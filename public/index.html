@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Causa Digital — Conectando Solidariedade</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-container">
+            <h1 class="logo">Causa Digital</h1>
+      <div class="nav-links">
+        <a href="#campanhas">Campanhas</a>
+        <a href="#painel">Para ONGs</a>
+        <a href="#ranking">Ranking</a>
+                <button id="modoBtn" class="btn-toggle">Modo</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1>Transforme Corações em <span>Impacto Real</span></h1>
+        <p>Escolha causas que importam, doe com propósito e ganhe recompensas ajudando o próximo.</p>
+        <div class="hero-buttons">
+          <button id="btnDoador" class="btn-primary">Quero Ajudar</button>
+          <button id="btnOng" class="btn-secondary">Sou uma ONG</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop" alt="Solidariedade">
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÕES (escondidas até clicar) -->
+  <section id="souDoador" class="section hidden">
+    <div class="container">
+      <h2>Para Doadores Apaixonados</h2>
+      <p class="subtitle">Escolha o que importa para você, doe e veja seu impacto crescer com recompensas gamificadas</p>
+
+      <div class="grid">
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">1</div>
+          <h3>Escolha Sua Causa</h3>
+          <p>Alimentação, saúde, educação, abrigo ou causas que tocam seu coração.</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">2</div>
+          <h3>Ganhe Pontos</h3>
+          <p>1 real = 10 pontos. Suba de nível e desbloqueia badges especiais.</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">3</div>
+          <h3>Veja o Impacto</h3>
+          <p>Acompanhe em tempo real como suas doações transformam vidas.</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">4</div>
+          <h3>Entre no Ranking</h3>
+          <p>Compita amigavelmente e inspire outros doadores.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="campanhas.html"><button class="btn-primary">Ver Campanhas →</button></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="souOng" class="section hidden alt">
+    <div class="container">
+      <h2>Para ONGs</h2>
+      <p class="subtitle">Gerencie campanhas, defina metas e receba apoio de quem acredita na sua causa.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Crie Campanhas</h3>
+          <p>Cadastre metas específicas como “alimentação”, “vacinação” ou “abrigo”.</p>
+        </div>
+        <div class="card">
+          <h3>Acompanhe arrecadacoes</h3>
+          <p>Visualize o progresso de cada meta e os resultados alcançados.</p>
+        </div>
+        <div class="card">
+          <h3>Inspire confianca</h3>
+          <p>Mostre resultados e conquiste apoiadores fiéis.</p>
+        </div>
+      </div>
+
+      <div class="center-btn">
+        <a href="painel.html"><button class="btn-primary">Acessar Painel da ONG</button></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMPANHAS -->
+  <section id="campanhasDestaque" class="section hidden">
+    <div class="container">
+      <h2>Campanhas Urgentes</h2>
+      <p class="subtitle">Causas que mais precisam de você agora</p>
+      <div id="destaques" class="grid"></div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE GAMIFICAÇÃO -->
+  <section class="section alt hidden" id="gamificacao">
+    <div class="container">
+      <h2>Como Funciona a Gamificacao</h2>
+      <p class="subtitle">Ganhe pontos, suba de nível e desbloqueie conquistas incríveis</p>
+
+      <div class="grid">
+        <div class="stat-box">
+          <h3>Pontos</h3>
+          <p>1 Real = 10 Pontos</p>
+        </div>
+        <div class="stat-box">
+          <h3>Níveis</h3>
+          <p>500 Pontos = 1 Nível</p>
+        </div>
+        <div class="stat-box">
+          <h3>Badges</h3>
+          <p>Desbloqueie até 10 conquistas</p>
+        </div>
+        <div class="stat-box">
+          <h3>Ranking</h3>
+          <p>Compete com outros doadores</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RANKING LIVE -->
+  <section id="ranking" class="section hidden">
+    <div class="container">
+      <h2>Top Doadores</h2>
+      <p class="subtitle">Heróis da solidariedade que já transformaram vidas</p>
+      <div id="rankingList" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="hidden" id="rodape">
+    <div class="container">
+      <p>© 2025 Causa Digital — Transformando solidariedade em impacto mensurável</p>
+      <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.7;">Conectando doadores com propósito a organizações que mudam o mundo</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    // --- DARK MODE ---
+    const btn = document.getElementById("modoBtn");
+    const body = document.body;
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark");
+      btn.textContent = "☀️";
+    }
+    btn.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      const dark = body.classList.contains("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      btn.textContent = dark ? "☀️" : "🌙";
+    });
+
+    // --- CAMPANHAS ---
+    async function carregarDestaques() {
+      try {
+        const res = await fetch("/api/campanhas");
+        const campanhas = await res.json();
+        const container = document.getElementById("destaques");
+        
+        container.innerHTML = campanhas.slice(0, 6).map(c => {
+          const percentual = Math.min((c.arrecadado / c.meta) * 100, 100);
+          const categoryIcons = {
+            alimentacao: 'A',
+            saude: 'S',
+            educacao: 'E',
+            abrigo: 'Ab',
+            outro: 'O'
+          };
+          
+          return `
+            <div class="card">
+              <img src="${c.imagem || 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop'}" alt="${c.titulo}">
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="badge badge-primary">${categoryIcons[c.categoria] || 'O'} ${c.categoria || 'Causa'}</span>
+                ${percentual >= 100 ? '<span class="badge badge-success">✓ Atingida</span>' : ''}
+              </div>
+              <h3>${c.titulo}</h3>
+              <p>${c.descricao}</p>
+              ${c.impactoDescricao ? `<p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.5rem 0; font-style: italic;">${c.impactoDescricao}</p>` : ''}
+              <div class="progress"><div style="width:${percentual}%;"></div></div>
+              <small style="display: block; margin-top: 0.5rem;">R$ ${c.arrecadado.toLocaleString()} de R$ ${c.meta.toLocaleString()}</small>
+              <div class="card-footer" style="margin-top: 1rem; gap: 1rem;">
+                <small style="flex-grow: 1; text-align: left;">${Math.round(percentual)}% arrecadado</small>
+                <a href="doacao.html?id=${c._id}"><button class="btn-primary" style="margin: 0;">Doar</button></a>
+              </div>
+            </div>
+          `;
+        }).join("");
+      } catch (error) {
+        console.error("Erro ao carregar campanhas:", error);
+      }
+    }
+
+    // --- RANKING ---
+    async function carregarRanking() {
+      try {
+        const res = await fetch("/api/doadores/ranking");
+        const doadores = await res.json();
+        const container = document.getElementById("rankingList");
+
+        const badges = {
+          primeiro_passo: '1P',
+          heroi_solidario: 'HS',
+          benfeitor: 'B'
+        };
+
+        container.innerHTML = doadores.map((d, idx) => `
+          <div class="card">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">
+              ${idx === 0 ? 'Ouro' : idx === 1 ? 'Prata' : idx === 2 ? 'Bronze' : 'Top'}
+            </div>
+            <h3>#${idx + 1} ${d.nome}</h3>
+            <div style="margin: 1rem 0;">
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Nível <strong>${d.nivel}</strong></p>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">${d.pontos} pontos</p>
+              <p style="font-size: 0.85rem; font-weight: 600; color: var(--success);">R$ ${d.totalArrecadado.toLocaleString()} arrecadados</p>
+            </div>
+            ${d.badges && d.badges.length > 0 ? `
+              <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
+                ${d.badges.map(b => `<span style="font-size: 1.2rem;">${badges[b] || 'B'}</span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `).join("");
+      } catch (error) {
+        console.error("Erro ao carregar ranking:", error);
+      }
+    }
+
+    // --- VISIBILIDADE DINÂMICA ---
+    const btnDoador = document.getElementById("btnDoador");
+    const btnOng = document.getElementById("btnOng");
+    const secDoador = document.getElementById("souDoador");
+    const secOng = document.getElementById("souOng");
+    const secCampanhas = document.getElementById("campanhasDestaque");
+    const secGamificacao = document.getElementById("gamificacao");
+    const secRanking = document.getElementById("ranking");
+    const rodape = document.getElementById("rodape");
+
+    function mostrarSecao(secao) {
+      secDoador.classList.add("hidden");
+      secOng.classList.add("hidden");
+      secCampanhas.classList.add("hidden");
+      secGamificacao.classList.add("hidden");
+      secRanking.classList.add("hidden");
+      rodape.classList.add("hidden");
+
+      secao.classList.remove("hidden");
+      secCampanhas.classList.remove("hidden");
+      
+      if (secao === secDoador) {
+        secGamificacao.classList.remove("hidden");
+        secRanking.classList.remove("hidden");
+      }
+      
+      rodape.classList.remove("hidden");
+      secao.scrollIntoView({ behavior: "smooth" });
+      carregarDestaques();
+      carregarRanking();
+    }
+
+    btnDoador.addEventListener("click", () => mostrarSecao(secDoador));
+    btnOng.addEventListener("click", () => mostrarSecao(secOng));
+
+    // Carregar no início
+    carregarDestaques();
+  </script>
+
+</body>
+</html>
+
+
+
+

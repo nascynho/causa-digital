@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Pessoas — Causa Digital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-container">
+      <h1 class="logo">Causa Digital</h1>
+      <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="campanhas.html">Campanhas</a>
+        <a href="doacao.html">Doação</a>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <section class="section">
+    <div class="container">
+      <h2>Cadastro de Pessoas</h2>
+      <p class="subtitle">Preencha os campos abaixo para se cadastrar na plataforma.</p>
+
+      <form id="cadastroForm" class="form">
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" required>
+
+        <label for="telefone">Telefone</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" required>
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" required>
+
+        <label for="tipo">Tipo de usuário</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Selecione uma opção</option>
+          <option value="doador">Doador</option>
+          <option value="voluntario">Voluntário</option>
+          <option value="representante">Representante de ONG</option>
+        </select>
+
+        <button type="submit" class="btn-primary" id="btnCadastrar">Cadastrar</button>
+      </form>
+
+      <div id="mensagemCadastro" class="mensagem hidden">
+        <h3>Cadastro realizado com sucesso</h3>
+        <p>Seja bem-vindo(a) à Causa Digital. Agora você já pode participar das campanhas.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Causa Digital</p>
+    </div>
+  </footer>
+
+  <script>
+    // Dark mode
+    const body = document.body;
+    const btn = document.getElementById("modoBtn");
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark");
+      btn.textContent = "☀️";
+    }
+    btn.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      const dark = body.classList.contains("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      btn.textContent = dark ? "☀️" : "🌙";
+    });
+
+await fetch("/api/pessoas", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    nome: form.nome.value,
+    email: form.email.value,
+    telefone: form.telefone.value,
+    senha: form.senha.value,
+    tipo: form.tipo.value
+  })
+});
+
+  </script>
+
+</body>
+</html>
+form.form select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+form.form select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+#mensagemCadastro {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}

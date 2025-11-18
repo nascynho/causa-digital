@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil — Causa Digital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-container">
+      <h1 class="logo">Causa Digital</h1>
+      <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="campanhas.html">Campanhas</a>
+        <button id="modoBtn" class="btn-toggle">Modo</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section">
+    <div class="container">
+      <h2>Meu Perfil de Doador</h2>
+      
+      <!-- HEADER DO PERFIL -->
+      <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h3 id="userName" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Carregando...</h3>
+            <p id="userLevel" style="opacity: 0.9;">Nível 1</p>
+          </div>
+          <div style="font-size: 4rem;">T</div>
+        </div>
+        
+        <!-- STATS PRINCIPAIS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+          <div>
+            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Pontos Acumulados</p>
+            <h4 id="userPoints" style="font-size: 1.8rem; margin: 0;">0</h4>
+          </div>
+          <div>
+            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Total Arrecadado</p>
+            <h4 id="userTotal" style="font-size: 1.8rem; margin: 0;">R$ 0</h4>
+          </div>
+          <div>
+            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Doacoes</p>
+            <h4 id="userDoacoes" style="font-size: 1.8rem; margin: 0;">0</h4>
+          </div>
+          <div>
+            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Badges</p>
+            <h4 id="userBadges" style="font-size: 1.8rem; margin: 0;">0</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--bg-secondary); flex-wrap: wrap;">
+        <button class="tab-btn active" data-tab="conquistas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">Conquistas</button>
+        <button class="tab-btn" data-tab="historico" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">Historico</button>
+        <button class="tab-btn" data-tab="metas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">Metas Pessoais</button>
+      </div>
+
+      <!-- CONQUISTAS -->
+      <div id="conquistas" class="tab-content" style="display: block;">
+        <h3 style="margin-bottom: 1.5rem;">Suas Conquistas</h3>
+        <div id="badgesContainer" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));"></div>
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div id="historico" class="tab-content" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Historico de Doacoes</h3>
+        <div id="doacoesContainer"></div>
+      </div>
+
+      <!-- METAS PESSOAIS -->
+      <div id="metas" class="tab-content" style="display: none;">
+        <h3 style="margin-bottom: 1.5rem;">Metas Pessoais de Impacto</h3>
+        <div style="margin-bottom: 2rem;">
+          <h4 style="margin-bottom: 1rem;">Criar uma Meta</h4>
+          <form id="metasForm" class="form" style="max-width: 500px;">
+            <input type="text" placeholder="Nome da meta (ex: Alimentação)" required>
+            <input type="number" placeholder="Valor desejado em R$" required>
+            <select required>
+              <option>Alimentação</option>
+              <option>Saúde</option>
+              <option>Educação</option>
+              <option>Abrigo</option>
+              <option>Outra</option>
+            </select>
+            <button type="submit" class="btn-primary">Criar Meta</button>
+          </form>
+        </div>
+        <div id="metasContainer" class="grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Causa Digital — Seu impacto importa</p>
+    </div>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const btn = document.getElementById("modoBtn");
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark");
+      btn.textContent = "☀️";
+    }
+    btn.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      const dark = body.classList.contains("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      btn.textContent = dark ? "☀️" : "🌙";
+    });
+
+    // Simular ID de doador (em produção, viria de autenticação)
+    const userId = localStorage.getItem("userId") || "user123";
+
+    const badgesInfo = {
+      primeiro_passo: { nome: '1P Primeiro Passo', descricao: 'Realizou sua primeira doacao' },
+      heroi_solidario: { nome: 'HS Heroi Solidario', descricao: 'Acumulou 100 pontos' },
+      benfeitor: { nome: 'B Benfeitor', descricao: 'Atingiu o nivel maximo de impacto' }
+    };
+
+    async function carregarPerfil() {
+      try {
+        const res = await fetch(`/api/doadores/${userId}`);
+        const doador = await res.json();
+
+        document.getElementById("userName").textContent = doador.nome || "Doador Anônimo";
+        document.getElementById("userLevel").textContent = `Nível ${doador.nivel}`;
+        document.getElementById("userPoints").textContent = `${doador.pontos.toLocaleString()} 📍`;
+        document.getElementById("userTotal").textContent = `R$ ${doador.totalArrecadado.toLocaleString()}`;
+        document.getElementById("userDoacoes").textContent = doador.doacoes.length;
+        document.getElementById("userBadges").textContent = doador.badges.length;
+
+        // Carregar badges
+        const badgesContainer = document.getElementById("badgesContainer");
+        if (doador.badges && doador.badges.length > 0) {
+          badgesContainer.innerHTML = doador.badges.map(b => {
+            const info = badgesInfo[b] || { nome: 'Conquista', descricao: 'Desbloqueada' };
+            return `
+              <div class="achievement-badge">
+                <div class="achievement-icon">${info.nome.split(' ')[0]}</div>
+                <strong>${info.nome}</strong>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">${info.descricao}</p>
+              </div>
+            `;
+          }).join("");
+        } else {
+          badgesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">Comece a doar para desbloquear conquistas 🎉</p>';
+        }
+
+        // Carregar histórico de doações
+        const doacoesRes = await fetch(`/api/doacoes/doador/${userId}`);
+        const doacoes = await doacoesRes.json();
+        const doacoesContainer = document.getElementById("doacoesContainer");
+        
+        if (doacoes.length > 0) {
+          doacoesContainer.innerHTML = doacoes.map(d => `
+            <div class="card" style="margin-bottom: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                  <h4>${d.campanha.titulo}</h4>
+                  <p style="color: var(--text-secondary); font-size: 0.9rem;">${new Date(d.criadoEm).toLocaleDateString('pt-BR')}</p>
+                </div>
+                <div style="text-align: right;">
+                  <p style="font-size: 1.2rem; font-weight: 600; color: var(--accent);">R$ ${d.valor.toLocaleString()}</p>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary);">+${d.pontosConcedidos} pontos</p>
+                </div>
+              </div>
+              ${d.mensagem ? `<p style="margin-top: 0.5rem; font-style: italic; color: var(--text-secondary);">"${d.mensagem}"</p>` : ''}
+            </div>
+          `).join("");
+        } else {
+          doacoesContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhuma doação realizada ainda. Comece agora! 💝</p>';
+        }
+
+        // Carregar metas pessoais
+        const metasContainer = document.getElementById("metasContainer");
+        if (doador.metasPessoais && doador.metasPessoais.length > 0) {
+          metasContainer.innerHTML = doador.metasPessoais.map(m => {
+            const percentual = (m.arrecadado / m.valor) * 100;
+            return `
+              <div class="card">
+                <h4>${m.nome}</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Categoria: ${m.categoria}</p>
+                <div class="progress"><div style="width: ${percentual}%;"></div></div>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">R$ ${m.arrecadado.toLocaleString()} de R$ ${m.valor.toLocaleString()}</p>
+              </div>
+            `;
+          }).join("");
+        } else {
+          metasContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">Crie uma meta pessoal para acompanhar seu progresso!</p>';
+        }
+      } catch (error) {
+        console.error("Erro ao carregar perfil:", error);
+      }
+    }
+
+    // Mudar de tab
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => {
+          b.style.color = "var(--text-secondary)";
+          b.style.borderBottomColor = "transparent";
+        });
+        btn.style.color = "var(--accent)";
+        btn.style.borderBottomColor = "var(--accent)";
+
+        document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
+        document.getElementById(btn.dataset.tab).style.display = "block";
+      });
+    });
+
+    carregarPerfil();
+  </script>
+
+</body>
+</html>

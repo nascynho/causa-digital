@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Registro — Causa Digital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-container">
+      <h1 class="logo">Causa Digital</h1>
+      <div class="nav-links">
+        <a href="index.html">Voltar</a>
+        <button id="modoBtn" class="btn-toggle">Modo</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section" style="min-height: 80vh; display: flex; align-items: center;">
+    <div class="container" style="max-width: 1000px;">
+      <!-- TABS -->
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
+        <button class="tab-btn active" data-tab="doador" style="padding: 1rem 2rem; background: var(--card); border: 2px solid var(--accent); cursor: pointer; font-weight: 600; color: var(--accent); border-radius: 8px; font-size: 1rem; transition: var(--transition);">Sou Doador</button>
+        <button class="tab-btn" data-tab="ong" style="padding: 1rem 2rem; background: var(--card); border: 2px solid var(--text-secondary); cursor: pointer; font-weight: 600; color: var(--text-secondary); border-radius: 8px; font-size: 1rem; transition: var(--transition);">🏢 Sou uma ONG</button>
+      </div>
+
+      <!-- DOADOR -->
+      <div id="doador" class="tab-content" style="display: block;">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+          <!-- Login Doador -->
+          <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">🔑 Acessar Minha Conta</h3>
+            <form id="loginDoador" class="form" style="padding: 0;">
+              <input type="email" placeholder="seu@email.com" required>
+              <input type="password" placeholder="Sua senha" required>
+              <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Entrar</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+              Não tem conta? <a href="#" style="color: var(--accent); cursor: pointer;" onclick="mostrarRegistro();">Crie uma!</a>
+            </p>
+          </div>
+
+          <!-- Registro Doador -->
+          <div class="card" id="registroDoador" style="display: none;">
+            <h3 style="margin-bottom: 1.5rem;">🎉 Criar Conta</h3>
+            <form id="novaContaDoador" class="form" style="padding: 0;">
+              <input type="text" placeholder="Seu nome" required>
+              <input type="email" placeholder="seu@email.com" required>
+              <input type="password" placeholder="Crie uma senha" required>
+              <input type="password" placeholder="Confirme a senha" required>
+              <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Criar Conta</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+              Já tem conta? <a href="#" style="color: var(--accent); cursor: pointer;" onclick="mostrarLogin();">Faça login!</a>
+            </p>
+          </div>
+
+          <!-- Info -->
+          <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; padding: 2rem; border-radius: var(--radius-lg); grid-column: 1 / -1;">
+            <h3 style="margin-bottom: 1rem;">Beneficios de Ser um Doador</h3>
+            <ul style="list-style: none; gap: 1rem; display: flex; flex-direction: column;">
+              <li>Escolha causas que importam para voce</li>
+              <li>Ganhe pontos e suba de nivel</li>
+              <li>Desbloqueie badges especiais</li>
+              <li>Acompanhe o impacto real de suas doacoes</li>
+              <li>Entre para o ranking de herois da solidariedade</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ONG -->
+      <div id="ong" class="tab-content" style="display: none;">
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+          <!-- Login ONG -->
+          <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">🔑 Acessar Painel</h3>
+            <form id="loginOng" class="form" style="padding: 0;">
+              <input type="email" placeholder="contato@ong.com" required>
+              <input type="password" placeholder="Sua senha" required>
+              <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Entrar no Painel</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+              Não tem conta? <a href="#" style="color: var(--accent); cursor: pointer;" onclick="mostrarRegistroOng();">Registre sua ONG!</a>
+            </p>
+          </div>
+
+          <!-- Registro ONG -->
+          <div class="card" id="registroOng" style="display: none;">
+            <h3 style="margin-bottom: 1.5rem;">🏢 Registrar ONG</h3>
+            <form id="novaContaOng" class="form" style="padding: 0;">
+              <input type="text" placeholder="Nome da ONG" required>
+              <input type="email" placeholder="contato@ong.com" required>
+              <input type="password" placeholder="Crie uma senha" required>
+              <input type="password" placeholder="Confirme a senha" required>
+              <input type="url" placeholder="Website (opcional)">
+              <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Registrar ONG</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+              Já tem conta? <a href="#" style="color: var(--accent); cursor: pointer;" onclick="mostrarLoginOng();">Faça login!</a>
+            </p>
+          </div>
+
+          <!-- Info -->
+          <div style="background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%); color: white; padding: 2rem; border-radius: var(--radius-lg); grid-column: 1 / -1;">
+            <h3 style="margin-bottom: 1rem;">Potencialize Seu Impacto</h3>
+            <ul style="list-style: none; gap: 1rem; display: flex; flex-direction: column;">
+              <li>Crie campanhas com metas claras e mensuraveis</li>
+              <li>Acompanhe arrecadacoes em tempo real</li>
+              <li>Engaje doadores com gamificacao</li>
+              <li>Mostre o impacto real de cada doacao</li>
+              <li>Construa comunidades de apoiadores fieis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Causa Digital — Conectando corações a impacto real</p>
+    </div>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const btn = document.getElementById("modoBtn");
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark");
+      btn.textContent = "☀️";
+    }
+    btn.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      const dark = body.classList.contains("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      btn.textContent = dark ? "Sol" : "Modo";
+    });
+
+    // Mudar entre abas principais
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => {
+          b.style.borderColor = "var(--text-secondary)";
+          b.style.color = "var(--text-secondary)";
+        });
+        btn.style.borderColor = "var(--accent)";
+        btn.style.color = "var(--accent)";
+
+        document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
+        document.getElementById(btn.dataset.tab).style.display = "block";
+      });
+    });
+
+    // Funções para mostrar/ocultar formulários - DOADOR
+    function mostrarRegistro() {
+      document.querySelector(".card:first-child").style.display = "none";
+      document.getElementById("registroDoador").style.display = "block";
+    }
+
+    function mostrarLogin() {
+      document.querySelector(".card:first-child").style.display = "block";
+      document.getElementById("registroDoador").style.display = "none";
+    }
+
+    // Funções para mostrar/ocultar formulários - ONG
+    function mostrarRegistroOng() {
+      document.querySelectorAll(".card")[2].style.display = "none";
+      document.getElementById("registroOng").style.display = "block";
+    }
+
+    function mostrarLoginOng() {
+      document.querySelectorAll(".card")[2].style.display = "block";
+      document.getElementById("registroOng").style.display = "none";
+    }
+
+    // Submissão de formulários
+    document.getElementById("loginDoador").addEventListener("submit", async e => {
+      e.preventDefault();
+      alert("Login de doador ativado! (Em producao, conectara ao backend)");
+      localStorage.setItem("userId", "user123");
+      window.location.href = "perfil.html";
+    });
+
+    document.getElementById("novaContaDoador").addEventListener("submit", async e => {
+      e.preventDefault();
+      alert("Conta criada! Bem-vindo à Causa Digital 🎉");
+      localStorage.setItem("userId", "user123");
+      window.location.href = "campanhas.html";
+    });
+
+    document.getElementById("loginOng").addEventListener("submit", async e => {
+      e.preventDefault();
+      alert("Login da ONG ativado! (Em produção, conectará ao backend)");
+      localStorage.setItem("ongId", "ong123");
+      window.location.href = "painel.html";
+    });
+
+    document.getElementById("novaContaOng").addEventListener("submit", async e => {
+      e.preventDefault();
+      alert("ONG registrada! Bem-vindo ao Causa Digital 🎉");
+      localStorage.setItem("ongId", "ong123");
+      window.location.href = "painel.html";
+    });
+  </script>
+
+</body>
+</html>
