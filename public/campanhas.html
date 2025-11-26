@@ -5,35 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campanhas — Causa Digital</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
 </head>
 <body>
 
   <nav>
     <div class="container nav-container">
-      <h1 class="logo">Causa Digital</h1>
+      <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
         <a href="index.html">Início</a>
-        <a href="painel.html">Painel ONG</a>
-        <button id="modoBtn" class="btn-toggle">Modo</button>
+        <a href="campanhas.html" class="active">Campanhas</a>
+        <a href="ongs.html">ONGs</a>
+        <a href="auth.html" class="btn-secondary outline">Entrar</a>
+        <a href="cadastro.html" class="btn-primary">Criar conta</a>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
 
   <section class="section">
     <div class="container">
-      <h2>Todas as Campanhas</h2>
-      <p class="subtitle">Explore e escolha as causas que tocam seu coração</p>
+      <h2>🎯 Todas as Campanhas</h2>
+      <p class="subtitle">Encontre a causa que faz sentido para você e faça a diferença hoje</p>
 
       <!-- FILTROS -->
       <div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
         <input type="text" id="searchInput" placeholder="Buscar campanhas..." style="flex: 1; min-width: 200px; padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); background: var(--bg);">
         <select id="categoryFilter" style="padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); background: var(--bg); color: var(--text);">
           <option value="">Todas as categorias</option>
-          <option value="alimentacao">Alimentacao</option>
-          <option value="saude">Saude</option>
-          <option value="educacao">Educacao</option>
-          <option value="abrigo">Abrigo</option>
-          <option value="outro">Outra</option>
+          <option value="alimentacao">🍞 Alimentação</option>
+          <option value="saude">🏥 Saúde</option>
+          <option value="educacao">📚 Educação</option>
+          <option value="abrigo">🏠 Abrigo</option>
+          <option value="outro">✨ Outra</option>
         </select>
         <select id="sortFilter" style="padding: 0.85rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); background: var(--bg); color: var(--text);">
           <option value="recente">Mais recentes</option>
@@ -46,9 +50,9 @@
     </div>
   </section>
 
-  <footer>
-    <div class="container">
-      <p>© 2025 Causa Digital — Juntos fazemos a diferença</p>
+  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
+    <div class="container" style="text-align: center;">
+      <p style="color: var(--text-secondary);">💙 © 2025 Causa Digital — Juntos fazemos a diferença</p>
     </div>
   </footer>
 
@@ -67,14 +71,17 @@
     });
 
     let todasCampanhas = [];
+    const listaCampanhas = document.getElementById("listaCampanhas");
 
     async function carregar() {
       try {
         const res = await fetch("/api/campanhas");
+        listaCampanhas.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Carregando campanhas...</p>';
         todasCampanhas = await res.json();
         filtrar();
       } catch (error) {
         console.error("Erro ao carregar campanhas:", error);
+        listaCampanhas.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Não foi possível carregar as campanhas agora.</p>';
       }
     }
 
@@ -96,14 +103,19 @@
         campanhas.sort((a, b) => (b.arrecadado / b.meta) - (a.arrecadado / a.meta));
       }
 
-      const lista = document.getElementById("listaCampanhas");
+      const lista = listaCampanhas;
       const categoryIcons = {
-        alimentacao: 'A',
-        saude: 'S',
-        educacao: 'E',
-        abrigo: 'Ab',
-        outro: 'O'
+        alimentacao: '🍞',
+        saude: '🏥',
+        educacao: '📚',
+        abrigo: '🏠',
+        outro: '✨'
       };
+
+      if (!campanhas.length) {
+        lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Nenhuma campanha corresponde aos filtros selecionados.</p>';
+        return;
+      }
 
       lista.innerHTML = campanhas.map(c => {
         const percentual = Math.min((c.arrecadado / c.meta) * 100, 100);
@@ -112,7 +124,7 @@
           <div class="card">
             <img src="${c.imagem || 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop'}" alt="${c.titulo}">
             <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
-              <span class="badge badge-primary">${categoryIcons[c.categoria] || '❤️'} ${c.categoria || 'Causa'}</span>
+              <span class="badge badge-primary">${categoryIcons[c.categoria] || 'C'} ${c.categoria || 'Causa'}</span>
               ${percentual >= 100 ? '<span class="badge badge-success">Meta atingida!</span>' : `<span class="badge badge-warning">Faltam R$ ${faltando.toLocaleString()}</span>`}
             </div>
             <h3>${c.titulo}</h3>
@@ -124,8 +136,8 @@
               <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString()}</span>
             </div>
             <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-              <span style="flex-grow: 1; text-align: center; padding: 0.5rem; border-radius: 6px; background: var(--bg-secondary); font-size: 0.85rem; font-weight: 600;">${Math.round(percentual)}%</span>
-              <a href="doacao.html?id=${c._id}" style="flex-grow: 1;"><button class="btn-primary" style="width: 100%; margin: 0;">Doar</button></a>
+              <span style="flex-grow: 1; text-align: center; padding: 0.5rem; border-radius: 6px; background: var(--bg-secondary); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; justify-content: center;">${Math.round(percentual)}%</span>
+              <a href="doacao.html?id=${c._id}" class="btn-primary" style="flex-grow: 1; text-align: center; text-decoration: none; padding: 0.5rem 1rem; font-size: 0.9rem;">Doar</a>
             </div>
           </div>
         `;

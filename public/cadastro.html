@@ -3,118 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Pessoas — Causa Digital</title>
+  <title>Criar Conta — Causa Digital</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
 </head>
 <body>
-
-  <!-- NAV -->
   <nav>
     <div class="container nav-container">
-      <h1 class="logo">Causa Digital</h1>
+      <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
-        <a href="index.html">Início</a>
         <a href="campanhas.html">Campanhas</a>
-        <a href="doacao.html">Doação</a>
+        <a href="ongs.html">ONGs</a>
+        <a href="auth.html" class="btn-secondary outline">Entrar</a>
+        <a href="cadastro.html" class="btn-primary">Criar conta</a>
         <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <section class="section">
-    <div class="container">
-      <h2>Cadastro de Pessoas</h2>
-      <p class="subtitle">Preencha os campos abaixo para se cadastrar na plataforma.</p>
+  <section class="section auth-section">
+    <div class="container auth-grid">
+      <div>
+        <span class="badge badge-primary">✨ Nova conta</span>
+        <h1 style="margin-top: 1rem;">Junte-se à transformação</h1>
+        <p class="subtitle">Cadastre-se como doador para apoiar causas que mudam vidas, ou como ONG para publicar campanhas e receber doações com transparência total.</p>
+        <div class="helper-card">
+          <h3>Como funciona?</h3>
+          <ul>
+            <li>Preencha seus dados básicos e confirme o cadastro.</li>
+            <li>Doadoras e doadores chegam direto na vitrine de ONGs ativas.</li>
+            <li>ONGs são redirecionadas ao painel para criar campanhas.</li>
+          </ul>
+        </div>
+      </div>
 
-      <form id="cadastroForm" class="form">
-        <label for="nome">Nome completo</label>
-        <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+      <div class="auth-card">
+        <div class="tab-buttons" role="tablist">
+          <button class="tab-button active" data-target="doador" type="button">Sou doador</button>
+          <button class="tab-button" data-target="ong" type="button">Sou uma ONG</button>
+        </div>
 
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" required>
+        <form id="formDoador" class="form tab-content active" autocomplete="off">
+          <div class="form-group">
+            <label for="nomeDoador">Nome completo</label>
+            <input id="nomeDoador" name="nome" type="text" placeholder="Digite seu nome" required>
+          </div>
+          <div class="form-group">
+            <label for="emailDoador">E-mail</label>
+            <input id="emailDoador" name="email" type="email" placeholder="nome@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="senhaDoador">Senha</label>
+            <input id="senhaDoador" name="senha" type="password" placeholder="Crie uma senha" required>
+            <p class="input-hint">Use 8+ caracteres com maiúscula, minúscula, número e símbolo.</p>
+          </div>
+          <button type="submit" class="btn-primary" id="btnCadastrarDoador">❤️ Quero fazer a diferença</button>
+          <p class="form-feedback" id="feedbackDoador"></p>
+        </form>
 
-        <label for="telefone">Telefone</label>
-        <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" required>
+        <form id="formOng" class="form tab-content" autocomplete="off" hidden>
+          <div class="form-group">
+            <label for="nomeOng">Nome da ONG</label>
+            <input id="nomeOng" name="nome" type="text" placeholder="Nome fantasia" required>
+          </div>
+          <div class="form-group">
+            <label for="emailOng">E-mail institucional</label>
+            <input id="emailOng" name="email" type="email" placeholder="contato@ong.org" required>
+          </div>
+          <div class="form-group">
+            <label for="senhaOng">Senha</label>
+            <input id="senhaOng" name="senha" type="password" placeholder="Crie uma senha" required>
+            <p class="input-hint">Use 8+ caracteres com maiúscula, minúscula, número e símbolo.</p>
+          </div>
+          <div class="form-group">
+            <label for="descricaoOng">Descrição</label>
+            <textarea id="descricaoOng" name="descricao" placeholder="Explique sua causa" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="siteOng">Site ou rede social</label>
+            <input id="siteOng" name="website" type="url" placeholder="https://" required>
+          </div>
+          <button type="submit" class="btn-primary" id="btnCadastrarOng">🚀 Criar minha conta</button>
+          <p class="form-feedback" id="feedbackOng"></p>
+        </form>
 
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" name="senha" placeholder="Digite uma senha segura" required>
-
-        <label for="tipo">Tipo de usuário</label>
-        <select id="tipo" name="tipo" required>
-          <option value="">Selecione uma opção</option>
-          <option value="doador">Doador</option>
-          <option value="voluntario">Voluntário</option>
-          <option value="representante">Representante de ONG</option>
-        </select>
-
-        <button type="submit" class="btn-primary" id="btnCadastrar">Cadastrar</button>
-      </form>
-
-      <div id="mensagemCadastro" class="mensagem hidden">
-        <h3>Cadastro realizado com sucesso</h3>
-        <p>Seja bem-vindo(a) à Causa Digital. Agora você já pode participar das campanhas.</p>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Já tem conta? <a href="auth.html">Faça login</a></p>
       </div>
     </div>
   </section>
 
-  <footer>
-    <div class="container">
-      <p>© 2025 Causa Digital</p>
-    </div>
-  </footer>
-
   <script>
-    // Dark mode
     const body = document.body;
-    const btn = document.getElementById("modoBtn");
+    const btnModo = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btn.textContent = "☀️";
+      btnModo.textContent = "☀️";
     }
-    btn.addEventListener("click", () => {
+    btnModo.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btn.textContent = dark ? "☀️" : "🌙";
+      btnModo.textContent = dark ? "☀️" : "🌙";
     });
 
-await fetch("/api/pessoas", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    nome: form.nome.value,
-    email: form.email.value,
-    telefone: form.telefone.value,
-    senha: form.senha.value,
-    tipo: form.tipo.value
-  })
-});
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabContents = document.querySelectorAll(".tab-content");
 
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        tabButtons.forEach((btn) => btn.classList.remove("active"));
+        tabContents.forEach((content) => {
+          content.classList.remove("active");
+          content.hidden = true;
+        });
+
+        button.classList.add("active");
+        const target = document.getElementById(`form${button.dataset.target.charAt(0).toUpperCase() + button.dataset.target.slice(1)}`);
+        target.classList.add("active");
+        target.hidden = false;
+      });
+    });
+
+    const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+
+    function senhaValida(valor) {
+      return SENHA_REGEX.test(valor || "");
+    }
+
+    function handleCadastro({ form, endpoint, feedback, button, redirect, storageKeys }) {
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        feedback.textContent = "";
+        feedback.style.color = "var(--text-secondary)";
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Enviando...";
+
+        const payload = Object.fromEntries(new FormData(form).entries());
+        if (!senhaValida(payload.senha)) {
+          feedback.textContent = "Senha precisa ter 8+ caracteres, com maiúscula, minúscula, número e símbolo.";
+          feedback.style.color = "var(--danger, #d0342c)";
+          button.disabled = false;
+          button.textContent = originalText;
+          return;
+        }
+        try {
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || "Não foi possível concluir o cadastro");
+          }
+
+          if (storageKeys) {
+            Object.entries(storageKeys).forEach(([key, value]) => {
+              localStorage.setItem(key, typeof value === "function" ? value(data) : value);
+            });
+          }
+
+          feedback.textContent = "Cadastro concluído! Redirecionando...";
+          feedback.style.color = "var(--success, #1f9254)";
+          setTimeout(() => {
+            window.location.href = redirect;
+          }, 600);
+        } catch (error) {
+          feedback.textContent = error.message;
+          feedback.style.color = "var(--danger, #d0342c)";
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      });
+    }
+
+    const formDoador = document.getElementById("formDoador");
+    const formOng = document.getElementById("formOng");
+
+    handleCadastro({
+      form: formDoador,
+      endpoint: "/api/doadores",
+      feedback: document.getElementById("feedbackDoador"),
+      button: document.getElementById("btnCadastrarDoador"),
+      redirect: "ongs.html",
+      storageKeys: {
+        userId: (data) => data._id,
+        userType: "doador"
+      }
+    });
+
+    handleCadastro({
+      form: formOng,
+      endpoint: "/api/ongs",
+      feedback: document.getElementById("feedbackOng"),
+      button: document.getElementById("btnCadastrarOng"),
+      redirect: "painel.html",
+      storageKeys: {
+        ongId: (data) => data._id,
+        userType: "ong"
+      }
+    });
   </script>
-
 </body>
 </html>
-form.form select {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  padding: 0.75rem;
-  border-radius: var(--radius);
-  font-size: 1rem;
-  color: var(--text);
-  transition: all 0.3s ease;
-}
-
-form.form select:focus {
-  border-color: var(--accent);
-  outline: none;
-}
-
-#mensagemCadastro {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 2rem;
-  text-align: center;
-  margin-top: 2rem;
-}

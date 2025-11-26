@@ -5,25 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel da ONG — Causa Digital</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
 </head>
 <body>
 
   <!-- NAV -->
   <nav>
     <div class="container nav-container">
-      <h1 class="logo">Causa Digital</h1>
+      <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
-        <a href="index.html">Início</a>
-        <a href="campanhas.html">Ver Campanhas</a>
-        <button id="modoBtn" class="btn-toggle">Modo</button>
+        <a href="campanhas.html">Campanhas</a>
+        <a href="ongs.html">ONGs</a>
+        <a href="auth.html" class="btn-secondary outline">Trocar conta</a>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
 
   <section class="section">
     <div class="container">
-      <h2>Painel de Controle da ONG</h2>
-      <p class="subtitle">Gerencie suas campanhas e acompanhe seu impacto em tempo real</p>
+      <h2>🏢 Painel de Controle</h2>
+      <p class="subtitle">Gerencie suas campanhas e acompanhe o impacto da sua ONG em tempo real</p>
+
+      <div class="helper-banner">
+        <div>
+          <strong>Próximo passo recomendado</strong>
+          <p id="painelHint">Crie sua primeira campanha para liberar indicadores no relatório.</p>
+        </div>
+        <div style="margin-left: auto; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <a href="#criar" class="btn-primary">Nova campanha</a>
+          <a href="#campanhas" class="btn-secondary outline">Ver campanhas</a>
+        </div>
+      </div>
 
       <!-- STATS DA ONG -->
       <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 3rem;">
@@ -47,9 +60,9 @@
 
       <!-- TABS -->
       <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--bg-secondary); flex-wrap: wrap;">
-        <button class="tab-btn active" data-tab="criar" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">🚀 Criar Campanha</button>
-        <button class="tab-btn" data-tab="campanhas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">Minhas Campanhas</button>
-        <button class="tab-btn" data-tab="relatorios" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">📈 Relatórios</button>
+        <button class="tab-btn active" data-tab="criar" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">➕ Nova Campanha</button>
+        <button class="tab-btn" data-tab="campanhas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">📝 Minhas Campanhas</button>
+        <button class="tab-btn" data-tab="relatorios" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">📊 Relatórios</button>
       </div>
 
       <!-- CRIAR CAMPANHA -->
@@ -67,11 +80,11 @@
               <label>Categoria *</label>
               <select name="categoria" required>
                 <option value="">Selecione...</option>
-                <option value="alimentacao">🍎 Alimentação</option>
-                <option value="saude">⚕️ Saúde</option>
-                <option value="educacao">📚 Educação</option>
-                <option value="abrigo">🏠 Abrigo</option>
-                <option value="outro">❤️ Outra</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="saude">Saúde</option>
+                <option value="educacao">Educação</option>
+                <option value="abrigo">Abrigo</option>
+                <option value="outro">Outra</option>
               </select>
             </div>
 
@@ -96,19 +109,21 @@
             <input type="url" name="imagem" placeholder="https://exemplo.com/imagem.jpg">
           </div>
 
-          <button type="submit" class="btn-primary" style="width: 100%;">✨ Criar Campanha</button>
+          <button type="submit" class="btn-primary" style="width: 100%;">Criar Campanha</button>
         </form>
       </div>
 
       <!-- MINHAS CAMPANHAS -->
       <div id="campanhas" class="tab-content" style="display: none;">
         <h3 style="margin-bottom: 1.5rem;">Suas Campanhas Ativas</h3>
-        <div id="campanhasList" class="grid"></div>
+        <div id="campanhasList" class="grid">
+          <p class="loading-message" style="grid-column: 1 / -1;">Carregando campanhas...</p>
+        </div>
       </div>
 
       <!-- RELATÓRIOS -->
       <div id="relatorios" class="tab-content" style="display: none;">
-        <h3 style="margin-bottom: 1.5rem;">📈 Relatório de Impacto</h3>
+        <h3 style="margin-bottom: 1.5rem;">Relatório de Impacto</h3>
         <div id="relatoriosContainer" style="display: grid; gap: 2rem;">
           <div class="card">
             <h4>Distribuição por Categoria</h4>
@@ -124,9 +139,9 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Causa Digital — Painel de Gestão de ONGs</p>
+  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
+    <div class="container" style="text-align: center;">
+      <p style="color: var(--text-secondary);">💙 © 2025 Causa Digital — Painel de Gestão de ONGs</p>
     </div>
   </footer>
 
@@ -150,8 +165,10 @@
 
     const form = document.getElementById("formCampanha");
     const lista = document.getElementById("campanhasList");
+    const painelHint = document.getElementById("painelHint");
 
     async function carregarCampanhas() {
+      lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Carregando campanhas...</p>';
       try {
         const res = await fetch("/api/campanhas");
         const data = await res.json();
@@ -159,34 +176,41 @@
         let totalArrecadado = 0;
         let metasAlcancadas = 0;
         
-        lista.innerHTML = data.map(c => {
-          const percentual = Math.min((c.arrecadado / c.meta) * 100, 100);
-          if (percentual >= 100) metasAlcancadas++;
-          totalArrecadado += c.arrecadado;
+        if (!data.length) {
+          lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Nenhuma campanha cadastrada ainda.</p>';
+        } else {
+          lista.innerHTML = data.map(c => {
+            const percentual = Math.min((c.arrecadado / c.meta) * 100, 100);
+            if (percentual >= 100) metasAlcancadas++;
+            totalArrecadado += c.arrecadado;
 
-          return `
-            <div class="card">
-              <img src="${c.imagem || 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop'}" alt="${c.titulo}" style="height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 1rem;">
-              <h4>${c.titulo}</h4>
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">${c.descricao}</p>
-              <div class="progress"><div style="width:${percentual}%;"></div></div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.9rem;">
-                <strong>R$ ${c.arrecadado.toLocaleString()}</strong>
-                <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString()}</span>
+            return `
+              <div class="card">
+                <img src="${c.imagem || 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop'}" alt="${c.titulo}" style="height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 1rem;">
+                <h4>${c.titulo}</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">${c.descricao}</p>
+                <div class="progress"><div style="width:${percentual}%;"></div></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.9rem;">
+                  <strong>R$ ${c.arrecadado.toLocaleString()}</strong>
+                  <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString()}</span>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                  <span style="flex-grow: 1; text-align: center; padding: 0.5rem; border-radius: 6px; background: var(--bg-secondary); font-size: 0.85rem; font-weight: 600;">${Math.round(percentual)}% concluído</span>
+                  <button class="btn-secondary outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Editar</button>
+                </div>
               </div>
-              <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                <span style="flex-grow: 1; text-align: center; padding: 0.5rem; border-radius: 6px; background: var(--bg-secondary); font-size: 0.85rem; font-weight: 600;">${Math.round(percentual)}% concluído</span>
-                <button class="btn-secondary outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Editar</button>
-              </div>
-            </div>
-          `;
-        }).join("");
+            `;
+          }).join("");
+        }
 
         document.getElementById("totalCampanhas").textContent = data.length;
         document.getElementById("totalArrecadado").textContent = `R$ ${totalArrecadado.toLocaleString()}`;
         document.getElementById("metasAlcancadas").textContent = metasAlcancadas;
+        painelHint.textContent = data.length ? "Mantenha suas campanhas atualizadas para reforçar a confiança dos doadores." : "Cadastre sua primeira campanha para liberar métricas de impacto.";
       } catch (error) {
         console.error("Erro ao carregar campanhas:", error);
+        painelHint.textContent = "Não foi possível carregar os dados agora. Tente novamente em instantes.";
+        lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Não foi possível carregar as campanhas.</p>';
       }
     }
 
@@ -206,7 +230,7 @@
         if (res.ok) {
           form.reset();
           carregarCampanhas();
-          alert("✨ Campanha criada com sucesso!");
+          alert("Campanha criada com sucesso!");
         } else {
           alert("Erro ao cadastrar a campanha.");
         }

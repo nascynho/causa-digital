@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Doação — Causa Digital</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
 </head>
 <body>
 
   <!-- NAV -->
   <nav>
     <div class="container nav-container">
-      <h1 class="logo">Causa Digital</h1>
+      <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
-        <a href="index.html">Início</a>
         <a href="campanhas.html">Campanhas</a>
+        <a href="ongs.html">ONGs</a>
+        <a href="auth.html" class="btn-secondary outline">Entrar</a>
+        <a href="cadastro.html" class="btn-primary">Criar conta</a>
         <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
@@ -22,31 +25,59 @@
 
   <section class="section">
     <div class="container">
-      <h2>Faça sua Doação</h2>
-      <p class="subtitle">Preencha os campos abaixo e contribua para esta campanha.</p>
+      <h2>❤️ Faça sua Doação</h2>
+      <p class="subtitle">Cada contribuição, por menor que seja, transforma vidas. Você está a um passo de fazer a diferença!</p>
 
-      <!-- FIGURAS 2–7 -->
+      <!-- Info da campanha -->
+      <div id="campaignInfo" style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card)); border-radius: var(--radius); display: none; border-left: 4px solid var(--primary);">
+        <h3 id="campaignTitle" style="margin-bottom: 0.5rem; color: var(--primary);"></h3>
+        <p id="campaignDescription" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;"></p>
+      </div>
+
+      <!-- Valores sugeridos -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.75rem; font-weight: 500;">Sugestões rápidas:</label>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="10">R$ 10</button>
+          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="25">R$ 25</button>
+          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="50">R$ 50</button>
+          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="100">R$ 100</button>
+        </div>
+      </div>
+
       <form id="formDoacao" class="form">
-        <!-- Figura 3: Campo Nome -->
-        <label for="nome">Nome completo</label>
-        <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
+        <div class="form-group">
+          <label for="nome">Nome completo</label>
+          <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
+        </div>
 
-        <!-- Figura 4: Campo E-mail -->
-        <label for="email">E-mail</label>
-        <input id="email" name="email" type="email" placeholder="Digite seu e-mail" required>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" placeholder="Digite seu e-mail" required>
+        </div>
 
-        <!-- Figura 5: Campo Valor -->
-        <label for="valor">Valor da doação (R$)</label>
-        <input id="valor" name="valor" type="number" min="1" placeholder="Ex: 50" required>
+        <div class="form-group">
+          <label for="valor">Valor da doação (R$)</label>
+          <input id="valor" name="valor" type="number" min="1" placeholder="Ex: 50" required>
+        </div>
 
-        <!-- Figura 8: Botão destacado -->
-        <button type="submit" class="btn-primary" id="btnDoar">Doar Agora</button>
+        <div class="form-group">
+          <label for="mensagem">Mensagem de apoio (opcional)</label>
+          <textarea id="mensagem" name="mensagem" rows="2" placeholder="Deixe uma mensagem para a campanha..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btnDoar" style="width: 100%;">Doar Agora</button>
       </form>
 
-      <!-- Figura 9: Mensagem de confirmação -->
+      <!-- Mensagem de confirmação -->
       <div id="mensagemConfirmacao" class="mensagem hidden">
-        <h3>Doação registrada com sucesso!</h3>
-        <p>Obrigado por apoiar esta causa. Seu gesto faz a diferença.</p>
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h3 style="color: var(--accent); margin-bottom: 0.5rem;">Doação realizada com sucesso!</h3>
+        <p style="margin-bottom: 1.5rem;">Obrigado por fazer parte dessa transformação. Seu apoio acaba de mudar uma vida!</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="campanhas.html" class="btn-primary">🎯 Ver mais campanhas</a>
+          <a href="perfil.html" class="btn-secondary outline">👤 Meu perfil</a>
+        </div>
       </div>
 
       <!-- Figura 10: Barra completa -->
@@ -60,9 +91,9 @@
     </div>
   </section>
 
-  <footer>
-    <div class="container">
-      <p>© 2025 Causa Digital</p>
+  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
+    <div class="container" style="text-align: center;">
+      <p style="color: var(--text-secondary);">💙 © 2025 Causa Digital — Sua generosidade transforma vidas</p>
     </div>
   </footer>
 
@@ -87,46 +118,108 @@
     const barra = document.getElementById("barraProgresso");
     const containerBarra = document.getElementById("barraFinal");
     const textoProgresso = document.getElementById("progressoTexto");
+    const campaignInfo = document.getElementById("campaignInfo");
+    const campaignTitle = document.getElementById("campaignTitle");
+    const campaignDescription = document.getElementById("campaignDescription");
 
-    form.addEventListener("submit", e => {
+    // Obter ID da campanha da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const campanhaId = urlParams.get('id');
+    const userId = localStorage.getItem("userId"); // Pode ser null se não logado
+
+    // Carregar dados da campanha
+    async function loadCampaign() {
+      if (!campanhaId) return;
+      try {
+        const res = await fetch(`/api/campanhas/${campanhaId}`);
+        if (res.ok) {
+          const campanha = await res.json();
+          campaignTitle.textContent = `Doando para: ${campanha.titulo}`;
+          campaignDescription.textContent = campanha.descricao.substring(0, 100) + "...";
+          campaignInfo.style.display = "block";
+        }
+      } catch (error) {
+        console.error("Erro ao carregar campanha", error);
+      }
+    }
+
+    if (campanhaId) loadCampaign();
+
+    // Botões de valores sugeridos
+    document.querySelectorAll('.valor-sugerido').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('valor').value = btn.dataset.valor;
+        document.querySelectorAll('.valor-sugerido').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        btn.style.background = 'var(--primary)';
+        btn.style.color = 'white';
+      });
+    });
+
+    // Preencher dados se usuário estiver logado
+    if (userId) {
+      fetch(`/api/doadores/${userId}`)
+        .then(res => res.json())
+        .then(user => {
+          if (user.nome) document.getElementById("nome").value = user.nome;
+          if (user.email) document.getElementById("email").value = user.email;
+        })
+        .catch(err => console.log("Usuário não logado ou erro ao buscar dados"));
+    }
+
+    form.addEventListener("submit", async e => {
       e.preventDefault();
+      const btn = document.getElementById("btnDoar");
+      btn.disabled = true;
+      btn.textContent = "Processando...";
+
+      const formData = new FormData(form);
+      const valor = parseFloat(formData.get("valor"));
+      const mensagem = formData.get("mensagem");
+
+      // Se tiver ID da campanha, faz a requisição real
+      if (campanhaId && userId) {
+        try {
+          const res = await fetch("/api/doacoes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              doador: userId,
+              campanha: campanhaId,
+              valor: valor,
+              mensagem: mensagem
+            })
+          });
+
+          if (!res.ok) throw new Error("Erro na doação");
+          
+        } catch (error) {
+          console.error(error);
+          alert("Houve um erro ao processar sua doação. Tente novamente.");
+          btn.disabled = false;
+          btn.textContent = "Doar Agora";
+          return;
+        }
+      }
+
+      // UI de sucesso (mesmo se for simulação sem login/campanha)
       form.classList.add("hidden");
       msg.classList.remove("hidden");
-      containerBarra.classList.remove("hidden");
-
-      // Simula progresso até 100%
-      let progresso = 0;
-      const meta = 100;
-      const timer = setInterval(() => {
-        progresso += 5;
-        barra.style.width = progresso + "%";
-        textoProgresso.textContent = progresso + "% da meta atingida";
-        if (progresso >= meta) clearInterval(timer);
-      }, 80);
+      
+      // Se tiver barra de progresso (simulação visual)
+      if (containerBarra) {
+        containerBarra.classList.remove("hidden");
+        let progresso = 0;
+        const meta = 100;
+        const timer = setInterval(() => {
+          progresso += 5;
+          barra.style.width = progresso + "%";
+          if (textoProgresso) textoProgresso.textContent = progresso + "% processado";
+          if (progresso >= meta) clearInterval(timer);
+        }, 50);
+      }
     });
   </script>
 
 </body>
 </html>
-.mensagem {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-.hidden {
-  display: none !important;
-}
-
-.progresso-container {
-  margin-top: 2rem;
-}
-
-#barraProgresso {
-  background: var(--accent);
-  height: 10px;
-  width: 0%;
-  transition: width 0.3s ease;
-}

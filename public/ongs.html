@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ONGs — Causa Digital</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+</head>
+<body>
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Causa Digital</a>
+      <div class="nav-links">
+        <a href="campanhas.html">Campanhas</a>
+        <a href="ongs.html" class="active">ONGs</a>
+        <a href="auth.html" class="btn-secondary outline">Entrar</a>
+        <a href="cadastro.html" class="btn-primary">Criar conta</a>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h1>🏢 ONGs Verificadas</h1>
+          <p class="subtitle">Conheça instituições confiáveis que estão transformando vidas neste momento</p>
+        </div>
+        <div class="chips">
+          <button class="chip active" data-filter="all" type="button">Todas</button>
+          <button class="chip" data-filter="impacto" type="button">Maior impacto</button>
+          <button class="chip" data-filter="novas" type="button">Novas</button>
+        </div>
+      </div>
+
+      <div id="ongsGrid" class="grid ongs-grid">
+        <div class="card skeleton">
+          <div style="height: 48px; width: 48px; border-radius: 12px; background: var(--bg-secondary);"></div>
+          <div style="height: 20px; width: 60%; background: var(--bg-secondary);"></div>
+          <div style="height: 14px; width: 80%; background: var(--bg-secondary);"></div>
+        </div>
+        <div class="card skeleton">
+          <div style="height: 48px; width: 48px; border-radius: 12px; background: var(--bg-secondary);"></div>
+          <div style="height: 20px; width: 60%; background: var(--bg-secondary);"></div>
+          <div style="height: 14px; width: 80%; background: var(--bg-secondary);"></div>
+        </div>
+        <div class="card skeleton">
+          <div style="height: 48px; width: 48px; border-radius: 12px; background: var(--bg-secondary);"></div>
+          <div style="height: 20px; width: 60%; background: var(--bg-secondary);"></div>
+          <div style="height: 14px; width: 80%; background: var(--bg-secondary);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
+    <div class="container" style="text-align: center;">
+      <p style="color: var(--text-secondary);">💙 © 2025 Causa Digital — Conectando doações a causas reais</p>
+    </div>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const modoBtn = document.getElementById("modoBtn");
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark");
+      modoBtn.textContent = "☀️";
+    }
+    modoBtn.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      const dark = body.classList.contains("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      modoBtn.textContent = dark ? "☀️" : "🌙";
+    });
+
+    let ongsAtivas = [];
+
+    async function carregarOngs() {
+      const grid = document.getElementById("ongsGrid");
+      try {
+        const res = await fetch("/api/ongs");
+        const ongs = await res.json();
+        if (!res.ok) {
+          throw new Error("Não foi possível carregar as ONGs");
+        }
+        if (!ongs.length) {
+          grid.innerHTML = `<div class="empty-state"><h3>Nenhuma ONG cadastrada ainda</h3><p>Que tal ser a primeira a publicar uma campanha?</p></div>`;
+          return;
+        }
+        ongsAtivas = ongs;
+        renderOngs(ongsAtivas);
+      } catch (error) {
+        grid.innerHTML = `<div class="empty-state"><h3>Ops!</h3><p>${error.message}</p></div>`;
+      }
+    }
+
+    function renderOngs(lista) {
+      const grid = document.getElementById("ongsGrid");
+      if (!lista.length) {
+        grid.innerHTML = `<div class="empty-state"><h3>Nenhuma ONG encontrada com esse filtro</h3></div>`;
+        return;
+      }
+      grid.innerHTML = lista.map(renderOngCard).join("");
+    }
+
+    function renderOngCard(ong) {
+      const campanhasAtivas = Array.isArray(ong.campanhas) ? ong.campanhas.length : 0;
+      return `
+        <div class="card ong-card">
+          <div class="ong-card__header">
+            <div class="ong-avatar">${ong.nome?.charAt(0) || "O"}</div>
+            <div>
+              <h3>${ong.nome}</h3>
+              <p>${ong.descricao || "Sem descrição cadastrada."}</p>
+            </div>
+          </div>
+          <div class="ong-card__body">
+            <div>
+              <span>Campanhas ativas</span>
+              <strong>${campanhasAtivas}</strong>
+            </div>
+            <div>
+              <span>Total arrecadado</span>
+              <strong>R$ ${(ong.totalArrecadado || 0).toLocaleString("pt-BR")}</strong>
+            </div>
+            <div>
+              <span>Seguidores</span>
+              <strong>${ong.seguidores || 0}</strong>
+            </div>
+          </div>
+          <div class="ong-card__footer">
+            <a class="btn-secondary" href="campanhas.html">Ver campanhas</a>
+            ${ong.website ? `<a class="btn-link" href="${ong.website}" target="_blank" rel="noopener">Visitar site →</a>` : ""}
+          </div>
+        </div>
+      `;
+    }
+
+    carregarOngs();
+
+    document.querySelectorAll(".chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+
+        let lista = [...ongsAtivas];
+        switch (chip.dataset.filter) {
+          case "impacto":
+            lista.sort((a, b) => (b.totalArrecadado || 0) - (a.totalArrecadado || 0));
+            break;
+          case "novas":
+            lista.sort((a, b) => new Date(b.createdAt || b.criadoEm || 0) - new Date(a.createdAt || a.criadoEm || 0));
+            break;
+          default:
+            lista = [...ongsAtivas];
+        }
+        renderOngs(lista);
+      });
+    });
+  </script>
+</body>
+</html>
