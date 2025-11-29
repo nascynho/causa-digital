@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Configuração básica
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,12 +17,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/causadigital";
 
-// Conexão com MongoDB
 mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB conectado com sucesso!"))
   .catch((err) => console.error("❌ Erro ao conectar no MongoDB:", err));
 
-// Schemas
 const doadorSchema = new mongoose.Schema({
   nome: String,
   email: { type: String, unique: true },
@@ -156,7 +153,6 @@ app.post("/api/doacoes", async (req, res) => {
   try {
     const { doadorId, doador, campanhaId, campanha, valor, mensagem } = req.body;
     
-    // Suportar ambos os formatos de entrada
     const doadorFinal = doadorId || doador;
     const campanhaFinal = campanhaId || campanha;
     
@@ -172,7 +168,6 @@ app.post("/api/doacoes", async (req, res) => {
 
     await doacao.save();
 
-    // Atualiza a campanha (se existir)
     if (campanhaFinal) {
       const campanhaDoc = await Campanha.findById(campanhaFinal);
       if (campanhaDoc) {
@@ -182,7 +177,6 @@ app.post("/api/doacoes", async (req, res) => {
       }
     }
 
-    // Atualiza o doador (se existir)
     if (doadorFinal) {
       const doadorDoc = await Doador.findById(doadorFinal);
       if (doadorDoc) {
