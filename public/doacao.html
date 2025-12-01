@@ -1,42 +1,34 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doação — Causa Digital</title>
+  <title>DoaÃ§Ã£o â€” Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <script src="auth-helper.js" defer></script>
 </head>
 <body>
-
-  <!-- NAV -->
   <nav>
     <div class="container nav-container">
       <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <a href="auth.html" class="btn-secondary outline">Entrar</a>
-        <a href="cadastro.html" class="btn-primary">Criar conta</a>
-        <button id="modoBtn" class="btn-toggle">🌙</button>
+        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
       </div>
     </div>
   </nav>
-
   <section class="section">
     <div class="container">
-      <h2>❤️ Faça sua Doação</h2>
-      <p class="subtitle">Cada contribuição, por menor que seja, transforma vidas. Você está a um passo de fazer a diferença!</p>
-
-      <!-- Info da campanha -->
+      <h2>â¤ï¸ FaÃ§a sua DoaÃ§Ã£o</h2>
+      <p class="subtitle">Cada contribuiÃ§Ã£o, por menor que seja, transforma vidas. VocÃª estÃ¡ a um passo de fazer a diferenÃ§a!</p>
       <div id="campaignInfo" style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card)); border-radius: var(--radius); display: none; border-left: 4px solid var(--primary);">
         <h3 id="campaignTitle" style="margin-bottom: 0.5rem; color: var(--primary);"></h3>
         <p id="campaignDescription" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;"></p>
       </div>
-
-      <!-- Valores sugeridos -->
       <div style="margin-bottom: 1.5rem;">
-        <label style="display: block; margin-bottom: 0.75rem; font-weight: 500;">Sugestões rápidas:</label>
+        <label style="display: block; margin-bottom: 0.75rem; font-weight: 500;">SugestÃµes rÃ¡pidas:</label>
         <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
           <button type="button" class="btn-secondary outline valor-sugerido" data-valor="10">R$ 10</button>
           <button type="button" class="btn-secondary outline valor-sugerido" data-valor="25">R$ 25</button>
@@ -44,43 +36,34 @@
           <button type="button" class="btn-secondary outline valor-sugerido" data-valor="100">R$ 100</button>
         </div>
       </div>
-
       <form id="formDoacao" class="form">
         <div class="form-group">
           <label for="nome">Nome completo</label>
           <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
         </div>
-
         <div class="form-group">
           <label for="email">E-mail</label>
           <input id="email" name="email" type="email" placeholder="Digite seu e-mail" required>
         </div>
-
         <div class="form-group">
-          <label for="valor">Valor da doação (R$)</label>
+          <label for="valor">Valor da doaÃ§Ã£o (R$)</label>
           <input id="valor" name="valor" type="number" min="1" placeholder="Ex: 50" required>
         </div>
-
         <div class="form-group">
           <label for="mensagem">Mensagem de apoio (opcional)</label>
           <textarea id="mensagem" name="mensagem" rows="2" placeholder="Deixe uma mensagem para a campanha..."></textarea>
         </div>
-
         <button type="submit" class="btn-primary" id="btnDoar" style="width: 100%;">Doar Agora</button>
       </form>
-
-      <!-- Mensagem de confirmação -->
       <div id="mensagemConfirmacao" class="mensagem hidden">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
-        <h3 style="color: var(--accent); margin-bottom: 0.5rem;">Doação realizada com sucesso!</h3>
-        <p style="margin-bottom: 1.5rem;">Obrigado por fazer parte dessa transformação. Seu apoio acaba de mudar uma vida!</p>
+        <div style="font-size: 4rem; margin-bottom: 1rem;">ðŸŽ‰</div>
+        <h3 style="color: var(--accent); margin-bottom: 0.5rem;">DoaÃ§Ã£o realizada com sucesso!</h3>
+        <p style="margin-bottom: 1.5rem;">Obrigado por fazer parte dessa transformaÃ§Ã£o. Seu apoio acaba de mudar uma vida!</p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="campanhas.html" class="btn-primary">🎯 Ver mais campanhas</a>
-          <a href="perfil.html" class="btn-secondary outline">👤 Meu perfil</a>
+          <a href="campanhas.html" class="btn-primary">ðŸŽ¯ Ver mais campanhas</a>
+          <a href="perfil.html" class="btn-secondary outline">ðŸ‘¤ Meu perfil</a>
         </div>
       </div>
-
-      <!-- Figura 10: Barra completa -->
       <div class="progresso-container hidden" id="barraFinal">
         <p>Meta da campanha</p>
         <div class="progress">
@@ -90,29 +73,26 @@
       </div>
     </div>
   </section>
-
   <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
     <div class="container" style="text-align: center;">
-      <p style="color: var(--text-secondary);">💙 © 2025 Causa Digital — Sua generosidade transforma vidas</p>
+      <p style="color: var(--text-secondary);">ðŸ’™ Â© 2025 Causa Digital â€” Sua generosidade transforma vidas</p>
     </div>
   </footer>
-
   <script>
     // Dark mode
     const body = document.body;
     const btn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btn.textContent = "☀️";
+      btn.textContent = "â˜€ï¸";
     }
     btn.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btn.textContent = dark ? "☀️" : "🌙";
+      btn.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
     });
-
-    // Simulação do envio da doação (para prints)
+    // SimulaÃ§Ã£o do envio da doaÃ§Ã£o (para prints)
     const form = document.getElementById("formDoacao");
     const msg = document.getElementById("mensagemConfirmacao");
     const barra = document.getElementById("barraProgresso");
@@ -121,12 +101,10 @@
     const campaignInfo = document.getElementById("campaignInfo");
     const campaignTitle = document.getElementById("campaignTitle");
     const campaignDescription = document.getElementById("campaignDescription");
-
     // Obter ID da campanha da URL
     const urlParams = new URLSearchParams(window.location.search);
     const campanhaId = urlParams.get('id');
-    const userId = localStorage.getItem("userId"); // Pode ser null se não logado
-
+    const userId = localStorage.getItem("userId"); // Pode ser null se nÃ£o logado
     // Carregar dados da campanha
     async function loadCampaign() {
       if (!campanhaId) return;
@@ -142,10 +120,8 @@
         console.error("Erro ao carregar campanha", error);
       }
     }
-
     if (campanhaId) loadCampaign();
-
-    // Botões de valores sugeridos
+    // BotÃµes de valores sugeridos
     document.querySelectorAll('.valor-sugerido').forEach(btn => {
       btn.addEventListener('click', () => {
         document.getElementById('valor').value = btn.dataset.valor;
@@ -155,8 +131,7 @@
         btn.style.color = 'white';
       });
     });
-
-    // Preencher dados se usuário estiver logado
+    // Preencher dados se usuÃ¡rio estiver logado
     if (userId) {
       fetch(`/api/doadores/${userId}`)
         .then(res => res.json())
@@ -164,49 +139,51 @@
           if (user.nome) document.getElementById("nome").value = user.nome;
           if (user.email) document.getElementById("email").value = user.email;
         })
-        .catch(err => console.log("Usuário não logado ou erro ao buscar dados"));
+        .catch(err => console.log("UsuÃ¡rio nÃ£o logado ou erro ao buscar dados"));
     }
-
     form.addEventListener("submit", async e => {
       e.preventDefault();
       const btn = document.getElementById("btnDoar");
       btn.disabled = true;
       btn.textContent = "Processando...";
-
       const formData = new FormData(form);
       const valor = parseFloat(formData.get("valor"));
       const mensagem = formData.get("mensagem");
-
-      // Se tiver ID da campanha, faz a requisição real
-      if (campanhaId && userId) {
-        try {
-          const res = await fetch("/api/doacoes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              doador: userId,
-              campanha: campanhaId,
-              valor: valor,
-              mensagem: mensagem
-            })
-          });
-
-          if (!res.ok) throw new Error("Erro na doação");
-          
-        } catch (error) {
-          console.error(error);
-          alert("Houve um erro ao processar sua doação. Tente novamente.");
+      // Se nÃ£o estiver logado, mostrar aviso mas permitir continuar
+      if (!userId && campanhaId) {
+        const confirmar = confirm("VocÃª nÃ£o estÃ¡ logado. Sua doaÃ§Ã£o serÃ¡ registrada como anÃ´nima.\n\nDeseja continuar?");
+        if (!confirmar) {
           btn.disabled = false;
           btn.textContent = "Doar Agora";
           return;
         }
       }
-
-      // UI de sucesso (mesmo se for simulação sem login/campanha)
+      // Se tiver ID da campanha, faz a requisiÃ§Ã£o real
+      if (campanhaId) {
+        try {
+          const res = await fetch("/api/doacoes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              doador: userId || null,
+              campanha: campanhaId,
+              valor: valor,
+              mensagem: mensagem
+            })
+          });
+          if (!res.ok) throw new Error("Erro na doaÃ§Ã£o");
+        } catch (error) {
+          console.error(error);
+          alert("Houve um erro ao processar sua doaÃ§Ã£o. Tente novamente.");
+          btn.disabled = false;
+          btn.textContent = "Doar Agora";
+          return;
+        }
+      }
+      // UI de sucesso (mesmo se for simulaÃ§Ã£o sem login/campanha)
       form.classList.add("hidden");
       msg.classList.remove("hidden");
-      
-      // Se tiver barra de progresso (simulação visual)
+      // Se tiver barra de progresso (simulaÃ§Ã£o visual)
       if (containerBarra) {
         containerBarra.classList.remove("hidden");
         let progresso = 0;
@@ -220,6 +197,5 @@
       }
     });
   </script>
-
 </body>
 </html>

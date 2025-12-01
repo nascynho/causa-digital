@@ -1,33 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil — Causa Digital</title>
+  <title>Meu Perfil â€” Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <script src="auth-helper.js" defer></script>
 </head>
 <body>
-
   <nav>
     <div class="container nav-container">
       <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <a href="auth.html" class="btn-secondary outline">Trocar conta</a>
-        <button id="modoBtn" class="btn-toggle">🌙</button>
+        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
       </div>
     </div>
   </nav>
-
   <section class="section">
     <div class="container">
-      <h2>👤 Meu Perfil de Doador</h2>
-
+      <h2>ðŸ‘¤ Meu Perfil de Doador</h2>
       <div class="helper-banner" id="nextActionBanner">
         <div>
-          <strong>Próximo passo recomendado</strong>
+          <strong>PrÃ³ximo passo recomendado</strong>
           <p id="nextActionText">Carregando seu impacto...</p>
         </div>
         <div style="margin-left: auto; display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -35,18 +32,14 @@
           <a href="#metas" class="btn-secondary outline">Revisar metas</a>
         </div>
       </div>
-      
-      <!-- HEADER DO PERFIL -->
       <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
           <div>
             <h3 id="userName" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Carregando...</h3>
-            <p id="userLevel" style="opacity: 0.9;">Nível 1</p>
+            <p id="userLevel" style="opacity: 0.9;">NÃ­vel 1</p>
           </div>
-          <div style="font-size: 4rem;">🧑‍🤝‍🧑</div>
+          <div style="font-size: 4rem;">ðŸ§‘â€ðŸ¤â€ðŸ§‘</div>
         </div>
-        
-        <!-- STATS PRINCIPAIS -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
           <div>
             <p style="opacity: 0.9; margin-bottom: 0.5rem;">Pontos Acumulados</p>
@@ -57,7 +50,7 @@
             <h4 id="userTotal" style="font-size: 1.8rem; margin: 0;">R$ 0</h4>
           </div>
           <div>
-            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Doações</p>
+            <p style="opacity: 0.9; margin-bottom: 0.5rem;">DoaÃ§Ãµes</p>
             <h4 id="userDoacoes" style="font-size: 1.8rem; margin: 0;">0</h4>
           </div>
           <div>
@@ -66,7 +59,6 @@
           </div>
         </div>
       </div>
-
       <div class="card ranking-card">
         <div class="ranking-card__header">
           <div>
@@ -79,40 +71,32 @@
           <p class="loading-message">Carregando ranking...</p>
         </div>
       </div>
-
-      <!-- TABS -->
       <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--bg-secondary); flex-wrap: wrap;">
-        <button class="tab-btn active" data-tab="conquistas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">🏆 Conquistas</button>
-        <button class="tab-btn" data-tab="historico" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">📜 Histórico</button>
-        <button class="tab-btn" data-tab="metas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">🎯 Metas</button>
+        <button class="tab-btn active" data-tab="conquistas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">ðŸ† Conquistas</button>
+        <button class="tab-btn" data-tab="historico" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">ðŸ“œ HistÃ³rico</button>
+        <button class="tab-btn" data-tab="metas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">ðŸŽ¯ Metas</button>
       </div>
-
-      <!-- CONQUISTAS -->
       <div id="conquistas" class="tab-content" style="display: block;">
         <h3 style="margin-bottom: 1.5rem;">Suas Conquistas</h3>
         <div id="badgesContainer" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
           <p class="loading-message" style="grid-column: 1 / -1;">Carregando conquistas...</p>
         </div>
       </div>
-
-      <!-- HISTÓRICO -->
       <div id="historico" class="tab-content" style="display: none;">
-        <h3 style="margin-bottom: 1.5rem;">📜 Histórico de Doações</h3>
-        <div id="doacoesContainer" class="loading-message">Carregando histórico...</div>
+        <h3 style="margin-bottom: 1.5rem;">ðŸ“œ HistÃ³rico de DoaÃ§Ãµes</h3>
+        <div id="doacoesContainer" class="loading-message">Carregando histÃ³rico...</div>
       </div>
-
-      <!-- METAS PESSOAIS -->
       <div id="metas" class="tab-content" style="display: none;">
         <h3 style="margin-bottom: 1.5rem;">Metas Pessoais de Impacto</h3>
         <div style="margin-bottom: 2rem;">
           <h4 style="margin-bottom: 1rem;">Criar uma Meta</h4>
           <form id="metasForm" class="form" style="max-width: 500px;">
-            <input type="text" placeholder="Nome da meta (ex: Alimentação)" required>
+            <input type="text" placeholder="Nome da meta (ex: AlimentaÃ§Ã£o)" required>
             <input type="number" placeholder="Valor desejado em R$" required>
             <select required>
-              <option>Alimentação</option>
-              <option>Saúde</option>
-              <option>Educação</option>
+              <option>AlimentaÃ§Ã£o</option>
+              <option>SaÃºde</option>
+              <option>EducaÃ§Ã£o</option>
               <option>Abrigo</option>
               <option>Outra</option>
             </select>
@@ -125,69 +109,65 @@
       </div>
     </div>
   </section>
-
   <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
     <div class="container" style="text-align: center;">
-      <p style="color: var(--text-secondary);">💙 © 2025 Causa Digital — Seu impacto importa</p>
+      <p style="color: var(--text-secondary);">ðŸ’™ Â© 2025 Causa Digital â€” Seu impacto importa</p>
     </div>
   </footer>
-
   <script>
     const body = document.body;
     const btn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btn.textContent = "☀️";
+      btn.textContent = "â˜€ï¸";
     }
     btn.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btn.textContent = dark ? "☀️" : "🌙";
+      btn.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
     });
-
-    // Simular ID de doador (em produção, viria de autenticação)
-    const userId = localStorage.getItem("userId") || "user123";
-
+    // Verificar se estÃ¡ logado
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("VocÃª precisa estar logado para acessar seu perfil.");
+      window.location.href = "auth.html";
+    }
     const badgesInfo = {
-      impacto_inicial: { nome: '⭐ Impacto Inicial', descricao: 'Sua primeira doação registrada!', emoji: '⭐' },
-      parceiro_constante: { nome: '🤝 Parceiro Constante', descricao: 'Você completou 5 doações.', emoji: '🤝' },
-      lider_generoso: { nome: '👑 Líder Generoso', descricao: '15 doações feitas para causas diferentes.', emoji: '👑' },
-      primeiro_passo: { nome: '👣 Primeiro Passo', descricao: 'Primeira contribuição confirmada!', emoji: '👣' },
-      heroi_solidario: { nome: '🦸 Herói Solidário', descricao: 'Acumulou mais de 100 pontos.', emoji: '🦸' },
-      benfeitor: { nome: '🌟 Benfeitor', descricao: 'Ultrapassou 1.000 pontos somados!', emoji: '🌟' }
+      impacto_inicial: { nome: 'â­ Impacto Inicial', descricao: 'Sua primeira doaÃ§Ã£o registrada!', emoji: 'â­' },
+      parceiro_constante: { nome: 'ðŸ¤ Parceiro Constante', descricao: 'VocÃª completou 5 doaÃ§Ãµes.', emoji: 'ðŸ¤' },
+      lider_generoso: { nome: 'ðŸ‘‘ LÃ­der Generoso', descricao: '15 doaÃ§Ãµes feitas para causas diferentes.', emoji: 'ðŸ‘‘' },
+      primeiro_passo: { nome: 'ðŸ‘£ Primeiro Passo', descricao: 'Primeira contribuiÃ§Ã£o confirmada!', emoji: 'ðŸ‘£' },
+      heroi_solidario: { nome: 'ðŸ¦¸ HerÃ³i SolidÃ¡rio', descricao: 'Acumulou mais de 100 pontos.', emoji: 'ðŸ¦¸' },
+      benfeitor: { nome: 'ðŸŒŸ Benfeitor', descricao: 'Ultrapassou 1.000 pontos somados!', emoji: 'ðŸŒŸ' }
     };
-
     async function carregarPerfil() {
       try {
         const res = await fetch(`/api/doadores/${userId}`);
         const doador = await res.json();
-
-        document.getElementById("userName").textContent = doador.nome || "Doador Anônimo";
-        document.getElementById("userLevel").textContent = `Nível ${doador.nivel}`;
+        document.getElementById("userName").textContent = doador.nome || "Doador AnÃ´nimo";
+        document.getElementById("userLevel").textContent = `NÃ­vel ${doador.nivel}`;
         document.getElementById("userPoints").textContent = `${doador.pontos.toLocaleString()} pts`;
         document.getElementById("userTotal").textContent = `R$ ${doador.totalArrecadado.toLocaleString()}`;
         document.getElementById("userDoacoes").textContent = (doador.doacoes || []).length;
         document.getElementById("userBadges").textContent = (doador.badges || []).length;
-
-        // Atualizar sugestão de próximo passo
+        // Atualizar sugestÃ£o de prÃ³ximo passo
         const nextActionText = document.getElementById("nextActionText");
         if ((doador.doacoes || []).length === 0) {
-          nextActionText.textContent = "Você ainda não realizou doações. Escolha uma campanha para destravar sua primeira badge.";
+          nextActionText.textContent = "VocÃª ainda nÃ£o realizou doaÃ§Ãµes. Escolha uma campanha para destravar sua primeira badge.";
         } else if ((doador.badges || []).length < 3) {
-          nextActionText.textContent = "Continue doando para desbloquear novas conquistas e subir de nível.";
+          nextActionText.textContent = "Continue doando para desbloquear novas conquistas e subir de nÃ­vel.";
         } else {
-          nextActionText.textContent = "Excelente ritmo! Compartilhe sua trajetória com amigos e inspire novos doadores.";
+          nextActionText.textContent = "Excelente ritmo! Compartilhe sua trajetÃ³ria com amigos e inspire novos doadores.";
         }
-
         // Carregar badges
         const badgesContainer = document.getElementById("badgesContainer");
         if (doador.badges && doador.badges.length > 0) {
           badgesContainer.innerHTML = doador.badges.map(b => {
-            const info = badgesInfo[b] || { nome: 'Conquista', descricao: 'Desbloqueada', emoji: '🌟' };
+            const info = badgesInfo[b] || { nome: 'Conquista', descricao: 'Desbloqueada', emoji: 'ðŸŒŸ' };
             return `
               <div class="achievement-badge">
-                <div class="achievement-icon" style="font-size: 2rem;">${info.emoji || '🌟'}</div>
+                <div class="achievement-icon" style="font-size: 2rem;">${info.emoji || 'ðŸŒŸ'}</div>
                 <strong>${info.nome}</strong>
                 <p style="font-size: 0.85rem; color: var(--text-secondary);">${info.descricao}</p>
               </div>
@@ -196,12 +176,10 @@
         } else {
           badgesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">Comece a doar para desbloquear conquistas.</p>';
         }
-
-        // Carregar histórico de doações
+        // Carregar histÃ³rico de doaÃ§Ãµes
         const doacoesRes = await fetch(`/api/doacoes/doador/${userId}`);
         const doacoes = await doacoesRes.json();
         const doacoesContainer = document.getElementById("doacoesContainer");
-        
         if (doacoes.length > 0) {
           doacoesContainer.innerHTML = doacoes.map(d => `
             <div class="card" style="margin-bottom: 1rem;">
@@ -219,9 +197,8 @@
             </div>
           `).join("");
         } else {
-          doacoesContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhuma doação realizada ainda. Comece agora.</p>';
+          doacoesContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhuma doaÃ§Ã£o realizada ainda. Comece agora.</p>';
         }
-
         // Carregar metas pessoais
         const metasContainer = document.getElementById("metasContainer");
         if (doador.metasPessoais && doador.metasPessoais.length > 0) {
@@ -243,7 +220,6 @@
         console.error("Erro ao carregar perfil:", error);
       }
     }
-
     // Mudar de tab
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -253,25 +229,21 @@
         });
         btn.style.color = "var(--accent)";
         btn.style.borderBottomColor = "var(--accent)";
-
         document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
         document.getElementById(btn.dataset.tab).style.display = "block";
       });
     });
-
     async function carregarRanking() {
       const rankingContainer = document.getElementById("rankingList");
       const rankingBadge = document.getElementById("rankingPosition");
       if (!rankingContainer) return;
-
       rankingContainer.innerHTML = '<p class="loading-message">Carregando ranking...</p>';
       try {
         const res = await fetch("/api/ranking?limit=20");
         const lista = await res.json();
         if (!res.ok || !Array.isArray(lista) || !lista.length) {
-          throw new Error("Ainda não há dados suficientes");
+          throw new Error("Ainda nÃ£o hÃ¡ dados suficientes");
         }
-
         rankingContainer.innerHTML = lista.map((item, index) => {
           const isUser = String(item._id) === String(userId);
           return `
@@ -282,12 +254,11 @@
               </div>
               <div class="ranking-pontos">
                 <span>${item.pontos} pts</span>
-                <small>Nível ${item.nivel}</small>
+                <small>NÃ­vel ${item.nivel}</small>
               </div>
             </div>
           `;
         }).join("");
-
         const minhaPosicao = lista.findIndex(item => String(item._id) === String(userId));
         rankingBadge.textContent = minhaPosicao > -1 ? `Top ${minhaPosicao + 1}` : "Fora do Top 20";
       } catch (error) {
@@ -295,10 +266,8 @@
         if (rankingBadge) rankingBadge.textContent = "--";
       }
     }
-
     carregarPerfil();
     carregarRanking();
   </script>
-
 </body>
 </html>

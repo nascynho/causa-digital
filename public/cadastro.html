@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar Conta — Causa Digital</title>
+  <title>Criar Conta â€” Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <script src="auth-helper.js" defer></script>
 </head>
 <body>
   <nav>
@@ -14,35 +15,30 @@
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <a href="auth.html" class="btn-secondary outline">Entrar</a>
-        <a href="cadastro.html" class="btn-primary">Criar conta</a>
-        <button id="modoBtn" class="btn-toggle">🌙</button>
+        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
       </div>
     </div>
   </nav>
-
   <section class="section auth-section">
     <div class="container auth-grid">
       <div>
-        <span class="badge badge-primary">✨ Nova conta</span>
-        <h1 style="margin-top: 1rem;">Junte-se à transformação</h1>
-        <p class="subtitle">Cadastre-se como doador para apoiar causas que mudam vidas, ou como ONG para publicar campanhas e receber doações com transparência total.</p>
+        <span class="badge badge-primary">âœ¨ Nova conta</span>
+        <h1 style="margin-top: 1rem;">Junte-se Ã  transformaÃ§Ã£o</h1>
+        <p class="subtitle">Cadastre-se como doador para apoiar causas que mudam vidas, ou como ONG para publicar campanhas e receber doaÃ§Ãµes com transparÃªncia total.</p>
         <div class="helper-card">
           <h3>Como funciona?</h3>
           <ul>
-            <li>Preencha seus dados básicos e confirme o cadastro.</li>
+            <li>Preencha seus dados bÃ¡sicos e confirme o cadastro.</li>
             <li>Doadoras e doadores chegam direto na vitrine de ONGs ativas.</li>
-            <li>ONGs são redirecionadas ao painel para criar campanhas.</li>
+            <li>ONGs sÃ£o redirecionadas ao painel para criar campanhas.</li>
           </ul>
         </div>
       </div>
-
       <div class="auth-card">
         <div class="tab-buttons" role="tablist">
           <button class="tab-button active" data-target="doador" type="button">Sou doador</button>
           <button class="tab-button" data-target="ong" type="button">Sou uma ONG</button>
         </div>
-
         <form id="formDoador" class="form tab-content active" autocomplete="off">
           <div class="form-group">
             <label for="nomeDoador">Nome completo</label>
@@ -55,12 +51,11 @@
           <div class="form-group">
             <label for="senhaDoador">Senha</label>
             <input id="senhaDoador" name="senha" type="password" placeholder="Crie uma senha" required>
-            <p class="input-hint">Use 8+ caracteres com maiúscula, minúscula, número e símbolo.</p>
+            <p class="input-hint">Use 8+ caracteres com maiÃºscula, minÃºscula, nÃºmero e sÃ­mbolo.</p>
           </div>
-          <button type="submit" class="btn-primary" id="btnCadastrarDoador">❤️ Quero fazer a diferença</button>
+          <button type="submit" class="btn-primary" id="btnCadastrarDoador">â¤ï¸ Quero fazer a diferenÃ§a</button>
           <p class="form-feedback" id="feedbackDoador"></p>
         </form>
-
         <form id="formOng" class="form tab-content" autocomplete="off" hidden>
           <div class="form-group">
             <label for="nomeOng">Nome da ONG</label>
@@ -73,42 +68,45 @@
           <div class="form-group">
             <label for="senhaOng">Senha</label>
             <input id="senhaOng" name="senha" type="password" placeholder="Crie uma senha" required>
-            <p class="input-hint">Use 8+ caracteres com maiúscula, minúscula, número e símbolo.</p>
+            <p class="input-hint">Use 8+ caracteres com maiÃºscula, minÃºscula, nÃºmero e sÃ­mbolo.</p>
           </div>
           <div class="form-group">
-            <label for="descricaoOng">Descrição</label>
+            <label for="descricaoOng">DescriÃ§Ã£o</label>
             <textarea id="descricaoOng" name="descricao" placeholder="Explique sua causa" rows="3" required></textarea>
           </div>
           <div class="form-group">
             <label for="siteOng">Site ou rede social</label>
             <input id="siteOng" name="website" type="url" placeholder="https://" required>
           </div>
-          <button type="submit" class="btn-primary" id="btnCadastrarOng">🚀 Criar minha conta</button>
+          <button type="submit" class="btn-primary" id="btnCadastrarOng">ðŸš€ Criar minha conta</button>
           <p class="form-feedback" id="feedbackOng"></p>
         </form>
-
-        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Já tem conta? <a href="auth.html">Faça login</a></p>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">JÃ¡ tem conta? <a href="auth.html">FaÃ§a login</a></p>
       </div>
     </div>
   </section>
-
   <script>
+    // Se jÃ¡ estiver logado, redireciona
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    const ongId = localStorage.getItem("ongId");
+    if (token && (userId || ongId)) {
+      window.location.href = userId ? "perfil.html" : "painel.html";
+    }
     const body = document.body;
     const btnModo = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btnModo.textContent = "☀️";
+      btnModo.textContent = "â˜€ï¸";
     }
     btnModo.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btnModo.textContent = dark ? "☀️" : "🌙";
+      btnModo.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
     });
-
     const tabButtons = document.querySelectorAll(".tab-button");
     const tabContents = document.querySelectorAll(".tab-content");
-
     tabButtons.forEach((button) => {
       button.addEventListener("click", () => {
         tabButtons.forEach((btn) => btn.classList.remove("active"));
@@ -116,20 +114,16 @@
           content.classList.remove("active");
           content.hidden = true;
         });
-
         button.classList.add("active");
         const target = document.getElementById(`form${button.dataset.target.charAt(0).toUpperCase() + button.dataset.target.slice(1)}`);
         target.classList.add("active");
         target.hidden = false;
       });
     });
-
     const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-
     function senhaValida(valor) {
       return SENHA_REGEX.test(valor || "");
     }
-
     function handleCadastro({ form, endpoint, feedback, button, redirect, storageKeys }) {
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -138,10 +132,9 @@
         const originalText = button.textContent;
         button.disabled = true;
         button.textContent = "Enviando...";
-
         const payload = Object.fromEntries(new FormData(form).entries());
         if (!senhaValida(payload.senha)) {
-          feedback.textContent = "Senha precisa ter 8+ caracteres, com maiúscula, minúscula, número e símbolo.";
+          feedback.textContent = "Senha precisa ter 8+ caracteres, com maiÃºscula, minÃºscula, nÃºmero e sÃ­mbolo.";
           feedback.style.color = "var(--danger, #d0342c)";
           button.disabled = false;
           button.textContent = originalText;
@@ -153,19 +146,16 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           });
-
           const data = await res.json();
           if (!res.ok) {
-            throw new Error(data.error || "Não foi possível concluir o cadastro");
+            throw new Error(data.error || "NÃ£o foi possÃ­vel concluir o cadastro");
           }
-
           if (storageKeys) {
             Object.entries(storageKeys).forEach(([key, value]) => {
               localStorage.setItem(key, typeof value === "function" ? value(data) : value);
             });
           }
-
-          feedback.textContent = "Cadastro concluído! Redirecionando...";
+          feedback.textContent = "Cadastro concluÃ­do! Redirecionando...";
           feedback.style.color = "var(--success, #1f9254)";
           setTimeout(() => {
             window.location.href = redirect;
@@ -179,22 +169,20 @@
         }
       });
     }
-
     const formDoador = document.getElementById("formDoador");
     const formOng = document.getElementById("formOng");
-
     handleCadastro({
       form: formDoador,
       endpoint: "/api/doadores",
       feedback: document.getElementById("feedbackDoador"),
       button: document.getElementById("btnCadastrarDoador"),
-      redirect: "ongs.html",
+      redirect: "perfil.html",
       storageKeys: {
+        token: "demo-token",
         userId: (data) => data._id,
         userType: "doador"
       }
     });
-
     handleCadastro({
       form: formOng,
       endpoint: "/api/ongs",
@@ -202,6 +190,7 @@
       button: document.getElementById("btnCadastrarOng"),
       redirect: "painel.html",
       storageKeys: {
+        token: "demo-token",
         ongId: (data) => data._id,
         userType: "ong"
       }
