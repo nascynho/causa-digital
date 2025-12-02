@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DoaÃ§Ã£o â€” Causa Digital</title>
+  <title>Doar - Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -15,187 +15,160 @@
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
   <section class="section">
-    <div class="container">
-      <h2>â¤ï¸ FaÃ§a sua DoaÃ§Ã£o</h2>
-      <p class="subtitle">Cada contribuiÃ§Ã£o, por menor que seja, transforma vidas. VocÃª estÃ¡ a um passo de fazer a diferenÃ§a!</p>
-      <div id="campaignInfo" style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card)); border-radius: var(--radius); display: none; border-left: 4px solid var(--primary);">
-        <h3 id="campaignTitle" style="margin-bottom: 0.5rem; color: var(--primary);"></h3>
-        <p id="campaignDescription" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;"></p>
+    <div class="container" style="max-width: 600px;">
+      <a href="campanhas.html" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">&larr; Voltar para campanhas</a>
+      <div class="card" id="campanhaInfo">
+        <div class="skeleton" style="height: 24px; width: 60%; margin-bottom: 1rem;"></div>
+        <div class="skeleton" style="height: 16px; width: 100%; margin-bottom: 0.5rem;"></div>
+        <div class="skeleton" style="height: 16px; width: 80%;"></div>
       </div>
-      <div style="margin-bottom: 1.5rem;">
-        <label style="display: block; margin-bottom: 0.75rem; font-weight: 500;">SugestÃµes rÃ¡pidas:</label>
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="10">R$ 10</button>
-          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="25">R$ 25</button>
-          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="50">R$ 50</button>
-          <button type="button" class="btn-secondary outline valor-sugerido" data-valor="100">R$ 100</button>
-        </div>
-      </div>
-      <form id="formDoacao" class="form">
-        <div class="form-group">
-          <label for="nome">Nome completo</label>
-          <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
-        </div>
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input id="email" name="email" type="email" placeholder="Digite seu e-mail" required>
-        </div>
-        <div class="form-group">
-          <label for="valor">Valor da doaÃ§Ã£o (R$)</label>
-          <input id="valor" name="valor" type="number" min="1" placeholder="Ex: 50" required>
-        </div>
-        <div class="form-group">
-          <label for="mensagem">Mensagem de apoio (opcional)</label>
-          <textarea id="mensagem" name="mensagem" rows="2" placeholder="Deixe uma mensagem para a campanha..."></textarea>
-        </div>
-        <button type="submit" class="btn-primary" id="btnDoar" style="width: 100%;">Doar Agora</button>
-      </form>
-      <div id="mensagemConfirmacao" class="mensagem hidden">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">ðŸŽ‰</div>
-        <h3 style="color: var(--accent); margin-bottom: 0.5rem;">DoaÃ§Ã£o realizada com sucesso!</h3>
-        <p style="margin-bottom: 1.5rem;">Obrigado por fazer parte dessa transformaÃ§Ã£o. Seu apoio acaba de mudar uma vida!</p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="campanhas.html" class="btn-primary">ðŸŽ¯ Ver mais campanhas</a>
-          <a href="perfil.html" class="btn-secondary outline">ðŸ‘¤ Meu perfil</a>
-        </div>
-      </div>
-      <div class="progresso-container hidden" id="barraFinal">
-        <p>Meta da campanha</p>
-        <div class="progress">
-          <div id="barraProgresso"></div>
-        </div>
-        <small id="progressoTexto"></small>
+      <div class="card" style="margin-top: 1.5rem;">
+        <h2 style="margin-bottom: 1.5rem;">💙 Fazer Doacao</h2>
+        <form id="formDoacao">
+          <div class="form-group">
+            <label>Valor da doacao</label>
+            <div class="valor-buttons">
+              <button type="button" class="valor-btn" data-valor="10">R$ 10</button>
+              <button type="button" class="valor-btn" data-valor="25">R$ 25</button>
+              <button type="button" class="valor-btn" data-valor="50">R$ 50</button>
+              <button type="button" class="valor-btn" data-valor="100">R$ 100</button>
+            </div>
+            <input type="number" id="valor" name="valor" min="1" placeholder="Ou digite outro valor" required style="margin-top: 0.75rem;">
+          </div>
+          <div class="form-group">
+            <label>Seu nome (opcional)</label>
+            <input type="text" id="nome" name="nome" placeholder="Deixe em branco para doacao anonima">
+          </div>
+          <div class="form-group">
+            <label>Mensagem (opcional)</label>
+            <textarea id="mensagem" name="mensagem" rows="3" placeholder="Deixe uma palavra de apoio..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%;" id="btnDoar">💙 Confirmar Doacao</button>
+          <p class="form-feedback" id="feedback"></p>
+        </form>
       </div>
     </div>
   </section>
-  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
-    <div class="container" style="text-align: center;">
-      <p style="color: var(--text-secondary);">ðŸ’™ Â© 2025 Causa Digital â€” Sua generosidade transforma vidas</p>
-    </div>
-  </footer>
   <script>
-    // Dark mode
     const body = document.body;
-    const btn = document.getElementById("modoBtn");
+    const modoBtn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btn.textContent = "â˜€ï¸";
+      modoBtn.textContent = "☀️";
     }
-    btn.addEventListener("click", () => {
+    modoBtn.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btn.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
+      modoBtn.textContent = dark ? "☀️" : "🌙";
     });
-    // SimulaÃ§Ã£o do envio da doaÃ§Ã£o (para prints)
-    const form = document.getElementById("formDoacao");
-    const msg = document.getElementById("mensagemConfirmacao");
-    const barra = document.getElementById("barraProgresso");
-    const containerBarra = document.getElementById("barraFinal");
-    const textoProgresso = document.getElementById("progressoTexto");
-    const campaignInfo = document.getElementById("campaignInfo");
-    const campaignTitle = document.getElementById("campaignTitle");
-    const campaignDescription = document.getElementById("campaignDescription");
-    // Obter ID da campanha da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const campanhaId = urlParams.get('id');
-    const userId = localStorage.getItem("userId"); // Pode ser null se nÃ£o logado
-    // Carregar dados da campanha
-    async function loadCampaign() {
-      if (!campanhaId) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const campanhaId = params.get("id") || "1";
+
+    const mockCampanhas = {
+      "1": { _id: "1", titulo: "Cesta Basica para 100 Familias", descricao: "Ajude familias em vulnerabilidade alimentar com cestas basicas completas.", meta: 5000, arrecadado: 4500 },
+      "2": { _id: "2", titulo: "Material Escolar Completo", descricao: "Kits escolares para criancas de comunidades carentes.", meta: 10000, arrecadado: 8200 },
+      "3": { _id: "3", titulo: "Medicamentos Essenciais", descricao: "Compra de medicamentos para idosos em situacao de vulnerabilidade.", meta: 8000, arrecadado: 6100 }
+    };
+
+    async function carregarCampanha() {
+      const container = document.getElementById("campanhaInfo");
       try {
         const res = await fetch(`/api/campanhas/${campanhaId}`);
+        let campanha = null;
         if (res.ok) {
-          const campanha = await res.json();
-          campaignTitle.textContent = `Doando para: ${campanha.titulo}`;
-          campaignDescription.textContent = campanha.descricao.substring(0, 100) + "...";
-          campaignInfo.style.display = "block";
+          campanha = await res.json();
         }
+        if (!campanha) campanha = mockCampanhas[campanhaId] || mockCampanhas["1"];
+        renderCampanha(campanha, container);
       } catch (error) {
-        console.error("Erro ao carregar campanha", error);
+        const campanha = mockCampanhas[campanhaId] || mockCampanhas["1"];
+        renderCampanha(campanha, container);
       }
     }
-    if (campanhaId) loadCampaign();
-    // BotÃµes de valores sugeridos
-    document.querySelectorAll('.valor-sugerido').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById('valor').value = btn.dataset.valor;
-        document.querySelectorAll('.valor-sugerido').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        btn.style.background = 'var(--primary)';
-        btn.style.color = 'white';
+
+    function renderCampanha(c, container) {
+      const percentual = Math.round((c.arrecadado / c.meta) * 100);
+      container.innerHTML = `
+        <h2 style="margin-bottom: 0.5rem;">${c.titulo}</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">${c.descricao}</p>
+        <div class="progress"><div style="width: ${percentual}%;"></div></div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem;">
+          <strong>R$ ${c.arrecadado.toLocaleString()} arrecadados</strong>
+          <span>${percentual}% da meta</span>
+        </div>
+      `;
+    }
+
+    const valorBtns = document.querySelectorAll(".valor-btn");
+    const valorInput = document.getElementById("valor");
+
+    valorBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        valorBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        valorInput.value = btn.dataset.valor;
       });
     });
-    // Preencher dados se usuÃ¡rio estiver logado
-    if (userId) {
-      fetch(`/api/doadores/${userId}`)
-        .then(res => res.json())
-        .then(user => {
-          if (user.nome) document.getElementById("nome").value = user.nome;
-          if (user.email) document.getElementById("email").value = user.email;
-        })
-        .catch(err => console.log("UsuÃ¡rio nÃ£o logado ou erro ao buscar dados"));
-    }
-    form.addEventListener("submit", async e => {
+
+    valorInput.addEventListener("input", () => {
+      valorBtns.forEach(b => b.classList.remove("active"));
+    });
+
+    const form = document.getElementById("formDoacao");
+    const feedback = document.getElementById("feedback");
+    const btnDoar = document.getElementById("btnDoar");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const btn = document.getElementById("btnDoar");
-      btn.disabled = true;
-      btn.textContent = "Processando...";
-      const formData = new FormData(form);
-      const valor = parseFloat(formData.get("valor"));
-      const mensagem = formData.get("mensagem");
-      // Se nÃ£o estiver logado, mostrar aviso mas permitir continuar
-      if (!userId && campanhaId) {
-        const confirmar = confirm("VocÃª nÃ£o estÃ¡ logado. Sua doaÃ§Ã£o serÃ¡ registrada como anÃ´nima.\n\nDeseja continuar?");
-        if (!confirmar) {
-          btn.disabled = false;
-          btn.textContent = "Doar Agora";
-          return;
-        }
+      const valor = parseFloat(valorInput.value);
+      if (!valor || valor < 1) {
+        feedback.textContent = "Informe um valor valido.";
+        feedback.style.color = "var(--danger, #d0342c)";
+        return;
       }
-      // Se tiver ID da campanha, faz a requisiÃ§Ã£o real
-      if (campanhaId) {
-        try {
-          const res = await fetch("/api/doacoes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              doador: userId || null,
-              campanha: campanhaId,
-              valor: valor,
-              mensagem: mensagem
-            })
-          });
-          if (!res.ok) throw new Error("Erro na doaÃ§Ã£o");
-        } catch (error) {
-          console.error(error);
-          alert("Houve um erro ao processar sua doaÃ§Ã£o. Tente novamente.");
-          btn.disabled = false;
-          btn.textContent = "Doar Agora";
-          return;
-        }
-      }
-      // UI de sucesso (mesmo se for simulaÃ§Ã£o sem login/campanha)
-      form.classList.add("hidden");
-      msg.classList.remove("hidden");
-      // Se tiver barra de progresso (simulaÃ§Ã£o visual)
-      if (containerBarra) {
-        containerBarra.classList.remove("hidden");
-        let progresso = 0;
-        const meta = 100;
-        const timer = setInterval(() => {
-          progresso += 5;
-          barra.style.width = progresso + "%";
-          if (textoProgresso) textoProgresso.textContent = progresso + "% processado";
-          if (progresso >= meta) clearInterval(timer);
-        }, 50);
+      const originalText = btnDoar.textContent;
+      btnDoar.disabled = true;
+      btnDoar.textContent = "Processando...";
+      feedback.textContent = "";
+      const userId = localStorage.getItem("userId");
+      const payload = {
+        campanhaId,
+        doadorId: userId || null,
+        valor,
+        nome: document.getElementById("nome").value || "Anonimo",
+        mensagem: document.getElementById("mensagem").value || ""
+      };
+      try {
+        const res = await fetch("/api/doacoes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("Erro ao processar doacao");
+        feedback.textContent = "🎉 Doacao realizada com sucesso! Obrigado!";
+        feedback.style.color = "var(--success, #1f9254)";
+        form.reset();
+        valorBtns.forEach(b => b.classList.remove("active"));
+        setTimeout(() => {
+          window.location.href = "campanhas.html";
+        }, 2000);
+      } catch (error) {
+        feedback.textContent = "Erro ao processar doacao. Tente novamente.";
+        feedback.style.color = "var(--danger, #d0342c)";
+      } finally {
+        btnDoar.disabled = false;
+        btnDoar.textContent = originalText;
       }
     });
+
+    carregarCampanha();
   </script>
 </body>
 </html>

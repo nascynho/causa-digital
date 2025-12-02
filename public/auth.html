@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar â€” Causa Digital</title>
+  <title>Entrar - Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -15,7 +15,7 @@
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
@@ -26,8 +26,8 @@
         <div class="auth-tab" id="tabOng">Sou ONG</div>
       </div>
       <form id="loginDoador" class="form-content">
-        <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 0.5rem;">ðŸ‘‹ Bem-vindo de volta!</h2>
-        <p style="text-align: center; margin-bottom: 2rem;">Acesse sua conta e continue fazendo a diferenÃ§a.</p>
+        <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 0.5rem;">👋 Bem-vindo de volta!</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Acesse sua conta e continue fazendo a diferenca.</p>
         <div class="form-group">
           <label>Email</label>
           <input type="email" name="email" required placeholder="seu@email.com">
@@ -39,11 +39,11 @@
         <button type="submit" class="btn-primary" style="width: 100%;">Entrar como Doador</button>
         <div class="form-feedback" id="doadorFeedback"></div>
         <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-          Ainda nÃ£o tem conta? <a href="cadastro.html" style="color: var(--primary); font-weight: 600;">Cadastre-se</a>
+          Ainda nao tem conta? <a href="cadastro.html" style="color: var(--primary); font-weight: 600;">Cadastre-se</a>
         </p>
       </form>
       <form id="loginOng" class="form-content" style="display: none;">
-        <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 0.5rem;">ðŸ¢ Portal da ONG</h2>
+        <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 0.5rem;">🏢 Portal da ONG</h2>
         <p style="text-align: center; margin-bottom: 2rem;">Gerencie suas campanhas e acompanhe o impacto em tempo real.</p>
         <div class="form-group">
           <label>Email da ONG</label>
@@ -62,7 +62,6 @@
     </div>
   </div>
   <script>
-    // Se jÃ¡ estiver logado, redireciona
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const ongId = localStorage.getItem("ongId");
@@ -74,16 +73,15 @@
     if (modoBtn) {
       if (localStorage.getItem("theme") === "dark") {
         body.classList.add("dark");
-        modoBtn.textContent = "â˜€ï¸";
+        modoBtn.textContent = "☀️";
       }
       modoBtn.addEventListener("click", () => {
         body.classList.toggle("dark");
         const dark = body.classList.contains("dark");
         localStorage.setItem("theme", dark ? "dark" : "light");
-        modoBtn.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
+        modoBtn.textContent = dark ? "☀️" : "🌙";
       });
     }
-    // Tabs
     const tabDoador = document.getElementById("tabDoador");
     const tabOng = document.getElementById("tabOng");
     const formDoador = document.getElementById("loginDoador");
@@ -123,7 +121,7 @@
           body: JSON.stringify(payload)
         });
         if (!res.ok) {
-          throw new Error("Credenciais invÃ¡lidas");
+          throw new Error("Credenciais invalidas");
         }
         const json = await res.json();
         Object.entries(storageKeys).forEach(([key, value]) => {
@@ -133,7 +131,7 @@
         setTimeout(() => window.location.href = redirect, 400);
       } catch (error) {
         console.error(error);
-        showFeedback(feedbackEl, "NÃ£o foi possÃ­vel autenticar. Tente novamente.");
+        showFeedback(feedbackEl, "Nao foi possivel autenticar. Tente novamente.");
         btn.textContent = originalText;
         btn.disabled = false;
       }

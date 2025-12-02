@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar Conta â€” Causa Digital</title>
+  <title>Criar Conta - Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -15,22 +15,22 @@
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
   <section class="section auth-section">
     <div class="container auth-grid">
       <div>
-        <span class="badge badge-primary">âœ¨ Nova conta</span>
-        <h1 style="margin-top: 1rem;">Junte-se Ã  transformaÃ§Ã£o</h1>
-        <p class="subtitle">Cadastre-se como doador para apoiar causas que mudam vidas, ou como ONG para publicar campanhas e receber doaÃ§Ãµes com transparÃªncia total.</p>
+        <span class="badge badge-primary">✨ Nova conta</span>
+        <h1 style="margin-top: 1rem;">Junte-se a transformacao</h1>
+        <p class="subtitle">Cadastre-se como doador para apoiar causas que mudam vidas, ou como ONG para publicar campanhas e receber doacoes com transparencia total.</p>
         <div class="helper-card">
           <h3>Como funciona?</h3>
           <ul>
-            <li>Preencha seus dados bÃ¡sicos e confirme o cadastro.</li>
+            <li>Preencha seus dados basicos e confirme o cadastro.</li>
             <li>Doadoras e doadores chegam direto na vitrine de ONGs ativas.</li>
-            <li>ONGs sÃ£o redirecionadas ao painel para criar campanhas.</li>
+            <li>ONGs sao redirecionadas ao painel para criar campanhas.</li>
           </ul>
         </div>
       </div>
@@ -51,9 +51,9 @@
           <div class="form-group">
             <label for="senhaDoador">Senha</label>
             <input id="senhaDoador" name="senha" type="password" placeholder="Crie uma senha" required>
-            <p class="input-hint">Use 8+ caracteres com maiÃºscula, minÃºscula, nÃºmero e sÃ­mbolo.</p>
+            <p class="input-hint">Use 8+ caracteres com maiuscula, minuscula, numero e simbolo.</p>
           </div>
-          <button type="submit" class="btn-primary" id="btnCadastrarDoador">â¤ï¸ Quero fazer a diferenÃ§a</button>
+          <button type="submit" class="btn-primary" id="btnCadastrarDoador">❤️ Quero fazer a diferenca</button>
           <p class="form-feedback" id="feedbackDoador"></p>
         </form>
         <form id="formOng" class="form tab-content" autocomplete="off" hidden>
@@ -68,25 +68,24 @@
           <div class="form-group">
             <label for="senhaOng">Senha</label>
             <input id="senhaOng" name="senha" type="password" placeholder="Crie uma senha" required>
-            <p class="input-hint">Use 8+ caracteres com maiÃºscula, minÃºscula, nÃºmero e sÃ­mbolo.</p>
+            <p class="input-hint">Use 8+ caracteres com maiuscula, minuscula, numero e simbolo.</p>
           </div>
           <div class="form-group">
-            <label for="descricaoOng">DescriÃ§Ã£o</label>
+            <label for="descricaoOng">Descricao</label>
             <textarea id="descricaoOng" name="descricao" placeholder="Explique sua causa" rows="3" required></textarea>
           </div>
           <div class="form-group">
             <label for="siteOng">Site ou rede social</label>
             <input id="siteOng" name="website" type="url" placeholder="https://" required>
           </div>
-          <button type="submit" class="btn-primary" id="btnCadastrarOng">ðŸš€ Criar minha conta</button>
+          <button type="submit" class="btn-primary" id="btnCadastrarOng">🚀 Criar minha conta</button>
           <p class="form-feedback" id="feedbackOng"></p>
         </form>
-        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">JÃ¡ tem conta? <a href="auth.html">FaÃ§a login</a></p>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Ja tem conta? <a href="auth.html">Faca login</a></p>
       </div>
     </div>
   </section>
   <script>
-    // Se jÃ¡ estiver logado, redireciona
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const ongId = localStorage.getItem("ongId");
@@ -97,13 +96,13 @@
     const btnModo = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btnModo.textContent = "â˜€ï¸";
+      btnModo.textContent = "☀️";
     }
     btnModo.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btnModo.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
+      btnModo.textContent = dark ? "☀️" : "🌙";
     });
     const tabButtons = document.querySelectorAll(".tab-button");
     const tabContents = document.querySelectorAll(".tab-content");
@@ -134,7 +133,7 @@
         button.textContent = "Enviando...";
         const payload = Object.fromEntries(new FormData(form).entries());
         if (!senhaValida(payload.senha)) {
-          feedback.textContent = "Senha precisa ter 8+ caracteres, com maiÃºscula, minÃºscula, nÃºmero e sÃ­mbolo.";
+          feedback.textContent = "Senha precisa ter 8+ caracteres, com maiuscula, minuscula, numero e simbolo.";
           feedback.style.color = "var(--danger, #d0342c)";
           button.disabled = false;
           button.textContent = originalText;
@@ -148,14 +147,14 @@
           });
           const data = await res.json();
           if (!res.ok) {
-            throw new Error(data.error || "NÃ£o foi possÃ­vel concluir o cadastro");
+            throw new Error(data.error || "Nao foi possivel concluir o cadastro");
           }
           if (storageKeys) {
             Object.entries(storageKeys).forEach(([key, value]) => {
               localStorage.setItem(key, typeof value === "function" ? value(data) : value);
             });
           }
-          feedback.textContent = "Cadastro concluÃ­do! Redirecionando...";
+          feedback.textContent = "Cadastro concluido! Redirecionando...";
           feedback.style.color = "var(--success, #1f9254)";
           setTimeout(() => {
             window.location.href = redirect;

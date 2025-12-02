@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil â€” Causa Digital</title>
+  <title>Meu Perfil - Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -15,259 +15,157 @@
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
   <section class="section">
-    <div class="container">
-      <h2>ðŸ‘¤ Meu Perfil de Doador</h2>
-      <div class="helper-banner" id="nextActionBanner">
-        <div>
-          <strong>PrÃ³ximo passo recomendado</strong>
-          <p id="nextActionText">Carregando seu impacto...</p>
+    <div class="container" style="max-width: 800px;">
+      <div class="card" id="perfilInfo">
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem;" id="avatar">?</div>
+          <div>
+            <h1 style="margin: 0;" id="nomeUsuario">Carregando...</h1>
+            <p style="color: var(--text-secondary); margin: 0.25rem 0 0;" id="emailUsuario">...</p>
+          </div>
         </div>
-        <div style="margin-left: auto; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <a href="campanhas.html" class="btn-primary">Doar agora</a>
-          <a href="#metas" class="btn-secondary outline">Revisar metas</a>
-        </div>
-      </div>
-      <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); color: white; padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <div>
-            <h3 id="userName" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Carregando...</h3>
-            <p id="userLevel" style="opacity: 0.9;">NÃ­vel 1</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value" id="totalDoado">R$ 0</span>
+            <span class="stat-label">Total Doado</span>
           </div>
-          <div style="font-size: 4rem;">ðŸ§‘â€ðŸ¤â€ðŸ§‘</div>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-          <div>
-            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Pontos Acumulados</p>
-            <h4 id="userPoints" style="font-size: 1.8rem; margin: 0;">0</h4>
+          <div class="stat-card">
+            <span class="stat-value" id="pontos">0</span>
+            <span class="stat-label">Pontos</span>
           </div>
-          <div>
-            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Total Arrecadado</p>
-            <h4 id="userTotal" style="font-size: 1.8rem; margin: 0;">R$ 0</h4>
+          <div class="stat-card">
+            <span class="stat-value" id="nivel">1</span>
+            <span class="stat-label">Nivel</span>
           </div>
-          <div>
-            <p style="opacity: 0.9; margin-bottom: 0.5rem;">DoaÃ§Ãµes</p>
-            <h4 id="userDoacoes" style="font-size: 1.8rem; margin: 0;">0</h4>
-          </div>
-          <div>
-            <p style="opacity: 0.9; margin-bottom: 0.5rem;">Badges</p>
-            <h4 id="userBadges" style="font-size: 1.8rem; margin: 0;">0</h4>
+          <div class="stat-card">
+            <span class="stat-value" id="doacoes">0</span>
+            <span class="stat-label">Doacoes</span>
           </div>
         </div>
       </div>
-      <div class="card ranking-card">
-        <div class="ranking-card__header">
-          <div>
-            <h3>Ranking geral</h3>
-            <p class="subtitle">Seu posicionamento entre os maiores doadores da semana.</p>
+      <div class="card" style="margin-top: 1.5rem;">
+        <h2 style="margin-bottom: 1rem;">🏆 Conquistas</h2>
+        <div id="conquistas" class="badges-grid">
+          <div class="badge-card locked">
+            <span style="font-size: 2rem;">🌱</span>
+            <span>Primeira Doacao</span>
           </div>
-          <span class="badge badge-primary" id="rankingPosition">--</span>
-        </div>
-        <div id="rankingList" class="ranking-list">
-          <p class="loading-message">Carregando ranking...</p>
-        </div>
-      </div>
-      <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--bg-secondary); flex-wrap: wrap;">
-        <button class="tab-btn active" data-tab="conquistas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">ðŸ† Conquistas</button>
-        <button class="tab-btn" data-tab="historico" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">ðŸ“œ HistÃ³rico</button>
-        <button class="tab-btn" data-tab="metas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">ðŸŽ¯ Metas</button>
-      </div>
-      <div id="conquistas" class="tab-content" style="display: block;">
-        <h3 style="margin-bottom: 1.5rem;">Suas Conquistas</h3>
-        <div id="badgesContainer" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-          <p class="loading-message" style="grid-column: 1 / -1;">Carregando conquistas...</p>
+          <div class="badge-card locked">
+            <span style="font-size: 2rem;">⭐</span>
+            <span>5 Doacoes</span>
+          </div>
+          <div class="badge-card locked">
+            <span style="font-size: 2rem;">💎</span>
+            <span>R$ 500 doados</span>
+          </div>
         </div>
       </div>
-      <div id="historico" class="tab-content" style="display: none;">
-        <h3 style="margin-bottom: 1.5rem;">ðŸ“œ HistÃ³rico de DoaÃ§Ãµes</h3>
-        <div id="doacoesContainer" class="loading-message">Carregando histÃ³rico...</div>
-      </div>
-      <div id="metas" class="tab-content" style="display: none;">
-        <h3 style="margin-bottom: 1.5rem;">Metas Pessoais de Impacto</h3>
-        <div style="margin-bottom: 2rem;">
-          <h4 style="margin-bottom: 1rem;">Criar uma Meta</h4>
-          <form id="metasForm" class="form" style="max-width: 500px;">
-            <input type="text" placeholder="Nome da meta (ex: AlimentaÃ§Ã£o)" required>
-            <input type="number" placeholder="Valor desejado em R$" required>
-            <select required>
-              <option>AlimentaÃ§Ã£o</option>
-              <option>SaÃºde</option>
-              <option>EducaÃ§Ã£o</option>
-              <option>Abrigo</option>
-              <option>Outra</option>
-            </select>
-            <button type="submit" class="btn-primary">Criar Meta</button>
-          </form>
-        </div>
-        <div id="metasContainer" class="grid">
-          <p class="loading-message" style="grid-column: 1 / -1;">Carregando metas...</p>
+      <div class="card" style="margin-top: 1.5rem;">
+        <h2 style="margin-bottom: 1rem;">📋 Historico de Doacoes</h2>
+        <div id="historico">
+          <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Voce ainda nao fez nenhuma doacao.</p>
         </div>
       </div>
     </div>
   </section>
-  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
-    <div class="container" style="text-align: center;">
-      <p style="color: var(--text-secondary);">ðŸ’™ Â© 2025 Causa Digital â€” Seu impacto importa</p>
-    </div>
-  </footer>
   <script>
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    if (!token || !userId) {
+      window.location.href = "auth.html";
+    }
     const body = document.body;
-    const btn = document.getElementById("modoBtn");
+    const modoBtn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btn.textContent = "â˜€ï¸";
+      modoBtn.textContent = "☀️";
     }
-    btn.addEventListener("click", () => {
+    modoBtn.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btn.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
+      modoBtn.textContent = dark ? "☀️" : "🌙";
     });
-    // Verificar se estÃ¡ logado
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      alert("VocÃª precisa estar logado para acessar seu perfil.");
-      window.location.href = "auth.html";
-    }
-    const badgesInfo = {
-      impacto_inicial: { nome: 'â­ Impacto Inicial', descricao: 'Sua primeira doaÃ§Ã£o registrada!', emoji: 'â­' },
-      parceiro_constante: { nome: 'ðŸ¤ Parceiro Constante', descricao: 'VocÃª completou 5 doaÃ§Ãµes.', emoji: 'ðŸ¤' },
-      lider_generoso: { nome: 'ðŸ‘‘ LÃ­der Generoso', descricao: '15 doaÃ§Ãµes feitas para causas diferentes.', emoji: 'ðŸ‘‘' },
-      primeiro_passo: { nome: 'ðŸ‘£ Primeiro Passo', descricao: 'Primeira contribuiÃ§Ã£o confirmada!', emoji: 'ðŸ‘£' },
-      heroi_solidario: { nome: 'ðŸ¦¸ HerÃ³i SolidÃ¡rio', descricao: 'Acumulou mais de 100 pontos.', emoji: 'ðŸ¦¸' },
-      benfeitor: { nome: 'ðŸŒŸ Benfeitor', descricao: 'Ultrapassou 1.000 pontos somados!', emoji: 'ðŸŒŸ' }
+
+    const mockPerfil = {
+      nome: "Doador Demo",
+      email: "doador@demo.com",
+      pontos: 450,
+      nivel: 2,
+      totalDoado: 350,
+      doacoes: [
+        { campanha: "Cesta Basica para 100 Familias", valor: 100, data: "2025-01-15" },
+        { campanha: "Material Escolar Completo", valor: 150, data: "2025-01-10" },
+        { campanha: "Medicamentos Essenciais", valor: 100, data: "2025-01-05" }
+      ]
     };
+
     async function carregarPerfil() {
       try {
         const res = await fetch(`/api/doadores/${userId}`);
-        const doador = await res.json();
-        document.getElementById("userName").textContent = doador.nome || "Doador AnÃ´nimo";
-        document.getElementById("userLevel").textContent = `NÃ­vel ${doador.nivel}`;
-        document.getElementById("userPoints").textContent = `${doador.pontos.toLocaleString()} pts`;
-        document.getElementById("userTotal").textContent = `R$ ${doador.totalArrecadado.toLocaleString()}`;
-        document.getElementById("userDoacoes").textContent = (doador.doacoes || []).length;
-        document.getElementById("userBadges").textContent = (doador.badges || []).length;
-        // Atualizar sugestÃ£o de prÃ³ximo passo
-        const nextActionText = document.getElementById("nextActionText");
-        if ((doador.doacoes || []).length === 0) {
-          nextActionText.textContent = "VocÃª ainda nÃ£o realizou doaÃ§Ãµes. Escolha uma campanha para destravar sua primeira badge.";
-        } else if ((doador.badges || []).length < 3) {
-          nextActionText.textContent = "Continue doando para desbloquear novas conquistas e subir de nÃ­vel.";
-        } else {
-          nextActionText.textContent = "Excelente ritmo! Compartilhe sua trajetÃ³ria com amigos e inspire novos doadores.";
+        let perfil = null;
+        if (res.ok) {
+          perfil = await res.json();
         }
-        // Carregar badges
-        const badgesContainer = document.getElementById("badgesContainer");
-        if (doador.badges && doador.badges.length > 0) {
-          badgesContainer.innerHTML = doador.badges.map(b => {
-            const info = badgesInfo[b] || { nome: 'Conquista', descricao: 'Desbloqueada', emoji: 'ðŸŒŸ' };
-            return `
-              <div class="achievement-badge">
-                <div class="achievement-icon" style="font-size: 2rem;">${info.emoji || 'ðŸŒŸ'}</div>
-                <strong>${info.nome}</strong>
-                <p style="font-size: 0.85rem; color: var(--text-secondary);">${info.descricao}</p>
-              </div>
-            `;
-          }).join("");
-        } else {
-          badgesContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">Comece a doar para desbloquear conquistas.</p>';
-        }
-        // Carregar histÃ³rico de doaÃ§Ãµes
-        const doacoesRes = await fetch(`/api/doacoes/doador/${userId}`);
-        const doacoes = await doacoesRes.json();
-        const doacoesContainer = document.getElementById("doacoesContainer");
-        if (doacoes.length > 0) {
-          doacoesContainer.innerHTML = doacoes.map(d => `
-            <div class="card" style="margin-bottom: 1rem;">
-              <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                  <h4>${d.campanha.titulo}</h4>
-                  <p style="color: var(--text-secondary); font-size: 0.9rem;">${new Date(d.criadoEm).toLocaleDateString('pt-BR')}</p>
-                </div>
-                <div style="text-align: right;">
-                  <p style="font-size: 1.2rem; font-weight: 600; color: var(--accent);">R$ ${d.valor.toLocaleString()}</p>
-                  <p style="font-size: 0.85rem; color: var(--text-secondary);">+${d.pontosConcedidos} pontos</p>
-                </div>
-              </div>
-              ${d.mensagem ? `<p style="margin-top: 0.5rem; font-style: italic; color: var(--text-secondary);">"${d.mensagem}"</p>` : ''}
-            </div>
-          `).join("");
-        } else {
-          doacoesContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhuma doaÃ§Ã£o realizada ainda. Comece agora.</p>';
-        }
-        // Carregar metas pessoais
-        const metasContainer = document.getElementById("metasContainer");
-        if (doador.metasPessoais && doador.metasPessoais.length > 0) {
-          metasContainer.innerHTML = doador.metasPessoais.map(m => {
-            const percentual = (m.arrecadado / m.valor) * 100;
-            return `
-              <div class="card">
-                <h4>${m.nome}</h4>
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Categoria: ${m.categoria}</p>
-                <div class="progress"><div style="width: ${percentual}%;"></div></div>
-                <p style="margin-top: 0.5rem; font-size: 0.9rem;">R$ ${m.arrecadado.toLocaleString()} de R$ ${m.valor.toLocaleString()}</p>
-              </div>
-            `;
-          }).join("");
-        } else {
-          metasContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">Crie uma meta pessoal para acompanhar seu progresso!</p>';
-        }
+        if (!perfil) perfil = mockPerfil;
+        renderPerfil(perfil);
       } catch (error) {
-        console.error("Erro ao carregar perfil:", error);
+        renderPerfil(mockPerfil);
       }
     }
-    // Mudar de tab
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => {
-          b.style.color = "var(--text-secondary)";
-          b.style.borderBottomColor = "transparent";
-        });
-        btn.style.color = "var(--accent)";
-        btn.style.borderBottomColor = "var(--accent)";
-        document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
-        document.getElementById(btn.dataset.tab).style.display = "block";
-      });
-    });
-    async function carregarRanking() {
-      const rankingContainer = document.getElementById("rankingList");
-      const rankingBadge = document.getElementById("rankingPosition");
-      if (!rankingContainer) return;
-      rankingContainer.innerHTML = '<p class="loading-message">Carregando ranking...</p>';
-      try {
-        const res = await fetch("/api/ranking?limit=20");
-        const lista = await res.json();
-        if (!res.ok || !Array.isArray(lista) || !lista.length) {
-          throw new Error("Ainda nÃ£o hÃ¡ dados suficientes");
-        }
-        rankingContainer.innerHTML = lista.map((item, index) => {
-          const isUser = String(item._id) === String(userId);
-          return `
-            <div class="ranking-row ${isUser ? 'me' : ''}">
-              <div>
-                <span class="ranking-pos">#${index + 1}</span>
-                <strong>${item.nome}</strong>
-              </div>
-              <div class="ranking-pontos">
-                <span>${item.pontos} pts</span>
-                <small>NÃ­vel ${item.nivel}</small>
-              </div>
-            </div>
-          `;
-        }).join("");
-        const minhaPosicao = lista.findIndex(item => String(item._id) === String(userId));
-        rankingBadge.textContent = minhaPosicao > -1 ? `Top ${minhaPosicao + 1}` : "Fora do Top 20";
-      } catch (error) {
-        rankingContainer.innerHTML = `<p class="loading-message">${error.message}</p>`;
-        if (rankingBadge) rankingBadge.textContent = "--";
+
+    function renderPerfil(perfil) {
+      document.getElementById("avatar").textContent = perfil.nome.charAt(0).toUpperCase();
+      document.getElementById("nomeUsuario").textContent = perfil.nome;
+      document.getElementById("emailUsuario").textContent = perfil.email;
+      document.getElementById("totalDoado").textContent = `R$ ${(perfil.totalDoado || 0).toLocaleString()}`;
+      document.getElementById("pontos").textContent = (perfil.pontos || 0).toLocaleString();
+      document.getElementById("nivel").textContent = perfil.nivel || 1;
+      document.getElementById("doacoes").textContent = (perfil.doacoes || []).length;
+      const conquistas = document.getElementById("conquistas");
+      const badges = [];
+      if ((perfil.doacoes || []).length >= 1) badges.push({ emoji: "🌱", nome: "Primeira Doacao" });
+      if ((perfil.doacoes || []).length >= 5) badges.push({ emoji: "⭐", nome: "5 Doacoes" });
+      if ((perfil.totalDoado || 0) >= 500) badges.push({ emoji: "💎", nome: "R$ 500 doados" });
+      if (badges.length) {
+        conquistas.innerHTML = badges.map(b => `
+          <div class="badge-card">
+            <span style="font-size: 2rem;">${b.emoji}</span>
+            <span>${b.nome}</span>
+          </div>
+        `).join("");
+      }
+      const historico = document.getElementById("historico");
+      if ((perfil.doacoes || []).length) {
+        historico.innerHTML = `
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <th style="text-align: left; padding: 0.75rem 0;">Campanha</th>
+                <th style="text-align: right; padding: 0.75rem 0;">Valor</th>
+                <th style="text-align: right; padding: 0.75rem 0;">Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${perfil.doacoes.map(d => `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem 0;">${d.campanha}</td>
+                  <td style="text-align: right; padding: 0.75rem 0; color: var(--success);">R$ ${d.valor.toLocaleString()}</td>
+                  <td style="text-align: right; padding: 0.75rem 0; color: var(--text-secondary);">${new Date(d.data).toLocaleDateString("pt-BR")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
       }
     }
+
     carregarPerfil();
-    carregarRanking();
   </script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel da ONG â€” Causa Digital</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ’™</text></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel da ONG - Causa Digital</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -15,213 +15,231 @@
       <div class="nav-links">
         <a href="campanhas.html">Campanhas</a>
         <a href="ongs.html">ONGs</a>
-        <button id="modoBtn" class="btn-toggle">ðŸŒ™</button>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
   <section class="section">
     <div class="container">
-      <h2>ðŸ¢ Painel de Controle</h2>
-      <p class="subtitle">Gerencie suas campanhas e acompanhe o impacto da sua ONG em tempo real</p>
-      <div class="helper-banner">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
         <div>
-          <strong>PrÃ³ximo passo recomendado</strong>
-          <p id="painelHint">Crie sua primeira campanha para liberar indicadores no relatÃ³rio.</p>
+          <h1 style="margin: 0;" id="nomeOng">Painel da ONG</h1>
+          <p style="color: var(--text-secondary); margin: 0.5rem 0 0;">Gerencie suas campanhas e acompanhe as doacoes</p>
         </div>
-        <div style="margin-left: auto; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <a href="#criar" class="btn-primary">Nova campanha</a>
-          <a href="#campanhas" class="btn-secondary outline">Ver campanhas</a>
+        <button class="btn-primary" id="btnNovaCampanha">+ Nova Campanha</button>
+      </div>
+      <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+          <span class="stat-value" id="totalArrecadado">R$ 0</span>
+          <span class="stat-label">Total Arrecadado</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="campanhasAtivas">0</span>
+          <span class="stat-label">Campanhas Ativas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="totalDoadores">0</span>
+          <span class="stat-label">Doadores</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="totalDoacoes">0</span>
+          <span class="stat-label">Doacoes</span>
         </div>
       </div>
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 3rem;">
-        <div class="stat-box">
-          <h3 id="totalCampanhas">0</h3>
-          <p>Campanhas Ativas</p>
-        </div>
-        <div class="stat-box">
-          <h3 id="totalArrecadado">R$ 0</h3>
-          <p>Total Arrecadado</p>
-        </div>
-        <div class="stat-box">
-          <h3 id="metasAlcancadas">0</h3>
-          <p>Metas Atingidas</p>
-        </div>
-        <div class="stat-box">
-          <h3 id="seguidores">0</h3>
-          <p>Apoiadores</p>
+      <div class="card">
+        <h2 style="margin-bottom: 1.5rem;">📋 Suas Campanhas</h2>
+        <div id="listaCampanhas">
+          <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Carregando campanhas...</p>
         </div>
       </div>
-      <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--bg-secondary); flex-wrap: wrap;">
-        <button class="tab-btn active" data-tab="criar" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--accent); border-bottom: 3px solid var(--accent); font-size: 1rem;">âž• Nova Campanha</button>
-        <button class="tab-btn" data-tab="campanhas" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">ðŸ“ Minhas Campanhas</button>
-        <button class="tab-btn" data-tab="relatorios" style="padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; font-size: 1rem;">ðŸ“Š RelatÃ³rios</button>
-      </div>
-      <div id="criar" class="tab-content" style="display: block;">
-        <form id="formCampanha" class="form">
-          <h3 style="margin-bottom: 1.5rem;">Cadastre uma Nova Campanha</h3>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-            <div class="form-group">
-              <label>TÃ­tulo da Campanha *</label>
-              <input type="text" name="titulo" required placeholder="Ex: AlimentaÃ§Ã£o para crianÃ§as">
-            </div>
-            <div class="form-group">
-              <label>Categoria *</label>
-              <select name="categoria" required>
-                <option value="">Selecione...</option>
-                <option value="alimentacao">AlimentaÃ§Ã£o</option>
-                <option value="saude">SaÃºde</option>
-                <option value="educacao">EducaÃ§Ã£o</option>
-                <option value="abrigo">Abrigo</option>
-                <option value="outro">Outra</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Meta em R$ *</label>
-              <input type="number" name="meta" min="100" required placeholder="Ex: 5000">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>DescriÃ§Ã£o *</label>
-            <textarea name="descricao" rows="4" required placeholder="Descreva detalhadamente a causa e por que precisa de ajuda..."></textarea>
-          </div>
-          <div class="form-group">
-            <label>DescriÃ§Ã£o do Impacto (Ex: AlimentarÃ¡ 50 crianÃ§as)</label>
-            <input type="text" name="impactoDescricao" placeholder="Qual serÃ¡ o impacto concreto dessa arrecadaÃ§Ã£o?">
-          </div>
-          <div class="form-group">
-            <label>Imagem (URL)</label>
-            <input type="url" name="imagem" placeholder="https://exemplo.com/imagem.jpg">
-          </div>
-          <button type="submit" class="btn-primary" style="width: 100%;">Criar Campanha</button>
-        </form>
-      </div>
-      <div id="campanhas" class="tab-content" style="display: none;">
-        <h3 style="margin-bottom: 1.5rem;">Suas Campanhas Ativas</h3>
-        <div id="campanhasList" class="grid">
-          <p class="loading-message" style="grid-column: 1 / -1;">Carregando campanhas...</p>
-        </div>
-      </div>
-      <div id="relatorios" class="tab-content" style="display: none;">
-        <h3 style="margin-bottom: 1.5rem;">RelatÃ³rio de Impacto</h3>
-        <div id="relatoriosContainer" style="display: grid; gap: 2rem;">
-          <div class="card">
-            <h4>DistribuiÃ§Ã£o por Categoria</h4>
-            <div id="categoriaChart" style="display: flex; gap: 0.5rem; height: 200px; align-items: flex-end; margin-top: 1rem;"></div>
-          </div>
-          <div class="card">
-            <h4>Top 10 Doadores</h4>
-            <div id="topDoadores"></div>
-          </div>
+      <div class="card" style="margin-top: 1.5rem;">
+        <h2 style="margin-bottom: 1.5rem;">💰 Doacoes Recentes</h2>
+        <div id="listaDoacoes">
+          <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Carregando doacoes...</p>
         </div>
       </div>
     </div>
   </section>
-  <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color); margin-top: 2rem;">
-    <div class="container" style="text-align: center;">
-      <p style="color: var(--text-secondary);">ðŸ’™ Â© 2025 Causa Digital â€” Painel de GestÃ£o de ONGs</p>
+  <div id="modalCampanha" class="modal" style="display: none;">
+    <div class="modal-content card">
+      <h2 style="margin-bottom: 1.5rem;">Nova Campanha</h2>
+      <form id="formCampanha">
+        <div class="form-group">
+          <label>Titulo da campanha</label>
+          <input type="text" name="titulo" required placeholder="Ex: Cesta basica para familias">
+        </div>
+        <div class="form-group">
+          <label>Descricao</label>
+          <textarea name="descricao" rows="3" required placeholder="Descreva o objetivo da campanha"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Meta (R$)</label>
+          <input type="number" name="meta" min="100" required placeholder="5000">
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select name="categoria" required>
+            <option value="alimentacao">🍲 Alimentacao</option>
+            <option value="educacao">📚 Educacao</option>
+            <option value="saude">🏥 Saude</option>
+            <option value="outros">🎮 Outros</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button type="button" class="btn-secondary" id="btnCancelar" style="flex: 1;">Cancelar</button>
+          <button type="submit" class="btn-primary" style="flex: 1;">Criar Campanha</button>
+        </div>
+        <p class="form-feedback" id="feedbackCampanha"></p>
+      </form>
     </div>
-  </footer>
+  </div>
   <script>
+    const token = localStorage.getItem("token");
+    const ongId = localStorage.getItem("ongId");
+    if (!token || !ongId) {
+      window.location.href = "auth.html";
+    }
     const body = document.body;
-    const btn = document.getElementById("modoBtn");
+    const modoBtn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
       body.classList.add("dark");
-      btn.textContent = "â˜€ï¸";
+      modoBtn.textContent = "☀️";
     }
-    btn.addEventListener("click", () => {
+    modoBtn.addEventListener("click", () => {
       body.classList.toggle("dark");
       const dark = body.classList.contains("dark");
       localStorage.setItem("theme", dark ? "dark" : "light");
-      btn.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
+      modoBtn.textContent = dark ? "☀️" : "🌙";
     });
-    // Verificar se estÃ¡ logado como ONG
-    const ongId = localStorage.getItem("ongId");
-    if (!ongId) {
-      alert("VocÃª precisa estar logado como ONG para acessar o painel.");
-      window.location.href = "auth.html";
-    }
-    const form = document.getElementById("formCampanha");
-    const lista = document.getElementById("campanhasList");
-    const painelHint = document.getElementById("painelHint");
-    async function carregarCampanhas() {
-      lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Carregando campanhas...</p>';
+
+    const mockOng = {
+      nome: "ONG Demo",
+      totalArrecadado: 15000,
+      campanhas: [
+        { _id: "1", titulo: "Cesta Basica para 100 Familias", meta: 5000, arrecadado: 4500, status: "ativa" },
+        { _id: "2", titulo: "Material Escolar Completo", meta: 10000, arrecadado: 8200, status: "ativa" }
+      ],
+      doacoes: [
+        { doador: "Joao Santos", campanha: "Cesta Basica", valor: 100, data: "2025-01-15" },
+        { doador: "Maria Silva", campanha: "Material Escolar", valor: 50, data: "2025-01-14" },
+        { doador: "Anonimo", campanha: "Cesta Basica", valor: 200, data: "2025-01-13" }
+      ]
+    };
+
+    async function carregarDados() {
       try {
-        const res = await fetch("/api/campanhas");
-        const data = await res.json();
-        let totalArrecadado = 0;
-        let metasAlcancadas = 0;
-        if (!data.length) {
-          lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">Nenhuma campanha cadastrada ainda.</p>';
-        } else {
-          lista.innerHTML = data.map(c => {
-            const percentual = Math.min((c.arrecadado / c.meta) * 100, 100);
-            if (percentual >= 100) metasAlcancadas++;
-            totalArrecadado += c.arrecadado;
-            return `
-              <div class="card">
-                <img src="${c.imagem || 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop'}" alt="${c.titulo}" style="height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 1rem;">
-                <h4>${c.titulo}</h4>
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">${c.descricao}</p>
-                <div class="progress"><div style="width:${percentual}%;"></div></div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.9rem;">
-                  <strong>R$ ${c.arrecadado.toLocaleString()}</strong>
-                  <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString()}</span>
-                </div>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                  <span style="flex-grow: 1; text-align: center; padding: 0.5rem; border-radius: 6px; background: var(--bg-secondary); font-size: 0.85rem; font-weight: 600;">${Math.round(percentual)}% concluÃ­do</span>
-                  <button class="btn-secondary outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Editar</button>
-                </div>
-              </div>
-            `;
-          }).join("");
+        const res = await fetch(`/api/ongs/${ongId}`);
+        let ong = null;
+        if (res.ok) {
+          ong = await res.json();
         }
-        document.getElementById("totalCampanhas").textContent = data.length;
-        document.getElementById("totalArrecadado").textContent = `R$ ${totalArrecadado.toLocaleString()}`;
-        document.getElementById("metasAlcancadas").textContent = metasAlcancadas;
-        painelHint.textContent = data.length ? "Mantenha suas campanhas atualizadas para reforÃ§ar a confianÃ§a dos doadores." : "Cadastre sua primeira campanha para liberar mÃ©tricas de impacto.";
+        if (!ong) ong = mockOng;
+        renderDados(ong);
       } catch (error) {
-        console.error("Erro ao carregar campanhas:", error);
-        painelHint.textContent = "NÃ£o foi possÃ­vel carregar os dados agora. Tente novamente em instantes.";
-        lista.innerHTML = '<p class="loading-message" style="grid-column: 1 / -1;">NÃ£o foi possÃ­vel carregar as campanhas.</p>';
+        renderDados(mockOng);
       }
     }
-    form.addEventListener("submit", async e => {
+
+    function renderDados(ong) {
+      document.getElementById("nomeOng").textContent = ong.nome;
+      document.getElementById("totalArrecadado").textContent = `R$ ${(ong.totalArrecadado || 0).toLocaleString()}`;
+      document.getElementById("campanhasAtivas").textContent = (ong.campanhas || []).filter(c => c.status === "ativa").length;
+      document.getElementById("totalDoadores").textContent = new Set((ong.doacoes || []).map(d => d.doador)).size;
+      document.getElementById("totalDoacoes").textContent = (ong.doacoes || []).length;
+      const listaCampanhas = document.getElementById("listaCampanhas");
+      if ((ong.campanhas || []).length) {
+        listaCampanhas.innerHTML = `
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <th style="text-align: left; padding: 0.75rem 0;">Campanha</th>
+                <th style="text-align: right; padding: 0.75rem 0;">Arrecadado</th>
+                <th style="text-align: right; padding: 0.75rem 0;">Meta</th>
+                <th style="text-align: center; padding: 0.75rem 0;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${ong.campanhas.map(c => `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem 0;">${c.titulo}</td>
+                  <td style="text-align: right; padding: 0.75rem 0; color: var(--success);">R$ ${c.arrecadado.toLocaleString()}</td>
+                  <td style="text-align: right; padding: 0.75rem 0;">R$ ${c.meta.toLocaleString()}</td>
+                  <td style="text-align: center; padding: 0.75rem 0;"><span class="badge badge-${c.status === 'ativa' ? 'primary' : 'secondary'}">${c.status}</span></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      } else {
+        listaCampanhas.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Nenhuma campanha criada ainda.</p>`;
+      }
+      const listaDoacoes = document.getElementById("listaDoacoes");
+      if ((ong.doacoes || []).length) {
+        listaDoacoes.innerHTML = `
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <th style="text-align: left; padding: 0.75rem 0;">Doador</th>
+                <th style="text-align: left; padding: 0.75rem 0;">Campanha</th>
+                <th style="text-align: right; padding: 0.75rem 0;">Valor</th>
+                <th style="text-align: right; padding: 0.75rem 0;">Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${ong.doacoes.slice(0, 10).map(d => `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem 0;">${d.doador}</td>
+                  <td style="padding: 0.75rem 0;">${d.campanha}</td>
+                  <td style="text-align: right; padding: 0.75rem 0; color: var(--success);">R$ ${d.valor.toLocaleString()}</td>
+                  <td style="text-align: right; padding: 0.75rem 0; color: var(--text-secondary);">${new Date(d.data).toLocaleDateString("pt-BR")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      } else {
+        listaDoacoes.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Nenhuma doacao recebida ainda.</p>`;
+      }
+    }
+
+    const modal = document.getElementById("modalCampanha");
+    const btnNova = document.getElementById("btnNovaCampanha");
+    const btnCancelar = document.getElementById("btnCancelar");
+    const formCampanha = document.getElementById("formCampanha");
+    const feedback = document.getElementById("feedbackCampanha");
+
+    btnNova.addEventListener("click", () => modal.style.display = "flex");
+    btnCancelar.addEventListener("click", () => modal.style.display = "none");
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
+
+    formCampanha.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
-      const obj = Object.fromEntries(formData.entries());
-      obj.ong = ongId;
+      const payload = Object.fromEntries(new FormData(formCampanha).entries());
+      payload.ongId = ongId;
+      payload.meta = parseFloat(payload.meta);
       try {
         const res = await fetch("/api/campanhas", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(obj)
+          body: JSON.stringify(payload)
         });
-        if (res.ok) {
-          form.reset();
-          carregarCampanhas();
-          alert("Campanha criada com sucesso!");
-        } else {
-          alert("Erro ao cadastrar a campanha.");
-        }
+        if (!res.ok) throw new Error("Erro ao criar campanha");
+        feedback.textContent = "Campanha criada com sucesso!";
+        feedback.style.color = "var(--success)";
+        formCampanha.reset();
+        setTimeout(() => {
+          modal.style.display = "none";
+          carregarDados();
+        }, 1000);
       } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao cadastrar a campanha.");
+        feedback.textContent = "Erro ao criar campanha. Tente novamente.";
+        feedback.style.color = "var(--danger)";
       }
     });
-    // Mudar de tab
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => {
-          b.style.color = "var(--text-secondary)";
-          b.style.borderBottomColor = "transparent";
-        });
-        btn.style.color = "var(--accent)";
-        btn.style.borderBottomColor = "var(--accent)";
-        document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
-        document.getElementById(btn.dataset.tab).style.display = "block";
-      });
-    });
-    carregarCampanhas();
+
+    carregarDados();
   </script>
 </body>
 </html>
