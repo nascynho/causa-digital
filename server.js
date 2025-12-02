@@ -169,6 +169,48 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Endpoint de estatísticas da plataforma
+app.get("/api/stats", async (req, res) => {
+  try {
+    if (DEMO_MODE) {
+      const totalArrecadado = demoData.campanhas.reduce((acc, c) => acc + c.arrecadado, 0);
+      const totalDoacoes = demoData.doacoes.length;
+      const totalOngs = demoData.ongs.length;
+      const totalCampanhas = demoData.campanhas.length;
+      const totalDoadores = demoData.doadores.length;
+
+      return res.json({
+        totalArrecadado,
+        totalDoacoes,
+        totalOngs,
+        totalCampanhas,
+        totalDoadores,
+        ultimaAtualizacao: new Date().toISOString()
+      });
+    }
+
+    const [totalArrecadado, totalDoacoes, totalOngs, totalCampanhas, totalDoadores] = await Promise.all([
+      Campanha.aggregate([{ $group: { _id: null, total: { $sum: "$arrecadado" } } }]),
+      Doacao.countDocuments(),
+      ONG.countDocuments(),
+      Campanha.countDocuments(),
+      Doador.countDocuments()
+    ]);
+
+    res.json({
+      totalArrecadado: totalArrecadado[0]?.total || 0,
+      totalDoacoes,
+      totalOngs,
+      totalCampanhas,
+      totalDoadores,
+      ultimaAtualizacao: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error("Erro ao buscar estatísticas:", error);
+    res.status(500).json({ error: "Erro ao buscar estatísticas" });
+  }
+});
+
 app.get("/api/campanhas", async (req, res) => {
   try {
     if (DEMO_MODE) {

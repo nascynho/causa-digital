@@ -42,56 +42,85 @@
         <form id="formDoador" class="form tab-content active" autocomplete="off">
           <div class="form-group">
             <label for="nomeDoador">Nome completo</label>
-            <input id="nomeDoador" name="nome" type="text" placeholder="Digite seu nome" required>
+            <input id="nomeDoador" name="nome" type="text" placeholder="Digite seu nome" required minlength="3">
+            <span class="input-error" id="errorNomeDoador"></span>
           </div>
           <div class="form-group">
             <label for="emailDoador">E-mail</label>
             <input id="emailDoador" name="email" type="email" placeholder="nome@email.com" required>
+            <span class="input-error" id="errorEmailDoador"></span>
           </div>
           <div class="form-group">
             <label for="senhaDoador">Senha</label>
-            <input id="senhaDoador" name="senha" type="password" placeholder="Crie uma senha" required>
-            <p class="input-hint">Use 8+ caracteres com maiuscula, minuscula, numero e simbolo.</p>
+            <input id="senhaDoador" name="senha" type="password" placeholder="Crie uma senha" required minlength="8">
+            <div class="password-strength" id="strengthDoador">
+              <div class="password-strength-bar">
+                <div class="password-strength-fill" id="strengthFillDoador"></div>
+              </div>
+              <span class="password-strength-text" id="strengthTextDoador"></span>
+            </div>
+            <p class="input-hint">Use 8+ caracteres com maiúscula, minúscula, número e símbolo.</p>
           </div>
-          <button type="submit" class="btn-primary" id="btnCadastrarDoador">❤️ Quero fazer a diferenca</button>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="btnCadastrarDoador">💚 Quero fazer a diferença</button>
+          </div>
           <p class="form-feedback" id="feedbackDoador"></p>
         </form>
         <form id="formOng" class="form tab-content" autocomplete="off" hidden>
           <div class="form-group">
             <label for="nomeOng">Nome da ONG</label>
-            <input id="nomeOng" name="nome" type="text" placeholder="Nome fantasia" required>
+            <input id="nomeOng" name="nome" type="text" placeholder="Nome fantasia" required minlength="3">
+            <span class="input-error" id="errorNomeOng"></span>
           </div>
           <div class="form-group">
             <label for="emailOng">E-mail institucional</label>
             <input id="emailOng" name="email" type="email" placeholder="contato@ong.org" required>
+            <span class="input-error" id="errorEmailOng"></span>
           </div>
           <div class="form-group">
             <label for="senhaOng">Senha</label>
-            <input id="senhaOng" name="senha" type="password" placeholder="Crie uma senha" required>
-            <p class="input-hint">Use 8+ caracteres com maiuscula, minuscula, numero e simbolo.</p>
+            <input id="senhaOng" name="senha" type="password" placeholder="Crie uma senha" required minlength="8">
+            <div class="password-strength" id="strengthOng">
+              <div class="password-strength-bar">
+                <div class="password-strength-fill" id="strengthFillOng"></div>
+              </div>
+              <span class="password-strength-text" id="strengthTextOng"></span>
+            </div>
+            <p class="input-hint">Use 8+ caracteres com maiúscula, minúscula, número e símbolo.</p>
           </div>
           <div class="form-group">
-            <label for="descricaoOng">Descricao</label>
-            <textarea id="descricaoOng" name="descricao" placeholder="Explique sua causa" rows="3" required></textarea>
+            <label for="descricaoOng">Descrição</label>
+            <textarea id="descricaoOng" name="descricao" placeholder="Explique sua causa em poucas palavras..." rows="3" required minlength="20"></textarea>
+            <span class="input-hint" id="charCountOng">0/200 caracteres</span>
           </div>
           <div class="form-group">
             <label for="siteOng">Site ou rede social</label>
             <input id="siteOng" name="website" type="url" placeholder="https://" required>
+            <span class="input-error" id="errorSiteOng"></span>
           </div>
-          <button type="submit" class="btn-primary" id="btnCadastrarOng">🚀 Criar minha conta</button>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="btnCadastrarOng">🚀 Criar minha conta</button>
+          </div>
           <p class="form-feedback" id="feedbackOng"></p>
         </form>
-        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Ja tem conta? <a href="auth.html">Faca login</a></p>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Já tem conta? <a href="auth.html" style="color: var(--primary); font-weight: 600;">Faça login</a></p>
       </div>
     </div>
   </section>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <script>
+    // Redirecionar se já estiver logado
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const ongId = localStorage.getItem("ongId");
     if (token && (userId || ongId)) {
       window.location.href = userId ? "perfil.html" : "painel.html";
     }
+
+    // Sistema de tema
     const body = document.body;
     const btnModo = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
@@ -104,6 +133,8 @@
       localStorage.setItem("theme", dark ? "dark" : "light");
       btnModo.textContent = dark ? "☀️" : "🌙";
     });
+
+    // Sistema de abas
     const tabButtons = document.querySelectorAll(".tab-button");
     const tabContents = document.querySelectorAll(".tab-content");
     tabButtons.forEach((button) => {
@@ -119,26 +150,94 @@
         target.hidden = false;
       });
     });
+
+    // Validação de senha
     const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    
     function senhaValida(valor) {
       return SENHA_REGEX.test(valor || "");
     }
+
+    // Indicador de força de senha
+    function updatePasswordStrength(inputId, fillId, textId) {
+      const input = document.getElementById(inputId);
+      const fill = document.getElementById(fillId);
+      const text = document.getElementById(textId);
+
+      if (!input || !fill || !text) return;
+
+      input.addEventListener('input', () => {
+        const value = input.value;
+        const strength = Validators.passwordStrength(value);
+        
+        fill.className = 'password-strength-fill ' + strength.level;
+        text.className = 'password-strength-text ' + strength.level;
+        text.textContent = strength.text;
+      });
+    }
+
+    // Inicializar indicadores de força de senha
+    updatePasswordStrength('senhaDoador', 'strengthFillDoador', 'strengthTextDoador');
+    updatePasswordStrength('senhaOng', 'strengthFillOng', 'strengthTextOng');
+
+    // Contador de caracteres para descrição da ONG
+    const descricaoOng = document.getElementById('descricaoOng');
+    const charCount = document.getElementById('charCountOng');
+    if (descricaoOng && charCount) {
+      descricaoOng.addEventListener('input', () => {
+        const len = descricaoOng.value.length;
+        charCount.textContent = `${len}/200 caracteres`;
+        charCount.style.color = len > 200 ? 'var(--danger)' : 'var(--text-light)';
+      });
+    }
+
+    // Validação em tempo real de email
+    function validateEmailField(inputId, errorId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      if (!input || !error) return;
+
+      input.addEventListener('blur', () => {
+        if (input.value && !Validators.email(input.value)) {
+          error.textContent = 'Digite um e-mail válido';
+          error.style.display = 'block';
+          input.style.borderColor = 'var(--danger)';
+        } else {
+          error.textContent = '';
+          error.style.display = 'none';
+          input.style.borderColor = '';
+        }
+      });
+    }
+
+    validateEmailField('emailDoador', 'errorEmailDoador');
+    validateEmailField('emailOng', 'errorEmailOng');
+
+    // Handler de cadastro melhorado
     function handleCadastro({ form, endpoint, feedback, button, redirect, storageKeys }) {
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         feedback.textContent = "";
         feedback.style.color = "var(--text-secondary)";
-        const originalText = button.textContent;
-        button.disabled = true;
-        button.textContent = "Enviando...";
+        
+        // Usar Loading do auth-helper
+        Loading.button(button, true);
+        
         const payload = Object.fromEntries(new FormData(form).entries());
+        
+        // Validações
         if (!senhaValida(payload.senha)) {
-          feedback.textContent = "Senha precisa ter 8+ caracteres, com maiuscula, minuscula, numero e simbolo.";
-          feedback.style.color = "var(--danger, #d0342c)";
-          button.disabled = false;
-          button.textContent = originalText;
+          Toast.error("Senha precisa ter 8+ caracteres, com maiúscula, minúscula, número e símbolo.");
+          Loading.button(button, false);
           return;
         }
+
+        if (!Validators.email(payload.email)) {
+          Toast.error("Digite um e-mail válido.");
+          Loading.button(button, false);
+          return;
+        }
+        
         try {
           const res = await fetch(endpoint, {
             method: "POST",
@@ -146,25 +245,33 @@
             body: JSON.stringify(payload)
           });
           const data = await res.json();
+          
           if (!res.ok) {
-            throw new Error(data.error || "Nao foi possivel concluir o cadastro");
+            throw new Error(data.error || "Não foi possível concluir o cadastro");
           }
+          
           if (storageKeys) {
             Object.entries(storageKeys).forEach(([key, value]) => {
               localStorage.setItem(key, typeof value === "function" ? value(data) : value);
             });
           }
-          feedback.textContent = "Cadastro concluido! Redirecionando...";
-          feedback.style.color = "var(--success, #1f9254)";
+          
+          // Salvar nome do usuário
+          if (payload.nome) {
+            localStorage.setItem('userName', payload.nome);
+          }
+          
+          Toast.success("Cadastro concluído! Bem-vindo à Causa Digital! 🎉");
+          
           setTimeout(() => {
             window.location.href = redirect;
-          }, 600);
+          }, 1500);
         } catch (error) {
+          Toast.error(error.message);
           feedback.textContent = error.message;
-          feedback.style.color = "var(--danger, #d0342c)";
+          feedback.style.color = "var(--danger)";
         } finally {
-          button.disabled = false;
-          button.textContent = originalText;
+          Loading.button(button, false);
         }
       });
     }

@@ -3,9 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Causa Digital - Transforme Vidas com Transparencia</title>
+  <meta name="description" content="Causa Digital - Plataforma de doações gamificada com transparência total. Doe, acumule pontos, desbloqueie conquistas e veja o impacto real da sua generosidade.">
+  <meta name="keywords" content="doação, caridade, ONG, transparência, gamificação, causas sociais, voluntariado">
+  <meta name="author" content="Causa Digital">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Causa Digital - Transforme Vidas com Transparência">
+  <meta property="og:description" content="Plataforma de doações gamificada onde você acompanha cada centavo do seu apoio.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://causadigital.org">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Causa Digital - Transforme Vidas com Transparência">
+  <meta name="twitter:description" content="Plataforma de doações gamificada com transparência total.">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#059669">
+  
+  <title>Causa Digital - Transforme Vidas com Transparência</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💚</text></svg>">
+  <link rel="canonical" href="https://causadigital.org">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -21,14 +42,39 @@
   </nav>
   <header class="hero">
     <div class="container">
-      <h1>Transforme vidas com<br>transparencia total</h1>
-      <p>A plataforma de doacoes gamificada onde voce acompanha cada centavo do seu apoio. Doe, acumule pontos, desbloqueie conquistas e veja o impacto real da sua generosidade.</p>
-      <div class="hero-buttons">
+      <span class="badge badge-success animate-fade-in" style="margin-bottom: 1rem;">🌱 Plataforma 100% transparente</span>
+      <h1 class="animate-fade-in-up">Transforme vidas com<br>transparência total</h1>
+      <p class="animate-fade-in-up delay-100">A plataforma de doações gamificada onde você acompanha cada centavo do seu apoio. Doe, acumule pontos, desbloqueie conquistas e veja o impacto real da sua generosidade.</p>
+      <div class="hero-buttons animate-fade-in-up delay-200">
         <a href="campanhas.html" class="btn-primary">🎯 Ver Campanhas</a>
         <a href="cadastro.html" class="btn-secondary">🏢 Cadastrar ONG</a>
       </div>
     </div>
   </header>
+
+  <!-- Seção de Estatísticas da Plataforma -->
+  <section class="section" style="background: var(--bg-secondary); padding: 3rem 0;">
+    <div class="container">
+      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="stat-card animate-fade-in-up">
+          <span class="stat-value" id="statArrecadado">R$ 0</span>
+          <span class="stat-label">Total Arrecadado</span>
+        </div>
+        <div class="stat-card animate-fade-in-up delay-100">
+          <span class="stat-value" id="statDoacoes">0</span>
+          <span class="stat-label">Doações Realizadas</span>
+        </div>
+        <div class="stat-card animate-fade-in-up delay-200">
+          <span class="stat-value" id="statOngs">0</span>
+          <span class="stat-label">ONGs Cadastradas</span>
+        </div>
+        <div class="stat-card animate-fade-in-up delay-300">
+          <span class="stat-value" id="statCampanhas">0</span>
+          <span class="stat-label">Campanhas Ativas</span>
+        </div>
+      </div>
+    </div>
+  </section>
   <section class="section">
     <div class="container">
       <div style="display: flex; justify-content: space-between; align-items: end; margin-bottom: 2rem;">
@@ -94,10 +140,14 @@
   </section>
   <footer style="padding: 3rem 0; border-top: 1px solid var(--border-color);">
     <div class="container" style="text-align: center;">
-      <p style="color: var(--text-secondary);">💙 2025 Causa Digital - Transformando vidas com transparencia</p>
+      <p style="color: var(--text-secondary);">💚 2025 Causa Digital - Transformando vidas com transparência</p>
     </div>
   </footer>
+
+  <!-- Toast Container para notificações -->
+  <div class="toast-container" id="toastContainer"></div>
   <script>
+    // Sistema de tema claro/escuro
     const body = document.body;
     const btn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
@@ -111,18 +161,71 @@
       btn.textContent = dark ? "☀️" : "🌙";
     });
 
+    // Dados de exemplo para fallback
     const mockDestaques = [
-      { _id: "1", titulo: "Cesta Basica para 100 Familias", descricao: "Ajude familias em vulnerabilidade.", meta: 5000, arrecadado: 4500, percentualConcluido: 90 },
-      { _id: "2", titulo: "Material Escolar Completo", descricao: "Kits escolares para criancas.", meta: 10000, arrecadado: 8200, percentualConcluido: 82 },
-      { _id: "3", titulo: "Medicamentos Essenciais", descricao: "Compra de medicamentos.", meta: 8000, arrecadado: 6100, percentualConcluido: 76 }
+      { _id: "1", titulo: "Cesta Básica para 100 Famílias", descricao: "Ajude famílias em vulnerabilidade alimentar a terem refeições dignas.", meta: 5000, arrecadado: 4500, percentualConcluido: 90, categoria: "alimentacao" },
+      { _id: "2", titulo: "Material Escolar Completo", descricao: "Kits escolares para crianças iniciarem o ano letivo com dignidade.", meta: 10000, arrecadado: 8200, percentualConcluido: 82, categoria: "educacao" },
+      { _id: "3", titulo: "Medicamentos Essenciais", descricao: "Compra de medicamentos para famílias em situação de vulnerabilidade.", meta: 8000, arrecadado: 6100, percentualConcluido: 76, categoria: "saude" }
     ];
 
     const mockRanking = [
-      { nome: "Joao Santos", pontos: 1200, nivel: 3 },
+      { nome: "João Santos", pontos: 1200, nivel: 3 },
       { nome: "Maria Silva", pontos: 850, nivel: 2 },
       { nome: "Ana Costa", pontos: 300, nivel: 1 }
     ];
 
+    const mockStats = {
+      totalArrecadado: 18800,
+      totalDoacoes: 156,
+      totalOngs: 12,
+      totalCampanhas: 8
+    };
+
+    // Função para animar contadores
+    function animateCounter(element, target, prefix = '', suffix = '') {
+      const duration = 1500;
+      const start = 0;
+      const startTime = performance.now();
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(start + (target - start) * easeOut);
+        element.textContent = prefix + current.toLocaleString('pt-BR') + suffix;
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    // Carregar estatísticas da plataforma
+    async function carregarEstatisticas() {
+      try {
+        const res = await fetch("/api/stats");
+        let stats = mockStats;
+        if (res.ok) {
+          const data = await res.json();
+          if (data.totalArrecadado) stats = data;
+        }
+        
+        // Animar os contadores
+        animateCounter(document.getElementById("statArrecadado"), stats.totalArrecadado, 'R$ ');
+        animateCounter(document.getElementById("statDoacoes"), stats.totalDoacoes);
+        animateCounter(document.getElementById("statOngs"), stats.totalOngs);
+        animateCounter(document.getElementById("statCampanhas"), stats.totalCampanhas);
+      } catch (error) {
+        // Usar dados mock com animação
+        animateCounter(document.getElementById("statArrecadado"), mockStats.totalArrecadado, 'R$ ');
+        animateCounter(document.getElementById("statDoacoes"), mockStats.totalDoacoes);
+        animateCounter(document.getElementById("statOngs"), mockStats.totalOngs);
+        animateCounter(document.getElementById("statCampanhas"), mockStats.totalCampanhas);
+      }
+    }
+
+    // Carregar campanhas em destaque
     async function carregarDestaques() {
       const container = document.getElementById("destaques");
       try {
@@ -138,25 +241,32 @@
       }
     }
 
+    function getCategoriaEmoji(cat) {
+      const emojis = { alimentacao: "🍲", educacao: "📚", saude: "🏥", outros: "🎮" };
+      return emojis[cat] || "💚";
+    }
+
     function renderizarDestaques(lista, container) {
-      container.innerHTML = lista.map(c => {
+      container.innerHTML = lista.map((c, index) => {
         const percentual = c.percentualConcluido || Math.round((c.arrecadado / c.meta) * 100);
         return `
-          <div class="card">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">💙</div>
-            <h3 style="margin-bottom: 0.5rem;">${c.titulo}</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 1rem; flex-grow: 1;">${c.descricao}</p>
+          <div class="card animate-fade-in-up delay-${index}00">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">${getCategoriaEmoji(c.categoria)}</div>
+            <span class="badge badge-primary">${c.categoria || 'causa'}</span>
+            <h3 style="margin: 0.75rem 0 0.5rem;">${c.titulo}</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem; flex-grow: 1; color: var(--text-secondary);">${c.descricao}</p>
             <div class="progress"><div style="width: ${percentual}%;"></div></div>
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-top: 0.5rem;">
-              <strong>R$ ${c.arrecadado.toLocaleString()}</strong>
-              <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString()}</span>
+              <strong style="color: var(--success);">R$ ${c.arrecadado.toLocaleString('pt-BR')}</strong>
+              <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString('pt-BR')}</span>
             </div>
-            <a href="doacao.html?id=${c._id}" class="btn-primary" style="width: 100%; margin-top: 1.5rem; text-align: center; text-decoration: none; display: block;">Doar Agora</a>
+            <a href="doacao.html?id=${c._id}" class="btn-primary" style="width: 100%; margin-top: 1.5rem; text-align: center; text-decoration: none; display: block;">💚 Doar Agora</a>
           </div>
         `;
       }).join("");
     }
 
+    // Carregar ranking de doadores
     async function carregarRanking() {
       const container = document.getElementById("ranking");
       try {
@@ -179,15 +289,17 @@
 
     function renderizarRanking(lista, container) {
       container.innerHTML = lista.map((u, index) => `
-        <div class="card" style="text-align: center; padding: 1.5rem;">
+        <div class="card animate-fade-in-up delay-${index}00" style="text-align: center; padding: 1.5rem;">
           <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">${rankingMedal(index)}</div>
           <h4 style="margin-bottom: 0.25rem;">${u.nome}</h4>
-          <p style="color: var(--primary); font-weight: 600; margin-bottom: 0;">${u.pontos.toLocaleString()} pts</p>
-          <p style="font-size: 0.8rem; color: var(--text-secondary);">Nivel ${u.nivel}</p>
+          <p style="color: var(--primary); font-weight: 700; margin-bottom: 0; font-size: 1.1rem;">${u.pontos.toLocaleString('pt-BR')} pts</p>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Nível ${u.nivel}</p>
         </div>
       `).join("");
     }
 
+    // Inicialização
+    carregarEstatisticas();
     carregarDestaques();
     carregarRanking();
   </script>

@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore campanhas verificadas e faça a diferença. Doe para causas de alimentação, educação, saúde e muito mais.">
   <title>Campanhas - Causa Digital</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💚</text></svg>">
   <script src="auth-helper.js" defer></script>
 </head>
 <body>
@@ -13,47 +14,60 @@
     <div class="container nav-container">
       <a href="index.html" class="logo">Causa Digital</a>
       <div class="nav-links">
-        <a href="campanhas.html">Campanhas</a>
+        <a href="campanhas.html" class="active">Campanhas</a>
         <a href="ongs.html">ONGs</a>
         <button id="modoBtn" class="btn-toggle">🌙</button>
       </div>
     </div>
   </nav>
+  
   <section class="section">
     <div class="container">
-      <span class="badge badge-primary">🎯 Campanhas</span>
-      <h1 style="margin-top: 1rem;">Encontre uma causa para apoiar</h1>
-      <p class="subtitle">Explore campanhas verificadas e faca a diferenca hoje.</p>
-      <div class="filter-bar">
-        <input type="text" id="busca" placeholder="🔍 Buscar campanhas..." style="flex: 1; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius); background: var(--bg-primary); color: var(--text-primary);">
-        <select id="categoria" style="padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius); background: var(--bg-primary); color: var(--text-primary);">
+      <span class="badge badge-primary animate-fade-in">🎯 Campanhas</span>
+      <h1 style="margin-top: 1rem;" class="animate-fade-in-up">Encontre uma causa para apoiar</h1>
+      <p class="subtitle animate-fade-in-up delay-100">Explore campanhas verificadas e faça a diferença hoje.</p>
+      
+      <div class="filter-bar animate-fade-in-up delay-200">
+        <input type="text" id="busca" placeholder="🔍 Buscar campanhas..." style="flex: 1; min-width: 200px;">
+        <select id="categoria">
           <option value="">Todas categorias</option>
-          <option value="alimentacao">🍲 Alimentacao</option>
-          <option value="educacao">📚 Educacao</option>
-          <option value="saude">🏥 Saude</option>
+          <option value="alimentacao">🍲 Alimentação</option>
+          <option value="educacao">📚 Educação</option>
+          <option value="saude">🏥 Saúde</option>
           <option value="outros">🎮 Outros</option>
         </select>
+        <select id="ordenar">
+          <option value="recentes">📅 Mais recentes</option>
+          <option value="arrecadado">💰 Mais arrecadado</option>
+          <option value="meta">🎯 Próximos da meta</option>
+        </select>
       </div>
-      <div id="listaCampanhas" class="grid" style="margin-top: 2rem;">
-        <div class="card skeleton">
-          <div style="height: 200px; background: var(--bg-secondary); border-radius: var(--radius); margin-bottom: 1rem;"></div>
-          <div style="height: 20px; width: 70%; background: var(--bg-secondary); margin-bottom: 0.5rem;"></div>
-          <div style="height: 16px; width: 40%; background: var(--bg-secondary);"></div>
-        </div>
-        <div class="card skeleton">
-          <div style="height: 200px; background: var(--bg-secondary); border-radius: var(--radius); margin-bottom: 1rem;"></div>
-          <div style="height: 20px; width: 70%; background: var(--bg-secondary); margin-bottom: 0.5rem;"></div>
-          <div style="height: 16px; width: 40%; background: var(--bg-secondary);"></div>
-        </div>
-        <div class="card skeleton">
-          <div style="height: 200px; background: var(--bg-secondary); border-radius: var(--radius); margin-bottom: 1rem;"></div>
-          <div style="height: 20px; width: 70%; background: var(--bg-secondary); margin-bottom: 0.5rem;"></div>
-          <div style="height: 16px; width: 40%; background: var(--bg-secondary);"></div>
-        </div>
+
+      <!-- Contador de resultados -->
+      <div id="resultadoInfo" class="animate-fade-in" style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem;"></div>
+      
+      <div id="listaCampanhas" class="grid" style="margin-top: 1rem;">
+        <!-- Skeleton loading -->
+        <div class="card skeleton-loading" style="height: 350px;"></div>
+        <div class="card skeleton-loading" style="height: 350px;"></div>
+        <div class="card skeleton-loading" style="height: 350px;"></div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">🔍</div>
+        <h3 class="empty-state-title">Nenhuma campanha encontrada</h3>
+        <p class="empty-state-description">Tente ajustar os filtros ou buscar por outros termos.</p>
+        <button class="btn-secondary" onclick="limparFiltros()">Limpar filtros</button>
       </div>
     </div>
   </section>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <script>
+    // Sistema de tema
     const body = document.body;
     const modoBtn = document.getElementById("modoBtn");
     if (localStorage.getItem("theme") === "dark") {
@@ -67,62 +81,124 @@
       modoBtn.textContent = dark ? "☀️" : "🌙";
     });
 
+    // Dados mock para fallback
     const mockCampanhas = [
-      { _id: "1", titulo: "Cesta Basica para 100 Familias", descricao: "Ajude familias em vulnerabilidade alimentar.", meta: 5000, arrecadado: 4500, categoria: "alimentacao" },
-      { _id: "2", titulo: "Material Escolar Completo", descricao: "Kits escolares para criancas carentes.", meta: 10000, arrecadado: 8200, categoria: "educacao" },
-      { _id: "3", titulo: "Medicamentos Essenciais", descricao: "Compra de medicamentos para idosos.", meta: 8000, arrecadado: 6100, categoria: "saude" },
-      { _id: "4", titulo: "Computadores para Escola", descricao: "Laboratorio de informatica para escola publica.", meta: 15000, arrecadado: 3500, categoria: "educacao" },
-      { _id: "5", titulo: "Reforma do Abrigo", descricao: "Melhorias no abrigo de animais abandonados.", meta: 12000, arrecadado: 9800, categoria: "outros" },
-      { _id: "6", titulo: "Almoco Solidario", descricao: "Refeicoes diarias para moradores de rua.", meta: 6000, arrecadado: 4200, categoria: "alimentacao" }
+      { _id: "1", titulo: "Cesta Básica para 100 Famílias", descricao: "Ajude famílias em vulnerabilidade alimentar a terem refeições dignas durante todo o mês.", meta: 5000, arrecadado: 4500, categoria: "alimentacao", criadoEm: "2025-11-01" },
+      { _id: "2", titulo: "Material Escolar Completo", descricao: "Kits escolares para crianças de baixa renda iniciarem o ano letivo com dignidade.", meta: 10000, arrecadado: 8200, categoria: "educacao", criadoEm: "2025-10-15" },
+      { _id: "3", titulo: "Medicamentos Essenciais", descricao: "Compra de medicamentos para idosos em situação de vulnerabilidade social.", meta: 8000, arrecadado: 6100, categoria: "saude", criadoEm: "2025-10-20" },
+      { _id: "4", titulo: "Computadores para Escola", descricao: "Laboratório de informática para escola pública da periferia.", meta: 15000, arrecadado: 3500, categoria: "educacao", criadoEm: "2025-11-10" },
+      { _id: "5", titulo: "Reforma do Abrigo", descricao: "Melhorias estruturais no abrigo de animais abandonados da cidade.", meta: 12000, arrecadado: 9800, categoria: "outros", criadoEm: "2025-09-25" },
+      { _id: "6", titulo: "Almoço Solidário", descricao: "Refeições diárias para moradores em situação de rua.", meta: 6000, arrecadado: 4200, categoria: "alimentacao", criadoEm: "2025-11-05" }
     ];
 
     let campanhas = [];
+    let campanhasFiltradas = [];
     const container = document.getElementById("listaCampanhas");
     const inputBusca = document.getElementById("busca");
     const selectCategoria = document.getElementById("categoria");
+    const selectOrdenar = document.getElementById("ordenar");
+    const resultadoInfo = document.getElementById("resultadoInfo");
+    const emptyState = document.getElementById("emptyState");
 
     function getCategoriaEmoji(cat) {
       const emojis = { alimentacao: "🍲", educacao: "📚", saude: "🏥", outros: "🎮" };
-      return emojis[cat] || "💙";
+      return emojis[cat] || "💚";
+    }
+
+    function getCategoriaLabel(cat) {
+      const labels = { alimentacao: "Alimentação", educacao: "Educação", saude: "Saúde", outros: "Outros" };
+      return labels[cat] || cat;
     }
 
     function renderCampanhas(lista) {
       if (!lista.length) {
-        container.innerHTML = `<div class="card" style="grid-column: 1/-1; text-align: center; padding: 3rem;"><p>Nenhuma campanha encontrada.</p></div>`;
+        container.innerHTML = '';
+        emptyState.style.display = 'block';
+        resultadoInfo.textContent = '';
         return;
       }
-      container.innerHTML = lista.map(c => {
+
+      emptyState.style.display = 'none';
+      resultadoInfo.textContent = `${lista.length} campanha${lista.length !== 1 ? 's' : ''} encontrada${lista.length !== 1 ? 's' : ''}`;
+
+      container.innerHTML = lista.map((c, index) => {
         const percentual = Math.round((c.arrecadado / c.meta) * 100);
+        const isAlmostComplete = percentual >= 80;
+        
         return `
-          <div class="card">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">${getCategoriaEmoji(c.categoria)}</div>
-            <span class="badge">${c.categoria}</span>
-            <h3 style="margin: 0.5rem 0;">${c.titulo}</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 1rem; flex-grow: 1;">${c.descricao}</p>
-            <div class="progress"><div style="width: ${percentual}%;"></div></div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.5rem;">
-              <strong>R$ ${c.arrecadado.toLocaleString()}</strong>
-              <span>de R$ ${c.meta.toLocaleString()}</span>
+          <div class="card animate-fade-in-up" style="animation-delay: ${index * 0.1}s;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <div style="font-size: 3rem;">${getCategoriaEmoji(c.categoria)}</div>
+              ${isAlmostComplete ? '<span class="badge badge-success">🔥 Quase lá!</span>' : ''}
             </div>
-            <a href="doacao.html?id=${c._id}" class="btn-primary" style="width: 100%; margin-top: 1rem; text-align: center; text-decoration: none; display: block;">Doar Agora</a>
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">${getCategoriaLabel(c.categoria)}</span>
+            <h3 style="margin: 0.5rem 0; line-height: 1.3;">${c.titulo}</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 1rem; flex-grow: 1; color: var(--text-secondary); line-height: 1.5;" class="line-clamp-2">${c.descricao}</p>
+            <div class="progress" style="margin-bottom: 0.5rem;">
+              <div style="width: ${Math.min(percentual, 100)}%; background: ${isAlmostComplete ? 'var(--success)' : ''};"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem;">
+              <strong style="color: var(--success);">R$ ${c.arrecadado.toLocaleString('pt-BR')}</strong>
+              <span style="color: var(--text-secondary);">de R$ ${c.meta.toLocaleString('pt-BR')}</span>
+            </div>
+            <div style="text-align: center; font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">
+              ${percentual}% arrecadado
+            </div>
+            <a href="doacao.html?id=${c._id}" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none; display: block;">💚 Doar Agora</a>
           </div>
         `;
       }).join("");
     }
 
+    function ordenarCampanhas(lista, criterio) {
+      const copia = [...lista];
+      switch(criterio) {
+        case 'arrecadado':
+          return copia.sort((a, b) => b.arrecadado - a.arrecadado);
+        case 'meta':
+          return copia.sort((a, b) => {
+            const percA = (a.arrecadado / a.meta) * 100;
+            const percB = (b.arrecadado / b.meta) * 100;
+            return percB - percA;
+          });
+        case 'recentes':
+        default:
+          return copia.sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm));
+      }
+    }
+
     function filtrar() {
-      const busca = inputBusca.value.toLowerCase();
+      const busca = inputBusca.value.toLowerCase().trim();
       const categoria = selectCategoria.value;
-      const filtradas = campanhas.filter(c => {
-        const matchBusca = c.titulo.toLowerCase().includes(busca) || c.descricao.toLowerCase().includes(busca);
+      const ordenacao = selectOrdenar.value;
+
+      campanhasFiltradas = campanhas.filter(c => {
+        const matchBusca = !busca || 
+          c.titulo.toLowerCase().includes(busca) || 
+          c.descricao.toLowerCase().includes(busca);
         const matchCategoria = !categoria || c.categoria === categoria;
         return matchBusca && matchCategoria;
       });
-      renderCampanhas(filtradas);
+
+      campanhasFiltradas = ordenarCampanhas(campanhasFiltradas, ordenacao);
+      renderCampanhas(campanhasFiltradas);
     }
 
-    inputBusca.addEventListener("input", filtrar);
+    function limparFiltros() {
+      inputBusca.value = '';
+      selectCategoria.value = '';
+      selectOrdenar.value = 'recentes';
+      filtrar();
+    }
+
+    // Event listeners com debounce para busca
+    let buscaTimeout;
+    inputBusca.addEventListener("input", () => {
+      clearTimeout(buscaTimeout);
+      buscaTimeout = setTimeout(filtrar, 300);
+    });
     selectCategoria.addEventListener("change", filtrar);
+    selectOrdenar.addEventListener("change", filtrar);
 
     async function carregarCampanhas() {
       try {
@@ -134,7 +210,7 @@
       } catch (error) {
         campanhas = mockCampanhas;
       }
-      renderCampanhas(campanhas);
+      filtrar();
     }
 
     carregarCampanhas();
