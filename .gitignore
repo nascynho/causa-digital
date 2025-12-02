@@ -13,3 +13,7 @@ build/
 *.swo
 *~
 .vagrant/
+
+# Arquivos locais de apresentação
+SCRIPT_APRESENTACAO.md
+GUIA_LINUX_MINT.md

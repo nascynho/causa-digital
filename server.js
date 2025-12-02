@@ -19,9 +19,9 @@ const DEMO_MODE = process.env.DEMO_MODE === "true" || process.argv.includes("--d
 
 const demoData = {
   doadores: [
-    { _id: "demo-doador-1", nome: "Maria Silva", email: "maria@email.com", senha: "Demo@123", pontos: 850, nivel: 2, totalArrecadado: 85, badges: ["impacto_inicial", "primeiro_passo", "heroi_solidario"], doacoes: ["demo-doacao-1", "demo-doacao-2"], metasPessoais: [] },
-    { _id: "demo-doador-2", nome: "João Santos", email: "joao@email.com", senha: "Demo@123", pontos: 1200, nivel: 3, totalArrecadado: 120, badges: ["impacto_inicial", "primeiro_passo", "heroi_solidario", "benfeitor"], doacoes: ["demo-doacao-3"], metasPessoais: [] },
-    { _id: "demo-doador-3", nome: "Ana Costa", email: "ana@email.com", senha: "Demo@123", pontos: 300, nivel: 1, totalArrecadado: 30, badges: ["impacto_inicial", "primeiro_passo"], doacoes: [], metasPessoais: [] }
+    { _id: "demo-doador-1", nome: "Maria Silva", email: "maria@email.com", senha: "Demo@123", pontos: 850, nivel: 2, creditos: 150, totalArrecadado: 85, badges: ["impacto_inicial", "primeiro_passo", "heroi_solidario"], doacoes: ["demo-doacao-1", "demo-doacao-2"], metasPessoais: [] },
+    { _id: "demo-doador-2", nome: "João Santos", email: "joao@email.com", senha: "Demo@123", pontos: 1200, nivel: 3, creditos: 500, totalArrecadado: 120, badges: ["impacto_inicial", "primeiro_passo", "heroi_solidario", "benfeitor"], doacoes: ["demo-doacao-3"], metasPessoais: [] },
+    { _id: "demo-doador-3", nome: "Ana Costa", email: "ana@email.com", senha: "Demo@123", pontos: 300, nivel: 1, creditos: 50, totalArrecadado: 30, badges: ["impacto_inicial", "primeiro_passo"], doacoes: [], metasPessoais: [] }
   ],
   ongs: [
     { _id: "demo-ong-1", nome: "Alimentação Solidária", email: "contato@alimentacao.org", senha: "Demo@123", descricao: "Combatendo a fome com dignidade", logo: "🍲", campanhas: ["demo-campanha-1"], totalArrecadado: 4500, metasAlcancadas: 2, seguidores: 156 },
@@ -37,6 +37,11 @@ const demoData = {
     { _id: "demo-doacao-1", doador: "demo-doador-1", campanha: "demo-campanha-1", valor: 50, pontosConcedidos: 500, mensagem: "Fico feliz em ajudar!", criadoEm: new Date("2025-11-15") },
     { _id: "demo-doacao-2", doador: "demo-doador-1", campanha: "demo-campanha-2", valor: 35, pontosConcedidos: 350, mensagem: "Educação transforma vidas", criadoEm: new Date("2025-11-20") },
     { _id: "demo-doacao-3", doador: "demo-doador-2", campanha: "demo-campanha-3", valor: 120, pontosConcedidos: 1200, mensagem: "Saúde é prioridade", criadoEm: new Date("2025-11-25") }
+  ],
+  transacoes: [
+    { _id: "demo-tx-1", doador: "demo-doador-1", tipo: "compra", valor: 200, creditos: 200, status: "aprovado", metodo: "pix", criadoEm: new Date("2025-11-10") },
+    { _id: "demo-tx-2", doador: "demo-doador-2", tipo: "compra", valor: 500, creditos: 500, status: "aprovado", metodo: "cartao", criadoEm: new Date("2025-11-12") },
+    { _id: "demo-tx-3", doador: "demo-doador-1", tipo: "doacao", valor: -50, creditos: -50, campanhaId: "demo-campanha-1", status: "concluido", criadoEm: new Date("2025-11-15") }
   ]
 };
 
@@ -69,6 +74,7 @@ const doadorSchema = new mongoose.Schema({
   tipo: { type: String, default: "doador" },
   pontos: { type: Number, default: 0 },
   nivel: { type: Number, default: 1 },
+  creditos: { type: Number, default: 0 },
   totalArrecadado: { type: Number, default: 0 },
   doacoes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Doacao" }],
   badges: [String],
@@ -115,10 +121,22 @@ const doacaoSchema = new mongoose.Schema({
   criadoEm: { type: Date, default: Date.now }
 }, { timestamps: true });
 
+const transacaoSchema = new mongoose.Schema({
+  doador: { type: mongoose.Schema.Types.ObjectId, ref: "Doador" },
+  tipo: { type: String, enum: ["compra", "doacao", "bonus"] },
+  valor: Number,
+  creditos: Number,
+  campanhaId: { type: mongoose.Schema.Types.ObjectId, ref: "Campanha" },
+  metodo: { type: String, enum: ["pix", "cartao", "boleto"] },
+  status: { type: String, enum: ["pendente", "processando", "aprovado", "recusado", "concluido"], default: "pendente" },
+  criadoEm: { type: Date, default: Date.now }
+}, { timestamps: true });
+
 const Doador = mongoose.model("Doador", doadorSchema);
 const ONG = mongoose.model("ONG", ongSchema);
 const Campanha = mongoose.model("Campanha", campanhaSchema);
 const Doacao = mongoose.model("Doacao", doacaoSchema);
+const Transacao = mongoose.model("Transacao", transacaoSchema);
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
 
@@ -233,8 +251,17 @@ app.post("/api/doacoes", async (req, res) => {
     const pontos = valor * 10;
 
     if (DEMO_MODE) {
+      const doadorDoc = demoData.doadores.find(d => d._id === doadorFinal);
+      if (doadorDoc) {
+        if (doadorDoc.creditos < valor) {
+          return res.status(400).json({ error: "Creditos insuficientes", creditos: doadorDoc.creditos });
+        }
+        doadorDoc.creditos -= valor;
+      }
       const novaDoacao = { _id: generateId(), doador: doadorFinal, campanha: campanhaFinal, valor, pontosConcedidos: pontos, mensagem, criadoEm: new Date() };
       demoData.doacoes.push(novaDoacao);
+      const txDoacao = { _id: generateId(), doador: doadorFinal, tipo: "doacao", valor: -valor, creditos: -valor, campanhaId: campanhaFinal, status: "concluido", criadoEm: new Date() };
+      demoData.transacoes.push(txDoacao);
 
       const campDoc = demoData.campanhas.find(c => c._id === campanhaFinal);
       if (campDoc) {
@@ -242,7 +269,6 @@ app.post("/api/doacoes", async (req, res) => {
         campDoc.percentualConcluido = (campDoc.arrecadado / campDoc.meta) * 100;
       }
 
-      const doadorDoc = demoData.doadores.find(d => d._id === doadorFinal);
       if (doadorDoc) {
         doadorDoc.pontos += pontos;
         doadorDoc.totalArrecadado += valor;
@@ -350,7 +376,7 @@ app.post("/api/doadores", async (req, res) => {
       return res.status(400).json({ error: "Senha precisa ter 8+ caracteres, incluindo maiúscula, minúscula, número e símbolo" });
     }
     if (DEMO_MODE) {
-      const novoDoador = { _id: generateId(), ...req.body, pontos: 0, nivel: 1, totalArrecadado: 0, badges: [], doacoes: [], metasPessoais: [] };
+      const novoDoador = { _id: generateId(), ...req.body, pontos: 0, nivel: 1, creditos: 0, totalArrecadado: 0, badges: [], doacoes: [], metasPessoais: [] };
       demoData.doadores.push(novoDoador);
       return res.status(201).json(novoDoador);
     }
@@ -436,6 +462,156 @@ app.post("/api/auth/login/ong", async (req, res) => {
     res.json({ token: "demo-token", ongId: ong._id });
   } catch (error) {
     res.status(500).json({ error: "Erro ao autenticar" });
+  }
+});
+
+app.get("/api/creditos/:doadorId", async (req, res) => {
+  try {
+    if (DEMO_MODE) {
+      const doador = demoData.doadores.find(d => d._id === req.params.doadorId);
+      if (!doador) return res.status(404).json({ error: "Doador nao encontrado" });
+      return res.json({ creditos: doador.creditos || 0 });
+    }
+    const doador = await Doador.findById(req.params.doadorId);
+    if (!doador) return res.status(404).json({ error: "Doador nao encontrado" });
+    res.json({ creditos: doador.creditos || 0 });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar creditos" });
+  }
+});
+
+app.get("/api/transacoes/:doadorId", async (req, res) => {
+  try {
+    if (DEMO_MODE) {
+      const transacoes = demoData.transacoes.filter(t => t.doador === req.params.doadorId);
+      return res.json(transacoes.sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm)));
+    }
+    const transacoes = await Transacao.find({ doador: req.params.doadorId }).sort({ criadoEm: -1 });
+    res.json(transacoes);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar transacoes" });
+  }
+});
+
+app.post("/api/gateway/iniciar", async (req, res) => {
+  try {
+    const { doadorId, valor, metodo } = req.body;
+    if (!doadorId || !valor || valor < 10) {
+      return res.status(400).json({ error: "Valor minimo: R$ 10" });
+    }
+    const txId = generateId();
+    const transacao = {
+      _id: txId,
+      doador: doadorId,
+      tipo: "compra",
+      valor: valor,
+      creditos: valor,
+      metodo: metodo || "pix",
+      status: "pendente",
+      criadoEm: new Date()
+    };
+    if (DEMO_MODE) {
+      demoData.transacoes.push(transacao);
+      return res.json({ 
+        transacaoId: txId, 
+        status: "pendente",
+        metodo: metodo || "pix",
+        valor: valor,
+        instrucoes: metodo === "pix" ? {
+          chave: "pagamentos@causadigital.org",
+          qrcode: "00020126580014br.gov.bcb.pix0136" + txId.substring(0,32),
+          expiracao: "30 minutos"
+        } : metodo === "boleto" ? {
+          codigo: "23793.38128 60000.000003 " + txId.substring(5,15) + " 1 " + (valor * 100).toString().padStart(10, "0"),
+          vencimento: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString("pt-BR")
+        } : {
+          mensagem: "Processando pagamento com cartao..."
+        }
+      });
+    }
+    const tx = new Transacao(transacao);
+    await tx.save();
+    res.json({ transacaoId: txId, status: "pendente" });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao iniciar pagamento" });
+  }
+});
+
+app.post("/api/gateway/confirmar", async (req, res) => {
+  try {
+    const { transacaoId } = req.body;
+    if (DEMO_MODE) {
+      const tx = demoData.transacoes.find(t => t._id === transacaoId);
+      if (!tx) return res.status(404).json({ error: "Transacao nao encontrada" });
+      if (tx.status === "aprovado") return res.json({ status: "ja_aprovado", creditos: tx.creditos });
+      tx.status = "aprovado";
+      const doador = demoData.doadores.find(d => d._id === tx.doador);
+      if (doador) {
+        doador.creditos = (doador.creditos || 0) + tx.creditos;
+      }
+      return res.json({ 
+        status: "aprovado", 
+        creditos: tx.creditos, 
+        saldoAtual: doador ? doador.creditos : tx.creditos,
+        mensagem: "Pagamento confirmado! Creditos adicionados."
+      });
+    }
+    const tx = await Transacao.findById(transacaoId);
+    if (!tx) return res.status(404).json({ error: "Transacao nao encontrada" });
+    tx.status = "aprovado";
+    await tx.save();
+    const doador = await Doador.findById(tx.doador);
+    if (doador) {
+      doador.creditos = (doador.creditos || 0) + tx.creditos;
+      await doador.save();
+    }
+    res.json({ status: "aprovado", creditos: tx.creditos, saldoAtual: doador.creditos });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao confirmar pagamento" });
+  }
+});
+
+app.post("/api/gateway/simular", async (req, res) => {
+  try {
+    const { doadorId, valor, metodo } = req.body;
+    if (!doadorId || !valor || valor < 10) {
+      return res.status(400).json({ error: "Valor minimo: R$ 10" });
+    }
+    const txId = generateId();
+    const transacao = {
+      _id: txId,
+      doador: doadorId,
+      tipo: "compra",
+      valor: valor,
+      creditos: valor,
+      metodo: metodo || "pix",
+      status: "aprovado",
+      criadoEm: new Date()
+    };
+    if (DEMO_MODE) {
+      demoData.transacoes.push(transacao);
+      const doador = demoData.doadores.find(d => d._id === doadorId);
+      if (doador) {
+        doador.creditos = (doador.creditos || 0) + valor;
+      }
+      return res.json({ 
+        status: "aprovado", 
+        transacaoId: txId,
+        creditos: valor, 
+        saldoAtual: doador ? doador.creditos : valor,
+        mensagem: "Pagamento simulado com sucesso!"
+      });
+    }
+    const tx = new Transacao(transacao);
+    await tx.save();
+    const doador = await Doador.findById(doadorId);
+    if (doador) {
+      doador.creditos = (doador.creditos || 0) + valor;
+      await doador.save();
+    }
+    res.json({ status: "aprovado", creditos: valor, saldoAtual: doador.creditos });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao simular pagamento" });
   }
 });
 

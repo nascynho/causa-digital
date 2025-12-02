@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprar Creditos - Causa Digital</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <script src="auth-helper.js" defer></script>
+  <style>
+    .credito-card { text-align: center; padding: 2rem; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+    .credito-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .credito-card.selected { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+    .credito-valor { font-size: 2.5rem; font-weight: 700; color: var(--primary); }
+    .credito-bonus { color: var(--success); font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem; }
+    .metodo-card { display: flex; align-items: center; gap: 1rem; padding: 1rem; cursor: pointer; border: 2px solid var(--border-color); border-radius: var(--radius); margin-bottom: 0.75rem; transition: all 0.2s; }
+    .metodo-card:hover { border-color: var(--primary); }
+    .metodo-card.selected { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+    .metodo-icon { font-size: 2rem; }
+    .metodo-info h4 { margin: 0; }
+    .metodo-info p { margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-secondary); }
+    .saldo-atual { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; padding: 1.5rem; border-radius: var(--radius); text-align: center; margin-bottom: 2rem; }
+    .saldo-valor { font-size: 2.5rem; font-weight: 700; }
+    .gateway-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+    .gateway-content { background: var(--bg-primary); border-radius: var(--radius); padding: 2rem; max-width: 450px; width: 100%; text-align: center; max-height: 90vh; overflow-y: auto; }
+    .pix-qr { width: 180px; height: 180px; background: white; margin: 1rem auto; display: flex; align-items: center; justify-content: center; border-radius: var(--radius); border: 1px solid var(--border-color); flex-direction: column; gap: 0.5rem; }
+    .codigo-pix { background: var(--bg-secondary); padding: 0.75rem; border-radius: var(--radius); font-family: monospace; font-size: 0.7rem; word-break: break-all; margin: 1rem 0; }
+    .timer { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin: 0.5rem 0; }
+    .historico-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+    .historico-item:last-child { border-bottom: none; }
+    .tx-valor.positivo { color: var(--success); font-weight: 600; }
+    .tx-valor.negativo { color: var(--danger); }
+    .loading-spinner { width: 50px; height: 50px; border: 4px solid var(--border-color); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 1rem auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .step-indicator { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .step { width: 10px; height: 10px; border-radius: 50%; background: var(--border-color); }
+    .step.active { background: var(--primary); }
+    .step.done { background: var(--success); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Causa Digital</a>
+      <div class="nav-links">
+        <a href="campanhas.html">Campanhas</a>
+        <a href="ongs.html">ONGs</a>
+        <button id="modoBtn" class="btn-toggle">🌙</button>
+      </div>
+    </div>
+  </nav>
+  <section class="section">
+    <div class="container" style="max-width: 800px;">
+      <a href="perfil.html" style="color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">&larr; Voltar ao perfil</a>
+      <div class="saldo-atual">
+        <p style="margin: 0 0 0.5rem; opacity: 0.9;">💰 Seu saldo atual</p>
+        <div class="saldo-valor" id="saldoAtual">0 creditos</div>
+        <p style="margin: 0.5rem 0 0; font-size: 0.9rem; opacity: 0.8;">1 credito = R$ 1,00</p>
+      </div>
+      <div class="card">
+        <h2 style="margin-bottom: 1.5rem;">💳 Comprar Creditos</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Escolha a quantidade de creditos. Creditos nunca expiram!</p>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <div class="card credito-card" data-valor="50" data-creditos="50">
+            <div class="credito-valor">50</div>
+            <div style="color: var(--text-secondary);">creditos</div>
+            <div style="font-weight: 600; margin-top: 0.5rem;">R$ 50</div>
+          </div>
+          <div class="card credito-card" data-valor="100" data-creditos="100">
+            <div class="credito-valor">100</div>
+            <div style="color: var(--text-secondary);">creditos</div>
+            <div style="font-weight: 600; margin-top: 0.5rem;">R$ 100</div>
+          </div>
+          <div class="card credito-card" data-valor="200" data-creditos="220">
+            <div class="credito-valor">220</div>
+            <div style="color: var(--text-secondary);">creditos</div>
+            <div style="font-weight: 600; margin-top: 0.5rem;">R$ 200</div>
+            <div class="credito-bonus">+10% bonus!</div>
+          </div>
+          <div class="card credito-card" data-valor="500" data-creditos="575">
+            <div class="credito-valor">575</div>
+            <div style="color: var(--text-secondary);">creditos</div>
+            <div style="font-weight: 600; margin-top: 0.5rem;">R$ 500</div>
+            <div class="credito-bonus">+15% bonus!</div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>Ou digite um valor personalizado (minimo R$ 10)</label>
+          <input type="number" id="valorCustom" min="10" placeholder="Digite o valor em reais" style="max-width: 300px;">
+        </div>
+        <h3 style="margin-bottom: 1rem;">Forma de Pagamento</h3>
+        <div id="metodosPagamento">
+          <div class="metodo-card selected" data-metodo="pix">
+            <span class="metodo-icon">📱</span>
+            <div class="metodo-info">
+              <h4>PIX</h4>
+              <p>Aprovacao instantanea</p>
+            </div>
+          </div>
+          <div class="metodo-card" data-metodo="cartao">
+            <span class="metodo-icon">💳</span>
+            <div class="metodo-info">
+              <h4>Cartao de Credito</h4>
+              <p>Parcele em ate 12x</p>
+            </div>
+          </div>
+          <div class="metodo-card" data-metodo="boleto">
+            <span class="metodo-icon">📄</span>
+            <div class="metodo-info">
+              <h4>Boleto Bancario</h4>
+              <p>Aprovacao em ate 3 dias</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" style="width: 100%; margin-top: 1.5rem;" id="btnComprar" disabled>Selecione uma opcao</button>
+      </div>
+      <div class="card" style="margin-top: 1.5rem;">
+        <h2 style="margin-bottom: 1rem;">📋 Historico de Transacoes</h2>
+        <div id="historico">
+          <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Carregando...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="gateway-modal" id="gatewayModal">
+    <div class="gateway-content card" id="gatewayContent"></div>
+  </div>
+  <script>
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    if (!token || !userId) {
+      window.location.href = "auth.html";
+    }
+    
+    const body = document.body;
+    const modoBtn = document.getElementById("modoBtn");
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark");
+      modoBtn.textContent = "☀️";
+    }
+    modoBtn.addEventListener("click", () => {
+      body.classList.toggle("dark");
+      const dark = body.classList.contains("dark");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      modoBtn.textContent = dark ? "☀️" : "🌙";
+    });
+
+    let valorSelecionado = 0;
+    let creditosSelecionados = 0;
+    let metodoSelecionado = "pix";
+    
+    const creditoCards = document.querySelectorAll(".credito-card");
+    const metodoCards = document.querySelectorAll(".metodo-card");
+    const valorCustom = document.getElementById("valorCustom");
+    const btnComprar = document.getElementById("btnComprar");
+    const gatewayModal = document.getElementById("gatewayModal");
+    const gatewayContent = document.getElementById("gatewayContent");
+
+    function atualizarBotao() {
+      if (valorSelecionado >= 10) {
+        btnComprar.disabled = false;
+        btnComprar.textContent = `Pagar R$ ${valorSelecionado} via ${metodoSelecionado.toUpperCase()}`;
+      } else {
+        btnComprar.disabled = true;
+        btnComprar.textContent = "Selecione uma opcao";
+      }
+    }
+
+    creditoCards.forEach(card => {
+      card.addEventListener("click", () => {
+        creditoCards.forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        valorSelecionado = parseInt(card.dataset.valor);
+        creditosSelecionados = parseInt(card.dataset.creditos);
+        valorCustom.value = "";
+        atualizarBotao();
+      });
+    });
+
+    valorCustom.addEventListener("input", () => {
+      creditoCards.forEach(c => c.classList.remove("selected"));
+      valorSelecionado = parseInt(valorCustom.value) || 0;
+      creditosSelecionados = valorSelecionado;
+      atualizarBotao();
+    });
+
+    metodoCards.forEach(card => {
+      card.addEventListener("click", () => {
+        metodoCards.forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        metodoSelecionado = card.dataset.metodo;
+        atualizarBotao();
+      });
+    });
+
+    function fecharModal() {
+      gatewayModal.style.display = "none";
+    }
+
+    gatewayModal.addEventListener("click", (e) => {
+      if (e.target === gatewayModal) fecharModal();
+    });
+
+    async function carregarSaldo() {
+      try {
+        const res = await fetch(`/api/creditos/${userId}`);
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById("saldoAtual").textContent = `${data.creditos} creditos`;
+          return data.creditos;
+        }
+      } catch (error) {
+        console.error("Erro ao carregar saldo");
+      }
+      return 0;
+    }
+
+    async function carregarHistorico() {
+      const container = document.getElementById("historico");
+      try {
+        const res = await fetch(`/api/transacoes/${userId}`);
+        if (res.ok) {
+          const transacoes = await res.json();
+          if (transacoes.length === 0) {
+            container.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Nenhuma transacao ainda.</p>`;
+            return;
+          }
+          container.innerHTML = transacoes.map(tx => `
+            <div class="historico-item">
+              <div>
+                <strong>${tx.tipo === "compra" ? "💳 Compra" : tx.tipo === "doacao" ? "💙 Doacao" : "🎁 Bonus"}</strong>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                  ${new Date(tx.criadoEm).toLocaleDateString("pt-BR")} - ${tx.metodo ? tx.metodo.toUpperCase() : ""}
+                </div>
+              </div>
+              <div class="tx-valor ${tx.creditos > 0 ? 'positivo' : 'negativo'}">
+                ${tx.creditos > 0 ? '+' : ''}${tx.creditos} creditos
+              </div>
+            </div>
+          `).join("");
+        } else {
+          container.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Nenhuma transacao ainda.</p>`;
+        }
+      } catch (error) {
+        container.innerHTML = `<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Nenhuma transacao ainda.</p>`;
+      }
+    }
+
+    function mostrarProcessando() {
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step active"></div>
+          <div class="step"></div>
+          <div class="step"></div>
+        </div>
+        <div class="loading-spinner"></div>
+        <h2>Processando...</h2>
+        <p style="color: var(--text-secondary);">Aguarde enquanto preparamos seu pagamento</p>
+      `;
+    }
+
+    function mostrarSucesso(creditos, saldoAtual) {
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step done"></div>
+          <div class="step done"></div>
+          <div class="step done"></div>
+        </div>
+        <div style="font-size: 4rem; margin: 1rem 0;">✅</div>
+        <h2 style="color: var(--success);">Pagamento Aprovado!</h2>
+        <p style="margin: 1rem 0;">Seus creditos foram adicionados com sucesso.</p>
+        <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius); margin: 1rem 0;">
+          <div style="font-size: 0.9rem; color: var(--text-secondary);">Creditos adicionados</div>
+          <div style="font-size: 2rem; font-weight: 700; color: var(--success);">+${creditos}</div>
+        </div>
+        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem;">
+          <div style="font-size: 0.9rem; color: var(--text-secondary);">Novo saldo</div>
+          <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">${saldoAtual} creditos</div>
+        </div>
+        <button class="btn-primary" style="width: 100%;" onclick="location.reload()">Continuar</button>
+      `;
+    }
+
+    function mostrarPix() {
+      const codigoPix = "00020126580014br.gov.bcb.pix0136" + Date.now().toString(36) + Math.random().toString(36).substr(2, 8);
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step done"></div>
+          <div class="step active"></div>
+          <div class="step"></div>
+        </div>
+        <h2>📱 Pague com PIX</h2>
+        <p style="color: var(--text-secondary);">Escaneie o QR Code ou copie o codigo</p>
+        <div class="pix-qr">
+          <div style="font-size: 3rem;">📷</div>
+          <div style="font-size: 0.75rem; color: #666;">QR Code PIX</div>
+        </div>
+        <div class="codigo-pix" id="codigoPix">${codigoPix}</div>
+        <button class="btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="copiarPix()">📋 Copiar codigo PIX</button>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.5rem 0;">Chave: pagamentos@causadigital.org</p>
+        <div class="timer">⏱️ Expira em 30:00</div>
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Apos o pagamento, clique no botao abaixo:</p>
+        <button class="btn-primary" style="width: 100%;" onclick="confirmarPagamento()">✅ Ja fiz o pagamento</button>
+        <button class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="fecharModal()">Cancelar</button>
+      `;
+    }
+
+    function mostrarCartao() {
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step done"></div>
+          <div class="step active"></div>
+          <div class="step"></div>
+        </div>
+        <h2>💳 Cartao de Credito</h2>
+        <form id="formCartao" style="text-align: left; margin-top: 1.5rem;">
+          <div class="form-group">
+            <label>Numero do Cartao</label>
+            <input type="text" id="numCartao" placeholder="0000 0000 0000 0000" maxlength="19" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label>Validade</label>
+              <input type="text" id="validade" placeholder="MM/AA" maxlength="5" required>
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" id="cvv" placeholder="123" maxlength="4" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Nome no Cartao</label>
+            <input type="text" id="nomeCartao" placeholder="Como esta no cartao" required>
+          </div>
+          <div class="form-group">
+            <label>Parcelas</label>
+            <select id="parcelas">
+              <option value="1">1x de R$ ${valorSelecionado.toFixed(2)} (sem juros)</option>
+              <option value="2">2x de R$ ${(valorSelecionado/2).toFixed(2)} (sem juros)</option>
+              <option value="3">3x de R$ ${(valorSelecionado/3).toFixed(2)} (sem juros)</option>
+              <option value="6">6x de R$ ${(valorSelecionado/6).toFixed(2)} (sem juros)</option>
+              <option value="12">12x de R$ ${(valorSelecionado/12).toFixed(2)} (sem juros)</option>
+            </select>
+          </div>
+          <button type="button" class="btn-primary" style="width: 100%;" onclick="processarCartao()">Pagar R$ ${valorSelecionado}</button>
+          <button type="button" class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="fecharModal()">Cancelar</button>
+        </form>
+      `;
+    }
+
+    function mostrarBoleto() {
+      const codigoBoleto = "23793.38128 60000.000003 " + Date.now().toString().substr(-10) + " 1 " + (valorSelecionado * 100).toString().padStart(10, "0");
+      const vencimento = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString("pt-BR");
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step done"></div>
+          <div class="step active"></div>
+          <div class="step"></div>
+        </div>
+        <h2>📄 Boleto Bancario</h2>
+        <div style="font-size: 3rem; margin: 1rem 0;">🧾</div>
+        <p style="color: var(--text-secondary);">Seu boleto foi gerado!</p>
+        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius); margin: 1rem 0;">
+          <div style="font-size: 0.7rem; font-family: monospace; word-break: break-all;" id="codigoBoleto">${codigoBoleto}</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 1rem;">
+          <span>Valor: <strong>R$ ${valorSelecionado}</strong></span>
+          <span>Vencimento: <strong>${vencimento}</strong></span>
+        </div>
+        <button class="btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="copiarBoleto()">📋 Copiar codigo</button>
+        <button class="btn-secondary" style="width: 100%; margin-bottom: 1rem;" onclick="alert('PDF do boleto baixado!')">📥 Baixar PDF</button>
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Apos o pagamento, clique no botao abaixo:</p>
+        <button class="btn-primary" style="width: 100%;" onclick="confirmarPagamento()">✅ Ja paguei o boleto</button>
+        <button class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="fecharModal()">Fechar</button>
+      `;
+    }
+
+    function copiarPix() {
+      const codigo = document.getElementById("codigoPix").textContent;
+      navigator.clipboard.writeText(codigo);
+      alert("Codigo PIX copiado!");
+    }
+
+    function copiarBoleto() {
+      const codigo = document.getElementById("codigoBoleto").textContent;
+      navigator.clipboard.writeText(codigo);
+      alert("Codigo do boleto copiado!");
+    }
+
+    async function confirmarPagamento() {
+      mostrarProcessando();
+      await new Promise(r => setTimeout(r, 2000));
+      
+      try {
+        const res = await fetch("/api/gateway/simular", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            doadorId: userId, 
+            valor: creditosSelecionados || valorSelecionado, 
+            metodo: metodoSelecionado 
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          mostrarSucesso(creditosSelecionados || valorSelecionado, data.saldoAtual);
+          carregarSaldo();
+          carregarHistorico();
+        } else {
+          gatewayContent.innerHTML = `
+            <div style="font-size: 4rem; margin: 1rem 0;">⚠️</div>
+            <h2>Pagamento Pendente</h2>
+            <p style="color: var(--text-secondary);">Ainda nao identificamos seu pagamento. Aguarde alguns minutos e tente novamente.</p>
+            <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="confirmarPagamento()">Verificar novamente</button>
+            <button class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="fecharModal()">Fechar</button>
+          `;
+        }
+      } catch (error) {
+        gatewayContent.innerHTML = `
+          <div style="font-size: 4rem; margin: 1rem 0;">⚠️</div>
+          <h2>Pagamento Pendente</h2>
+          <p style="color: var(--text-secondary);">Estamos verificando seu pagamento. Isso pode levar alguns minutos.</p>
+          <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="confirmarPagamento()">Verificar novamente</button>
+          <button class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="fecharModal()">Fechar</button>
+        `;
+      }
+    }
+
+    async function processarCartao() {
+      const numCartao = document.getElementById("numCartao").value;
+      const validade = document.getElementById("validade").value;
+      const cvv = document.getElementById("cvv").value;
+      const nome = document.getElementById("nomeCartao").value;
+
+      if (!numCartao || !validade || !cvv || !nome) {
+        alert("Preencha todos os campos");
+        return;
+      }
+
+      mostrarProcessando();
+      
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step done"></div>
+          <div class="step active"></div>
+          <div class="step"></div>
+        </div>
+        <div class="loading-spinner"></div>
+        <h2>Processando Cartao...</h2>
+        <p style="color: var(--text-secondary);">Verificando dados do cartao</p>
+      `;
+      
+      await new Promise(r => setTimeout(r, 1500));
+      
+      gatewayContent.innerHTML = `
+        <div class="step-indicator">
+          <div class="step done"></div>
+          <div class="step done"></div>
+          <div class="step active"></div>
+        </div>
+        <div class="loading-spinner"></div>
+        <h2>Autorizando...</h2>
+        <p style="color: var(--text-secondary);">Aguardando aprovacao da operadora</p>
+      `;
+      
+      await new Promise(r => setTimeout(r, 1500));
+      
+      try {
+        const res = await fetch("/api/gateway/simular", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            doadorId: userId, 
+            valor: creditosSelecionados || valorSelecionado, 
+            metodo: "cartao" 
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok) {
+          mostrarSucesso(creditosSelecionados || valorSelecionado, data.saldoAtual);
+          carregarSaldo();
+          carregarHistorico();
+        } else {
+          throw new Error("Falha");
+        }
+      } catch (error) {
+        gatewayContent.innerHTML = `
+          <div style="font-size: 4rem; margin: 1rem 0;">❌</div>
+          <h2 style="color: var(--danger);">Cartao Recusado</h2>
+          <p style="color: var(--text-secondary);">A operadora nao autorizou esta transacao. Verifique os dados ou tente outro cartao.</p>
+          <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="mostrarCartao()">Tentar novamente</button>
+          <button class="btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="fecharModal()">Cancelar</button>
+        `;
+      }
+    }
+
+    btnComprar.addEventListener("click", async () => {
+      if (valorSelecionado < 10) return;
+      
+      gatewayModal.style.display = "flex";
+      mostrarProcessando();
+      
+      await new Promise(r => setTimeout(r, 800));
+      
+      if (metodoSelecionado === "pix") {
+        mostrarPix();
+      } else if (metodoSelecionado === "cartao") {
+        mostrarCartao();
+      } else {
+        mostrarBoleto();
+      }
+    });
+
+    carregarSaldo();
+    carregarHistorico();
+  </script>
+</body>
+</html>
